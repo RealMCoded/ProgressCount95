@@ -1,8 +1,8 @@
 const fs = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection } = require('discord.js');
 const { token, countingCh } = require('./config.json');
 
-const client = new Client({ ws: { properties: { $browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const client = new Client({ ws: { properties: { $browser: "Discord iOS" }}, intents: 1665 });
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
