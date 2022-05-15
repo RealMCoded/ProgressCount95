@@ -16,7 +16,7 @@ The bot is built with Node.js.
 
 Clone the repository with
 ```
-git clone https://github.com/RealMCoded/Patzibot
+git clone https://github.com/RealMCoded/ProgressCount95
 ```
 
 Install all requirements
