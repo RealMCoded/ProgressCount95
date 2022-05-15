@@ -6,10 +6,6 @@ The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 
 ## Required Files
 
-The bot requires some files to be made that have been gitignored.
-
-- Make 2 files in `data/` called `numb.txt` and `banned.json`. These files are required for the bot to store data.
-
 - Copy `config.json.template`, rename it to `config.json` and replace the variables with your own.
 
 ## Buidling
