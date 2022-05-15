@@ -4,6 +4,11 @@ The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 
 **Warning: The code used for this is very half assed and very unstable.**
 
+## Known issues
+
+- The 1984 emoji will fail to react.
+- 
+
 ## Required Files
 
 The bot requires some files to be made that have been gitignored.
@@ -20,7 +25,7 @@ The bot is built with Node.js.
 
 Clone the repository with
 ```
-git clone https://github.com/RealMCoded/Patzibot
+git clone https://github.com/RealMCoded/ProgressCount95
 ```
 
 Install all requirements
@@ -31,4 +36,9 @@ npm install
 Start the bot
 ```
 node .
+```
+
+Invite your bot with this link (Replace `[ClientID]` with your bot's ID!)
+```
+https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=8&scope=bot%20applications.commands
 ```
