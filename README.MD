@@ -16,7 +16,7 @@ The bot requires some files to be made that have been gitignored.
 
 The bot is built with Node.js.
 
---
+---
 
 Clone the repository with
 ```
