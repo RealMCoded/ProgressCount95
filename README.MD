@@ -1,6 +1,6 @@
 # ProgressCount95
 
-The source code for the ProgressCount95 Bot - Now open sourced by request.
+The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 
 **Warning: The code used for this is very half assed and very unstable.**
 
