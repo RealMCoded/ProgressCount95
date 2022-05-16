@@ -48,7 +48,7 @@ client.on('messageCreate', async message => {
 	if (message.author.bot) return
 
 	if (message.channel.id === countingCh) {
-		//Read file banned.json and store it in variable fd
+		//Read file banned.json and store it in variable
 		var fd = fs.readFileSync('./data/banned.json', 'utf8')
 		if (fd.includes(message.author.id)) {
 			return
@@ -72,7 +72,6 @@ client.on('messageCreate', async message => {
 							case "36": message.react("<:PBNOT36:819147051912134657>"); break; //NOT36
 							case "98": message.react("<:PB98:819146172928491580>"); break; //98
 							case "95": message.react("<:PB95:662601719653597196>"); break; //95
-							case "2": message.react("<:he3:975457560268275803>"); break; //2
 							//NOT BAR GAME RELATED BUT STILL FUNNY
 							case "100": message.react("💯"); break;
 							case "1984": message.react("<a:1984:971405081817804800>"); break;
