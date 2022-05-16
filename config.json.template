@@ -5,6 +5,7 @@
     "countingCh":"",
     "logChannel":"",
     "token":"",
+    "useCustomEmoji":false
     "SQL_USER":"",
     "SQL_PASS":""
 }
