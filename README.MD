@@ -12,6 +12,17 @@ The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 
 The bot requires some files to be made that have been gitignored.
 
+You can run the following command to generate these files:
+```
+node FIRSTRUN.JS
+```
+
+All you need to do is edit `config.json` with your own variables.
+
+---
+
+Alternatively, you can do it manually:
+
 - Make 2 files in `data/` called `numb.txt` and `banned.json`. These files are required for the bot to store data.
 
 - `banned.json` is a JSON array, so make sure your `banned.json` file includesthe following:
