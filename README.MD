@@ -7,6 +7,7 @@ The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 ## Known issues
 
 - If an emoji doesn't exist and the bot tries to use it, the bot crashes. You can turn `useCustomEmoji` to `false` in the `config.json` file if you wish.
+- The bot detects attachments and stickers as an invalid number.
 
 ## Required Files
 
