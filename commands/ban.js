@@ -19,7 +19,7 @@ module.exports = {
         } else {
             if (banMBR.some(me => me.id == mbr.id)) {
                 banMBR.splice(banMBR.indexOf(mbr.id), 1)
-                interaction.reply("User unbanned!")
+                interaction.reply("✅ **" + mbr.tag + "** is no longer banned from counting.")
                 fs.writeFile(banMBRfile, JSON.stringify(banMBR, null, 2), function writeJSON(err) {
                     if (err) return console.error(err);
                 });
@@ -31,6 +31,7 @@ module.exports = {
             });
 
             console.log(`${interaction.user.tag} banned ${mbr}`)
+            //mbr.send("haha u r banned from counting")
             return interaction.reply({ content: `✅ **Banned ${mbr} from counting for "${interaction.options.getString("reason")}"**`, ephemeral: false }); 
         }
         }
