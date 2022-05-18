@@ -13,7 +13,11 @@ module.exports = {
             let banlist = '';
 
             for (var i=0; i < banMBR.length; i++) {
-                banlist += `${i+1}. <@${banMBR[i]}>\n`
+                banlist += `**${i+1}.** <@${banMBR[i].id}> - ${banMBR[i].reason}\n`
+            }
+
+            if (banlist == '') {
+                banlist = '**No one is banned from counting.**'
             }
             //create message embed
             const embed = new MessageEmbed()

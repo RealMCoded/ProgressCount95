@@ -17,14 +17,14 @@ module.exports = {
             interaction.reply("You can't ban Chris from counting!")
             return
         } else {
-            if (banMBR.includes(mbr.id)) {
+            if (banMBR.some(me => me.id == mbr.id)) {
                 banMBR.splice(banMBR.indexOf(mbr.id), 1)
                 interaction.reply("User unbanned!")
                 fs.writeFile(banMBRfile, JSON.stringify(banMBR, null, 2), function writeJSON(err) {
                     if (err) return console.error(err);
                 });
             } else {
-            banMBR.push(mbr.id)
+            banMBR.push({"id": mbr.id, "reason": interaction.options.getString("reason")})
             
             fs.writeFile(banMBRfile, JSON.stringify(banMBR, null, 2), function writeJSON(err) {
                 if (err) return console.error(err);
