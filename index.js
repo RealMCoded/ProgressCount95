@@ -86,7 +86,7 @@ client.on('messageCreate', async message => {
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 					} else {
 						message.react('❌')
-						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!`)
+						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1**`)
 						numb = 0
 						lastCounterId = "0"
 					}
