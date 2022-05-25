@@ -116,11 +116,10 @@ client.on('messageCreate', async message => {
 		}
 
 		//i use arch btw counter - maybe later
-	}
-
-	if (message.content == "bruhbruhbruh"){
-		message.channel.send("[DEBUG] resored server saves to 3")
-		serverSaves = 3
+		if (message.content == "bruhbruhbruh"){
+			message.channel.send("[DEBUG] resored server saves to 3")
+			serverSaves = 3
+		}
 	}
 
 });
