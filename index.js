@@ -9,6 +9,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
 var lastCounterId= "0"
+var serverSaves= 3
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -84,18 +85,28 @@ client.on('messageCreate', async message => {
 				} else {
 					if (message.content.length >= 1500){
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
+					} else if (serverSaves !== 0) {
+						message.react('⚠️')
+						--serverSaves
+						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}**`)
 					} else {
 						message.react('❌')
-						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1**`)
+						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
 						numb = 0
 						lastCounterId = "0"
 					}
 				}
-			}else {
-				message.react('❌')
-				message.reply(`${message.author} ruined the count!\n**You cannot count more than one time in a row**!`)
-				numb = 0
-				lastCounterId = "0"
+			} else {
+				if (serverSaves !== 0) {
+					message.react('⚠️')
+					--serverSaves
+					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}**`)
+				} else {
+					message.react('❌')
+					message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
+					numb = 0
+					lastCounterId = "0"
+				}
 			}
 
 			//write changes to file
@@ -105,6 +116,11 @@ client.on('messageCreate', async message => {
 		}
 
 		//i use arch btw counter - maybe later
+	}
+
+	if (message.content == "bruhbruhbruh"){
+		message.channel.send("[DEBUG] resored server saves to 3")
+		serverSaves = 3
 	}
 
 });
