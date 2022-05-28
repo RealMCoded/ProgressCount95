@@ -15,16 +15,21 @@ module.exports = {
 			.setDescription("View your saves!"))
         .addSubcommand(subcommand =>
             subcommand
-            .setName("set")
-            .setDescription("Admin and debug use only! Set your saves")),
+            .setName("99")
+            .setDescription("Admin and debug use only! gives you 99 saves")),
     async execute(interaction) {
+        const db = interaction.client.db.Saves;
         const subcommand = interaction.options.getSubcommand();
         if (subcommand === "claim") {
             return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
         } else if (subcommand === "view") {
             return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
-        } else if (subcommand === "set") {
-            return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
+        } else if (subcommand === "99") {
+            db.create({
+                saves: 99,
+                userID: interaction.member.user.id,
+            })
+            return interaction.reply({ content: "k", ephemeral: true }); //show nothing for now
         }
     },
 };
