@@ -11,22 +11,21 @@ module.exports = {
             .setRequired(false)),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
-        //return interaction.reply({embeds: [embed]})
+
         var le = ""
         list = await db.findAll({
             attributes: ['numbers', 'userID']
           })
-            //.slice(0, interaction.options.getInteger('numb') || 10)
-            //create a message embed
-        //list = list.sort((a, b) => b.numbers - a.numbers)
+
+        list = list.sort((a, b) => b.numbers - a.numbers)
+        list = list.slice(0, interaction.options.getInteger('numb') || 10)
 
         for(var i=0; i < list.length; i++){
-            console.log(list[i].numbers)
             var le = le + "**#" + (i+1).toString() + "** | <@" + list[i].userID + ">: **" + list[i].numbers.toString() + "**\n"
         }
 
         const embed = new MessageEmbed()
-            .setTitle("Leaderboard")
+            .setTitle(`Leaderboard | First ${interaction.options.getInteger('numb') || 10} users`)
             .setColor("#0099ff")
             .setDescription(`${le}`)
             .setTimestamp()
