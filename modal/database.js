@@ -10,7 +10,7 @@ const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
 
 const Saves = sequelize.define('saves', {
   userID:{
-    type: Sequelize.NUMBER,
+    type: Sequelize.STRING,
   },
   saves: {
     type: Sequelize.NUMBER,
@@ -20,7 +20,7 @@ const Saves = sequelize.define('saves', {
 
 const Counters = sequelize.define('counters', {
     userID:{
-      type: Sequelize.NUMBER,
+      type: Sequelize.STRING,
     },
     numbers: {
       type: Sequelize.NUMBER,

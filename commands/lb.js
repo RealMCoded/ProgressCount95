@@ -3,20 +3,34 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('lb')
+        .setName('leaderboard')
         .setDescription(`Get the leaderboard`)
         .addIntegerOption(option =>
             option.setName('numb')
             .setDescription(`The number of users to show (default: 10)`)
             .setRequired(false)),
     async execute(interaction) {
-       //create a message embed
-         const embed = new MessageEmbed()
+        const db = interaction.client.db.Counters;
+        //return interaction.reply({embeds: [embed]})
+        var le = ""
+        list = await db.findAll({
+            attributes: ['numbers', 'userID']
+          })
+            //.slice(0, interaction.options.getInteger('numb') || 10)
+            //create a message embed
+        //list = list.sort((a, b) => b.numbers - a.numbers)
+
+        for(var i=0; i < list.length; i++){
+            console.log(list[i].numbers)
+            var le = le + "**#" + (i+1).toString() + "** | <@" + list[i].userID + ">: **" + list[i].numbers.toString() + "**\n"
+        }
+
+        const embed = new MessageEmbed()
             .setTitle("Leaderboard")
             .setColor("#0099ff")
-            .setDescription("Here is the leaderboard!\n\n1: Frank | a lot of numbers\n\n2: Josh | some numbers\n\n3: Jimmy | very few numbers")
+            .setDescription(`${le}`)
             .setTimestamp()
-        //send the message embed
-        return interaction.reply({ embed });
+
+		return interaction.reply({embeds: [embed]});
     },
 };

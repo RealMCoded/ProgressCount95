@@ -97,13 +97,24 @@ client.on('messageCreate', async message => {
 					}
 					numb++
 					lastCounterId = message.author.id
+
+					//store that they counted in the db
+					let lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
+					if (lecountr) {
+						lecountr.increment('numbers')
+					} else {
+						client.db.Counters.create({
+							numbers: 1,
+							userID: message.author.id,
+						})
+					}
 				} else {
 					if (message.content.length >= 1500){
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 					} else if (serverSaves !== 0) {
 						message.react('⚠️')
 						--serverSaves
-						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}**`)
+						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
 					} else {
 						message.react('❌')
 						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
@@ -115,7 +126,7 @@ client.on('messageCreate', async message => {
 				if (serverSaves !== 0) {
 					message.react('⚠️')
 					--serverSaves
-					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}**`)
+					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
 				} else {
 					message.react('❌')
 					message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
@@ -132,7 +143,7 @@ client.on('messageCreate', async message => {
 
 		//i use arch btw counter - maybe later
 		if (message.content == "bruhbruhbruh"){
-			message.channel.send("[DEBUG] resored server saves to 3")
+			message.channel.send("[DEBUG] restored server saves to 3")
 			serverSaves = 3
 		}
 	}
