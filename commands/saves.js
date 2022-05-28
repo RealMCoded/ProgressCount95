@@ -4,7 +4,7 @@ const {MessageEmbed} = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('saves')
-        .setDescription(`View and claim saves!`)
+        .setDescription(`save cmd`)
         .addSubcommand(subcommand =>
 			subcommand
 			.setName("claim")
@@ -12,8 +12,19 @@ module.exports = {
         .addSubcommand(subcommand =>
 			subcommand
 			.setName("view")
-			.setDescription("View your saves!")),
+			.setDescription("View your saves!"))
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName("set")
+            .setDescription("Admin and debug use only! Set your saves")),
     async execute(interaction) {
-       return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
+        const subcommand = interaction.options.getSubcommand();
+        if (subcommand === "claim") {
+            return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
+        } else if (subcommand === "view") {
+            return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
+        } else if (subcommand === "set") {
+            return interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
+        }
     },
 };

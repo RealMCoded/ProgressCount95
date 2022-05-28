@@ -1,8 +1,19 @@
 const fs = require('node:fs');
+const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, countingCh, useCustomEmoji } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS } = require('./config.json');
 
 const client = new Client({ ws: { properties: { $browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+
+//database shit
+const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
+	host: 'localhost',
+	dialect: 'sqlite',
+	logging: false,
+	// SQLite only
+	storage: 'database.sqlite',
+});
+client.db = require('./modal/database.js')
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -17,6 +28,10 @@ for (const file of commandFiles) {
 }
 
 client.once('ready', () => {
+	//sync database
+	client.db.Saves.sync()
+	client.db.Counters.sync()
+
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	client.user.setActivity('counting', { type: 'COMPETING' });
