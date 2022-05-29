@@ -33,7 +33,15 @@ module.exports = {
             interaction.reply({ content: `everyone in the server has counted a total of **${tot}** numbers ~~wow what losers~~`, ephemeral: false}); //placeholder
 
         } else if (subcommand === "user") {
-            interaction.reply({ content: "_ _", ephemeral: true }); //show nothing for now
+            const usr = interaction.options.getUser("user").id || interaction.user.id;
+
+            const tag = await db.findOne({ where: { userID: usr } });
+
+            if (tag) {
+                interaction.reply({ content: `<@${usr}> has counted **${tag.get('numbers')}** numbers`, ephemeral: false});
+            } else {
+                interaction.reply({ content: `<@${usr}> has not counted any numbers`, ephemeral: false});
+            }
         }
     },
 };
