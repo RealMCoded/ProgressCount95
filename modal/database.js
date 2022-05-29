@@ -14,7 +14,7 @@ const Saves = sequelize.define('saves', {
   },
   saves: {
     type: Sequelize.NUMBER,
-    defaultValue: 0
+    defaultValue: 2
   }
 });
 

@@ -16,11 +16,12 @@ module.exports = {
 
             } else {
                 for (let i = 0; i < bans.length; i++) {
-                    let user = interaction.client.users.cache.get(bans[i].userID);
+                    //TODO: Fix caching.
+                    let user = await interaction.client.users.cache.get(bans[i].userID);
                     if (user) {
                         banlist += `**${user.username}#${user.discriminator}** - ${bans[i].reason}\n`
                     } else {
-                        banlist += `**${bans[i].userID}** (no longer in guild) - ${bans[i].reason}\n`
+                        banlist += `**<@${bans[i].userID}>**  - ${bans[i].reason}\n`
                     }
                 }
             }
@@ -29,7 +30,7 @@ module.exports = {
             }
             //create message embed
             const embed = new MessageEmbed()
-                .setTitle('List of banned members from Counting')
+                .setTitle('List of banned members from Counting - Work in progress')
                 .setDescription(banlist)
                 .setColor('#ff0000')
             return interaction.reply({embeds: [embed]}); 

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const {MessageEmbed} = require('discord.js');
+const {MessageEmbed, Permissions} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -24,15 +24,16 @@ module.exports = {
     async execute(interaction) {
         const db = interaction.client.db.Saves;
         const subcommand = interaction.options.getSubcommand();
-        let save = await db.findOne({ where: { userID: interaction.member.user.id } });
+        let save = await db.findOne({ where: { userID: interaction.user.id } });
+        
         if (subcommand === "claim") {
 
             if (save) {
                 save.increment('saves', { by: 0.5 });
             } else {
                 await db.create({
-                    userID: interaction.member.user.id,
-                    saves: 0.5
+                    userID: interaction.user.id,
+                    saves: 2.5
                 })
             }
             const embed = new MessageEmbed()
@@ -62,7 +63,7 @@ module.exports = {
             if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
                 db.create({
                     saves: 99,
-                    userID: interaction.member.user.id,
+                    userID: interaction.user.id,
                 })
                 return interaction.reply({ content: "k", ephemeral: true }); //show nothing for now
             } else {
