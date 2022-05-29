@@ -16,7 +16,11 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
             .setName("99")
-            .setDescription("Admin and debug use only! gives you 99 saves")),
+            .setDescription("Admin and debug use only! gives you 99 saves"))
+        .addSubcommand(subcommand =>
+            subcommand
+            .setName("server99")
+            .setDescription("Admin and debug use only! gives the server 99 saves")),
     async execute(interaction) {
         const db = interaction.client.db.Saves;
         const subcommand = interaction.options.getSubcommand();
@@ -59,6 +63,16 @@ module.exports = {
                 db.create({
                     saves: 99,
                     userID: interaction.member.user.id,
+                })
+                return interaction.reply({ content: "k", ephemeral: true }); //show nothing for now
+            } else {
+                return interaction.reply({ content: "You do not have permission to use this command", ephemeral: true });
+            }
+        } else if (subcommand === "server99") {
+            if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
+                db.create({
+                    saves: 99,
+                    userID: "660752537401688085", //treating the server as a user for ease of use.
                 })
                 return interaction.reply({ content: "k", ephemeral: true }); //show nothing for now
             } else {

@@ -63,7 +63,8 @@ client.on('messageCreate', async message => {
 	if (message.author.bot) return
 
 	if (message.channel.id === countingCh) {
-		//Read file banned.json and store it in variable
+
+		//Read file banned.json and store it in variable - yeah i re-read it each time sue me
 		var fd = fs.readFileSync('./data/banned.json', 'utf8')
 		if (fd.includes(message.author.id)) {
 			return
