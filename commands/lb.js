@@ -15,7 +15,7 @@ module.exports = {
         var le = ""
         list = await db.findAll({
             attributes: ['numbers', 'userID']
-          })
+        })
 
         list = list.sort((a, b) => b.numbers - a.numbers)
         list = list.slice(0, interaction.options.getInteger('numb') || 10)
