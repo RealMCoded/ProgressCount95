@@ -30,17 +30,33 @@ module.exports = {
                 tot = tot + list[i].numbers
             }
 
-            interaction.reply({ content: `everyone in the server has counted a total of **${tot}** numbers ~~wow what losers~~`, ephemeral: false}); //placeholder
+            const embed = new MessageEmbed()
+                .setTitle(`Server Stats`)
+                .setColor("#0099ff")
+                .setDescription(`everyone in the server has counted a total of **${tot}** numbers ~~wow what losers~~`)
+                .setTimestamp()
+
+		    return interaction.reply({embeds: [embed]});
 
         } else if (subcommand === "user") {
-            const usr = interaction.options.getUser("user").id || interaction.user.id;
+            const usr = interaction.options.getUser("user") || interaction.member.user;
 
-            const tag = await db.findOne({ where: { userID: usr } });
+            const tag = await db.findOne({ where: { userID: usr.id } });
 
             if (tag) {
-                interaction.reply({ content: `<@${usr}> has counted **${tag.get('numbers')}** numbers`, ephemeral: false});
+                const embed = new MessageEmbed()
+                    .setTitle(`Server Stats`)
+                    .setColor("#0099ff")
+                    .setDescription(`<@${usr.id}> has counted **${tag.get('numbers')}** numbers`)
+                    .setTimestamp()
+                return interaction.reply({embeds: [embed]});
             } else {
-                interaction.reply({ content: `<@${usr}> has not counted any numbers`, ephemeral: false});
+                const embed = new MessageEmbed()
+                    .setTitle(`User Stats`)
+                    .setColor("#0099ff")
+                    .setDescription(`<@${usr.id}> has not counted any numbers`)
+                    .setTimestamp()
+                return interaction.reply({embeds: [embed]});
             }
         }
     },
