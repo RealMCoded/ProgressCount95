@@ -13,7 +13,7 @@ module.exports = {
             let mbr = interaction.options.getUser("user")
             if (mbr == "513487616964952084") {
                 return interaction.reply("❌ **What did i ever do to you?**")
-            } else if (mbr == "511223071504334866") {
+            } else if (mbr == "284804878604435476") {
                 return interaction.reply("❌ **You cannot ban my creator from counting smh**")
             } else {
                 const db = interaction.client.db.Bans;
