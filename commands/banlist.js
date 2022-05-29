@@ -1,8 +1,6 @@
 const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Permissions, MessageEmbed } = require('discord.js');
-const banMBRfile = './data/banned.json'
-const banMBR = require("." + banMBRfile);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,11 +9,21 @@ module.exports = {
     async execute(interaction) {
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
             let banlist = '';
+            const db = interaction.client.db.Bans;
 
-            for (var i=0; i < banMBR.length; i++) {
-                banlist += `**${i+1}.** <@${banMBR[i].id}> - ${banMBR[i].reason}\n`
+            let bans = await db.findAll();
+            if (bans.length == 0) {
+
+            } else {
+                for (let i = 0; i < bans.length; i++) {
+                    let user = interaction.client.users.cache.get(bans[i].userID);
+                    if (user) {
+                        banlist += `**${user.username}#${user.discriminator}** - ${bans[i].reason}\n`
+                    } else {
+                        banlist += `**${bans[i].userID}** (no longer in guild) - ${bans[i].reason}\n`
+                    }
+                }
             }
-
             if (banlist == '') {
                 banlist = '**No one is banned from counting.**'
             }

@@ -28,4 +28,14 @@ const Counters = sequelize.define('counters', {
     }
 });
 
-module.exports = { Saves, Counters }
+const Bans = sequelize.define('banned', {
+  userID:{
+    type: Sequelize.STRING,
+  },
+  reason: {
+    type: Sequelize.STRING,
+    defaultValue: "No reason given."
+  }
+});
+
+module.exports = { Saves, Counters, Bans }

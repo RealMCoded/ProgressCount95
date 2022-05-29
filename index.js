@@ -31,6 +31,7 @@ client.once('ready', () => {
 	//sync database
 	client.db.Saves.sync()
 	client.db.Counters.sync()
+	client.db.Bans.sync()
 
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
@@ -64,11 +65,11 @@ client.on('messageCreate', async message => {
 
 	if (message.channel.id === countingCh) {
 
-		//Read file banned.json and store it in variable - yeah i re-read it each time sue me
-		var fd = fs.readFileSync('./data/banned.json', 'utf8')
-		if (fd.includes(message.author.id)) {
-			return
+		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
+		if (bn) {
+			return;
 		}
+
 		//check if first string in message is a number
 		if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) {
 			if (lastCounterId !== message.author.id) {
