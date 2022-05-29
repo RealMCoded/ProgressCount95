@@ -141,7 +141,7 @@ client.on('messageCreate', async message => {
 			});
 		}
 
-		//i use arch btw counter - maybe later
+		//DEBUG - Reset server saves to 3
 		if (message.content == "bruhbruhbruh"){
 			message.channel.send("[DEBUG] restored server saves to 3")
 			serverSaves = 3
