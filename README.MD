@@ -2,6 +2,8 @@
 
 The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 
+**[Trello Board](https://trello.com/b/WMZYOuTd/progresscount95)**
+
 **Warning: The code used for this is very half assed and very unstable.**
 
 ## Known issues
