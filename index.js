@@ -18,7 +18,7 @@ client.db = require('./modal/database.js')
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
+//var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
 var lastCounterId= "0"
 var serverSaves= 3
 
@@ -27,11 +27,22 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 
-client.once('ready', () => {
-	//sync database
+client.once('ready', async () => {
+	//sync database tables
 	client.db.Saves.sync()
 	client.db.Counters.sync()
 	client.db.Bans.sync()
+	client.db.Ruins.sync()
+	client.db.Data.sync()
+
+	var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
+
+	if(!numbdb){
+		client.db.Data.create({ name: "numb", value: "0" })
+		numb = 0 
+	}else{
+		numb = parseInt(numbdb.get("value"))
+	}
 
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
@@ -48,7 +59,9 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		await command.execute(interaction);
-		numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
+
+		var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
+		numb = parseInt(numbdb.get("value"))
 	} catch (error) {
 		console.log(`${error}\n\n`)
 		if (interaction.user.id !== "284804878604435476") {
@@ -63,7 +76,10 @@ client.on('messageCreate', async message => {
 
 	if (message.author.bot) return
 
+	if (message.type !== "DEFAULT") return;
+
 	if (message.channel.id === countingCh) {
+		//console.log(message.type)
 
 		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
 		if (bn) {
@@ -137,10 +153,8 @@ client.on('messageCreate', async message => {
 				}
 			}
 
-			//write changes to file
-			fs.writeFile('./data/numb.txt', String(numb), (err) => {
-				if (err) throw err;
-			});
+			var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
+		    numbdb.update({ value: numb.toString() })
 		}
 
 		//DEBUG - Reset server saves to 3

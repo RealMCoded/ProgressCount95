@@ -10,9 +10,10 @@ module.exports = {
     async execute(interaction) {
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
             var numb = interaction.options.getInteger("numb")
-            fs.writeFile('./data/numb.txt', String(numb), (err) => {
-                if (err) throw err;
-            });
+
+            var numbdb = await interaction.client.db.Data.findOne({ where: { name: "numb" }})
+		    numbdb.update({ value: numb.toString() })
+
             console.log(`${interaction.user.tag} changed the number to ${numb}`)
             return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
         } else {

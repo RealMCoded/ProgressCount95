@@ -28,6 +28,16 @@ const Counters = sequelize.define('counters', {
     }
 });
 
+const Ruins = sequelize.define('ruins', {
+  userID:{
+    type: Sequelize.STRING,
+  },
+  ruin: {
+    type: Sequelize.NUMBER,
+    defaultValue: 0
+  }
+});
+
 const Bans = sequelize.define('banned', {
   userID:{
     type: Sequelize.STRING,
@@ -38,4 +48,15 @@ const Bans = sequelize.define('banned', {
   }
 });
 
-module.exports = { Saves, Counters, Bans }
+const Data = sequelize.define('data', {
+  name:{
+    type: Sequelize.STRING,
+    defaultValue: 0
+  },
+  value: {
+    type: Sequelize.STRING,
+    defaultValue: "0"
+  }
+});
+
+module.exports = { Saves, Counters, Bans, Ruins, Data }
