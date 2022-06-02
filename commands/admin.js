@@ -49,8 +49,18 @@ module.exports = {
 
                         }
                     }
+                case "setcount":
+                    var numb = interaction.options.getInteger("count")
+
+                    var numbdb = await interaction.client.db.Data.findOne({ where: { name: "numb" }})
+		            numbdb.update({ value: numb.toString() })
+
+                    console.log(`${interaction.user.tag} changed the number to ${numb}`)
+                    return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
             }
         
+        } else {
+            return interaction.reply({ content: `❌ **You cannot do this!**`, ephemeral: true });
         }
     }
 
