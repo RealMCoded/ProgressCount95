@@ -41,7 +41,7 @@ module.exports = {
                     } else {
                         const db = interaction.client.db.Bans;
                         if (ban) {
-                            await db.findOrCreate({ where: { userID: mbr.id } })
+                            await db.findOrCreate({ where: { userID: mbr.id }, defaults: { reason: reason} })
                             interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
                         } else {
                             await db.destroy({ where: { userID: mbr.id } })
