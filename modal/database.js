@@ -25,6 +25,10 @@ const Counters = sequelize.define('counters', {
     numbers: {
       type: Sequelize.NUMBER,
       defaultValue: 0
+    },
+    wrongNumbers: {
+      type: Sequelize.NUMBER,
+      defaultValue: 0
     }
 });
 

@@ -82,6 +82,8 @@ client.on('messageCreate', async message => {
 		//console.log(message.type)
 
 		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
+		let lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
+
 		if (bn) {
 			return;
 		}
@@ -117,7 +119,6 @@ client.on('messageCreate', async message => {
 					lastCounterId = message.author.id
 
 					//store that they counted in the db
-					let lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
 					if (lecountr) {
 						lecountr.increment('numbers')
 					} else {
@@ -139,6 +140,7 @@ client.on('messageCreate', async message => {
 						numb = 0
 						lastCounterId = "0"
 					}
+					lecountr.increment("wrongNumbers")
 				}
 			} else {
 				if (serverSaves !== 0) {
@@ -151,6 +153,8 @@ client.on('messageCreate', async message => {
 					numb = 0
 					lastCounterId = "0"
 				}
+				lecountr.increment("wrongNumbers")
+
 			}
 
 			var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
