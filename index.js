@@ -110,7 +110,7 @@ client.on('messageCreate', async message => {
 							//NOT BAR GAME RELATED BUT STILL FUNNY
 							case "100": message.react("💯"); break;
 							case "1984": message.react("<a:1984:971405081817804800>"); break;
-							default: message.react("✅"); break;
+							default: message.react("<:CheckMark:981961793800921140>"); break;
 						}
 					} else {
 						message.react("✅");
@@ -131,11 +131,11 @@ client.on('messageCreate', async message => {
 					if (message.content.length >= 1500){
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 					} else if (serverSaves !== 0) {
-						message.react('⚠️')
+						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						--serverSaves
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
 					} else {
-						message.react('❌')
+						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
 						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
 						numb = 0
 						lastCounterId = "0"
@@ -144,11 +144,11 @@ client.on('messageCreate', async message => {
 				}
 			} else {
 				if (serverSaves !== 0) {
-					message.react('⚠️')
+					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 					--serverSaves
 					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
 				} else {
-					message.react('❌')
+					if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
 					message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
 					numb = 0
 					lastCounterId = "0"
