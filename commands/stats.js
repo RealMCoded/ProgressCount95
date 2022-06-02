@@ -47,7 +47,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Server Stats`)
                     .setColor("#0099ff")
-                    .setDescription(`<@${usr.id}> has counted **${tag.get('numbers')}** numbers`)
+                    .setDescription(`<@${usr.id}> has counted **${tag.get('numbers')}** numbers with **${tag.get('wrongNumbers')} wrong numbers`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
