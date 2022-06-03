@@ -85,6 +85,10 @@ client.on('messageCreate', async message => {
 		let lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
 
 		if (bn) {
+			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
+				message.react("<:NumberIgnored:981961793947705415>"); 
+				message.reply({ content: "<:NumberIgnored:981961793947705415> **Your number has been ignored because you are banned from counting.**", ephemeral: true })
+			}
 			return;
 		}
 
