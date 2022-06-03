@@ -30,63 +30,93 @@ module.exports = {
                 .setRequired(true)))
         .addSubcommand(subcommand => subcommand
             .setName("banlist")
-            .setDescription("Look at all the dead people.")),
+            .setDescription("Look at all the dead people."))
+        .addSubcommand(subcommand => subcommand
+            .setName("setuserscore")
+            .setDescription("Set an user's correct and incorrect numbers.")
+            .addUserOption(option => option
+                .setName("user")
+                .setDescription("the user")
+                .setRequired(true))
+            .addIntegerOption(option => option
+                .setName("correctNumbers")
+                .setDescription("the correct numbers")
+                .setRequired(true))
+            .addIntegerOption(option => option
+                .setName("incorrectNumbers")
+                .setDescription("the incorrect numbers")
+                .setRequired(true))
+        .addSubcommand(subcommand => subcommand
+            .setName("sethighscore")
+            .setDescription("set the high score")
+            .addIntegerOption(option => option
+                .setName("highscore")
+                .setDescription("the highscore")
+                .setRequired(true)))),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
-            switch(subcommand) {
-                case "setban":
-                    let mbr = interaction.options.getUser("user")
-                    let ban = interaction.options.getBoolean("ban")
-                    let reason = interaction.options.getString("reason")
-                    if (mbr == "513487616964952084") {
-                        return interaction.reply("❌ **What did i ever do to you?**")
-                    } else {
-                        const db = interaction.client.db.Bans;
-                        if (ban) {
-                            await db.findOrCreate({ where: { userID: mbr.id }, defaults: { reason: reason} })
-                            interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
-                        } else {
-                            await db.destroy({ where: { userID: mbr.id } })
-                            interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
-
-                        }
-                    }
-                case "setcount":
-                    var numb = interaction.options.getInteger("count")
-
-                    var numbdb = await interaction.client.db.Data.findOne({ where: { name: "numb" }})
-		            numbdb.update({ value: numb.toString() })
-
-                    console.log(`${interaction.user.tag} changed the number to ${numb}`)
-                    return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
-                case "banlist":
-                    let banlist = '';
+            if (subcommand == "setban") {
+                let mbr = interaction.options.getUser("user")
+                let ban = interaction.options.getBoolean("ban")
+                let reason = interaction.options.getString("reason")
+                if (mbr == "513487616964952084") {
+                    return interaction.reply("❌ **What did i ever do to you?**")
+                } else {
                     const db = interaction.client.db.Bans;
-
-                    let bans = await db.findAll();
-                    if (bans.length == 0) {
-
+                    if (ban) {
+                        await db.findOrCreate({ where: { userID: mbr.id }, defaults: { reason: reason} })
+                        interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
                     } else {
-                        for (let i = 0; i < bans.length; i++) {
-                            //TODO: Fix caching.
-                            let user = await interaction.client.users.cache.get(bans[i].userID);
-                            if (user) {
-                                banlist += `**${user.username}#${user.discriminator}** - ${bans[i].reason}\n`
-                            } else {
-                                banlist += `**<@${bans[i].userID}>**  - ${bans[i].reason}\n`
-                            }
-                        }
-                    }      
-                    if (banlist == '') {
-                        banlist = '**No one is banned from counting.**'
+                        await db.destroy({ where: { userID: mbr.id } })
+                        interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
+
                     }
-                    //create message embed
-                    const embed = new MessageEmbed()
-                        .setTitle('List of banned members from Counting - Work in progress')
-                        .setDescription(banlist)
-                        .setColor('#ff0000')
-                    return interaction.reply({embeds: [embed]}); 
+                }
+            } else if (subcommand == "setcount") {
+                var numb = interaction.options.getInteger("count")
+
+                var numbdb = await interaction.client.db.Data.findOne({ where: { name: "numb" }})
+                numbdb.update({ value: numb.toString() })
+
+                console.log(`${interaction.user.tag} changed the number to ${numb}`)
+                return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
+            } else if (subcommand == "banlist") {
+                let banlist = '';
+                const db = interaction.client.db.Bans;
+
+                let bans = await db.findAll();
+                if (bans.length == 0) {
+
+                } else {
+                    for (let i = 0; i < bans.length; i++) {
+                        //TODO: Fix caching.
+                        let user = await interaction.client.users.cache.get(bans[i].userID);
+                        if (user) {
+                            banlist += `**${user.username}#${user.discriminator}** - ${bans[i].reason}\n`
+                        } else {
+                            banlist += `**<@${bans[i].userID}>**  - ${bans[i].reason}\n`
+                        }
+                    }
+                }      
+                if (banlist == '') {
+                    banlist = '**No one is banned from counting.**'
+                }
+                //create message embed
+                const embed = new MessageEmbed()
+                    .setTitle('List of banned members from Counting - Work in progress')
+                    .setDescription(banlist)
+                    .setColor('#ff0000')
+                return interaction.reply({embeds: [embed]});
+            } else if (subcommand == "setuserscore") {
+                const user = interaction.options.getUser("user")
+                const correctNumbers = interaction.options.getInteger("correctNumbers")
+                const wrongNumbers = interaction.options.getInteger("wrongNumbers")
+                const db = interaction.client.db.Counters
+                const row = await db.findOrCreate({ where: { userID: user.id } })
+                row.update({ wrongNumbers: wrongNumbers, numbers: correctNumbers })
+                console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${wrongNumbers} wrong`)
+                return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${wrongNumbers} wrong.**`, ephemeral: true })
             }
         
         } else {
