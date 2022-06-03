@@ -82,7 +82,7 @@ client.on('messageCreate', async message => {
 		//console.log(message.type)
 
 		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
-		let lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
+		let lecountr = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 1 } });
 
 		if (bn) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
