@@ -59,9 +59,6 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		await command.execute(interaction);
-
-		var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
-		numb = parseInt(numbdb.get("value"))
 	} catch (error) {
 		console.log(`${error}\n\n`)
 		if (interaction.user.id !== "284804878604435476") {
@@ -82,7 +79,7 @@ client.on('messageCreate', async message => {
 		//console.log(message.type)
 
 		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
-		let lecountr = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 1 } });
+		let lecountr = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0 } });
 
 		if (bn) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
@@ -121,15 +118,7 @@ client.on('messageCreate', async message => {
 					numb++
 					lastCounterId = message.author.id
 
-					//store that they counted in the db
-					if (lecountr) {
-						lecountr.increment('numbers')
-					} else {
-						client.db.Counters.create({
-							numbers: 1,
-							userID: message.author.id,
-						})
-					}
+					client.db.Counters.increment('numbers', { where: { userID: message.author.id } });
 				} else {
 					if (message.content.length >= 1500){
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
@@ -143,7 +132,7 @@ client.on('messageCreate', async message => {
 						numb = 0
 						lastCounterId = "0"
 					}
-					lecountr.increment("wrongNumbers")
+					client.db.Counters.increment('wrongNumbers', { where: { userID: message.author.id } });
 				}
 			} else {
 				if (serverSaves !== 0) {
@@ -156,12 +145,12 @@ client.on('messageCreate', async message => {
 					numb = 0
 					lastCounterId = "0"
 				}
-				lecountr.increment("wrongNumbers")
+				client.db.Counters.increment('wrongNumbers', { where: { userID: message.author.id } });
 
 			}
 
 			var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
-		    numbdb.update({ value: numb.toString() })
+			numbdb.update({ value: numb.toString() })
 		}
 
 		//DEBUG - Reset server saves to 3

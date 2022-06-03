@@ -76,6 +76,8 @@ module.exports = {
             } else if (subcommand == "setcount") {
                 var numb = interaction.options.getInteger("count")
 
+                interaction.client.numb = numb
+
                 var numbdb = await interaction.client.db.Data.findOne({ where: { name: "numb" }})
                 numbdb.update({ value: numb.toString() })
 
