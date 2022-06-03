@@ -87,7 +87,6 @@ client.on('messageCreate', async message => {
 		if (bn) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
-				message.reply({ content: "<:NumberIgnored:981961793947705415> **Your number has been ignored because you are banned from counting.**", ephemeral: true })
 			}
 			return;
 		}
