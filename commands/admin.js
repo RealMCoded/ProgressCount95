@@ -39,11 +39,11 @@ module.exports = {
                 .setDescription("the user")
                 .setRequired(true))
             .addIntegerOption(option => option
-                .setName("correctNumbers")
+                .setName("correct")
                 .setDescription("the correct numbers")
                 .setRequired(true))
             .addIntegerOption(option => option
-                .setName("incorrectNumbers")
+                .setName("incorrect")
                 .setDescription("the incorrect numbers")
                 .setRequired(true))
         .addSubcommand(subcommand => subcommand
@@ -110,13 +110,13 @@ module.exports = {
                 return interaction.reply({embeds: [embed]});
             } else if (subcommand == "setuserscore") {
                 const user = interaction.options.getUser("user")
-                const correctNumbers = interaction.options.getInteger("correctNumbers")
-                const wrongNumbers = interaction.options.getInteger("wrongNumbers")
+                const correctNumbers = interaction.options.getInteger("correct")
+                const incorrectNumbers = interaction.options.getInteger("incorrect")
                 const db = interaction.client.db.Counters
                 const row = await db.findOrCreate({ where: { userID: user.id } })
-                row.update({ wrongNumbers: wrongNumbers, numbers: correctNumbers })
-                console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${wrongNumbers} wrong`)
-                return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${wrongNumbers} wrong.**`, ephemeral: true })
+                row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
+                console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
+                return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
             }
         
         } else {
