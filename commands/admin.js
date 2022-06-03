@@ -45,14 +45,14 @@ module.exports = {
             .addIntegerOption(option => option
                 .setName("incorrect")
                 .setDescription("the incorrect numbers")
-                .setRequired(true))
+                .setRequired(true)))
         .addSubcommand(subcommand => subcommand
             .setName("sethighscore")
             .setDescription("set the high score")
             .addIntegerOption(option => option
                 .setName("highscore")
                 .setDescription("the highscore")
-                .setRequired(true)))),
+                .setRequired(true))),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
