@@ -14,12 +14,10 @@ The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
 
 The bot requires some files to be made that have been gitignored. The only file it needs to make is `config.json`
 
-You can run the following command to generate the file:
+This can be done for you by running the following script:
 ```
-node FIRSTRUN.JS
+node config-gen.js
 ```
-
-All you need to do is edit `config.json` with your own variables.
 
 ---
 
