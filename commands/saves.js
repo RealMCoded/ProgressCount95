@@ -5,20 +5,16 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('saves')
         .setDescription(`save cmd`)
-        .addSubcommand(subcommand =>
-			subcommand
+        .addSubcommand(subcommand => subcommand
 			.setName("claim")
 			.setDescription("Claim your saves!"))
-        .addSubcommand(subcommand =>
-			subcommand
+        .addSubcommand(subcommand => subcommand
 			.setName("view")
-			.setDescription("View your saves!"))
-        .addSubcommand(subcommand =>
-            subcommand
-            .setName("99")
-            .setDescription("Admin and debug use only! gives you 99 saves"))
-        .addSubcommand(subcommand =>
-            subcommand
+			.setDescription("View your saves!")
+            .addUserOption(o => o
+                .setName("user")
+                .setDescription("The user you want to see how many save he/she have")))
+        .addSubcommand(subcommand => subcommand
             .setName("server99")
             .setDescription("Admin and debug use only! gives the server 99 saves")),
     async execute(interaction) {
@@ -44,6 +40,7 @@ module.exports = {
             return interaction.reply({embeds: [embed]});
 
         } else if (subcommand === "view") {
+            if (interaction.options.getUser("user").id) save = interaction.options.getUser("user").id
             if (save) {
                 const embed = new MessageEmbed()
                     .setTitle(`Saves`)
@@ -58,16 +55,6 @@ module.exports = {
                     .setDescription(`**You have not claimed any saves! Use \`/saves claim\`!**`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
-            }
-        } else if (subcommand === "99") {
-            if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
-                db.create({
-                    saves: 99,
-                    userID: interaction.user.id,
-                })
-                return interaction.reply({ content: "k", ephemeral: true }); //show nothing for now
-            } else {
-                return interaction.reply({ content: "You do not have permission to use this command", ephemeral: true });
             }
         } else if (subcommand === "server99") {
             if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
