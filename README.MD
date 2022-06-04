@@ -51,13 +51,9 @@ Invite your bot with this link (Replace `[ClientID]` with your bot's ID!)
 https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=8&scope=bot%20applications.commands
 ```
 
-For slash commands: Run `REGISTER_PROGRE.bat` for your release server or `REGISTER_TEST.bat` for your testing server. 
+For slash commands: Run `REGISTER.bat` to register the slash commands to your server.
 
 You can also run the following command:
 ```
-node register-pw.js
-```
-or
-```
-node register-test.js
+node register.js
 ```
