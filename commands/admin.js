@@ -109,7 +109,7 @@ module.exports = {
                     .setTitle('List of banned members from Counting - Work in progress')
                     .setDescription(banlist)
                     .setColor('#ff0000')
-                return interaction.reply({embeds: [embed]});
+                return interaction.reply({embeds: [embed], ephemeral: true});
             } else if (subcommand == "setuserscore") {
                 const user = interaction.options.getUser("user")
                 const correctNumbers = interaction.options.getInteger("correct")
