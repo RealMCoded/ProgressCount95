@@ -52,7 +52,21 @@ module.exports = {
             .addIntegerOption(option => option
                 .setName("highscore")
                 .setDescription("the highscore")
-                .setRequired(true))),
+                .setRequired(true)))
+        .addSubcommand(subcommand => subcommand
+            .setName("setusersaves")
+            .setDescription("Set an user's saves.")
+            .addUserOption(option => option
+                .setName("user")
+                .setDescription("the user")
+                .setRequired(true))
+            .addNumberOption(option => option
+                .setName("saves")
+                .setDescription("the number of saves")
+                .setRequired(true))
+            .addIntegerOption(option => option
+                .setName("slots")
+                .setDescription("the number of save slots"))),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
@@ -119,6 +133,15 @@ module.exports = {
                 row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
+            } else if (subcommand == "setusersaves") {
+                const user = interaction.options.getUser("user")
+                const saves = interaction.options.getNumber("saves")
+                const slots = interaction.options.getInteger("slots")
+                const db = interaction.client.db.Saves
+                let userSaves = await db.findOne({ where: { userID: interaction.user.id } });
+                userSaves.update({ saves: saves })
+                console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}`)
+                return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}.**`)
             }
         
         } else {
