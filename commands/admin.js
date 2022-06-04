@@ -116,6 +116,7 @@ module.exports = {
                 const incorrectNumbers = interaction.options.getInteger("incorrect")
                 const db = interaction.client.db.Counters
                 const row = await db.findOrCreate({ where: { userID: user.id } })
+                console.log(row)
                 row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
