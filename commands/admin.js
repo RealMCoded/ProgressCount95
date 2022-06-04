@@ -138,7 +138,7 @@ module.exports = {
                 const saves = interaction.options.getNumber("saves")
                 const slots = interaction.options.getInteger("slots")
                 const db = interaction.client.db.Saves
-                let userSaves = await db.findOne({ where: { userID: interaction.user.id } });
+                let userSaves = await db.findOne({ where: { userID: user.id } });
                 userSaves.update({ saves: saves })
                 console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}`)
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}.**`)
