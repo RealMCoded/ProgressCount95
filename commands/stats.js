@@ -46,7 +46,7 @@ module.exports = {
             if (tag) {
                 const correct = tag.get("numbers")
                 const incorrect = tag.get("wrongNumbers")
-                const accuracy = (correct / (correct + incorrect)).toFixed(3)
+                const accuracy = (correct / (correct + incorrect) * 100).toFixed(3)
                 const embed = new MessageEmbed()
                     .setTitle(`Server Stats`)
                     .setColor("#0099ff")
