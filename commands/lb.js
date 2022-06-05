@@ -10,6 +10,11 @@ module.exports = {
             .setDescription(`The number of users to show (default: 10)`)
             .setRequired(false)),
     async execute(interaction) {
+        const lenum = interaction.options.getInteger('numb') || 10
+        if(lenum < 1) {
+            interaction.reply({ content: `❌ **Provide a number greater than 0!**`, ephemeral: false });
+            return;
+        }
         const db = interaction.client.db.Counters;
 
         var le = ""
@@ -18,14 +23,14 @@ module.exports = {
         })
 
         list = list.sort((a, b) => b.numbers - a.numbers)
-        list = list.slice(0, interaction.options.getInteger('numb') || 10)
+        list = list.slice(0, lenum)
 
         for(var i=0; i < list.length; i++){
             var le = le + "**#" + (i+1).toString() + "** | <@" + list[i].userID + ">: **" + list[i].numbers.toString() + "**\n"
         }
 
         const embed = new MessageEmbed()
-            .setTitle(`Leaderboard | First ${interaction.options.getInteger('numb') || 10} users`)
+            .setTitle(`Counting Leaderboard | First ${lenum} counters`)
             .setColor("#0099ff")
             .setDescription(`${le}`)
             .setTimestamp()
