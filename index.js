@@ -80,7 +80,7 @@ client.on('messageCreate', async message => {
 
 		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
 		let lecountr = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0 } });
-		let userSaves = await db.Saves.findOne({ where: { userID: message.author.id } }).saves
+		let userSaves = await client.db.Saves.findOne({ where: { userID: message.author.id } }).saves
 		if (bn) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
@@ -124,7 +124,7 @@ client.on('messageCreate', async message => {
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 					} else if (userSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-						db.Saves.decrement('saves', { where: { userID: message.author.id } })
+						client.db.Saves.decrement('saves', { where: { userID: message.author.id } })
 						message.reply(`${message.author}, wrong number! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
@@ -141,7 +141,7 @@ client.on('messageCreate', async message => {
 			} else {
 			    if (userSaves >= 1) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-					db.Saves.decrement('saves', { where: { userID: message.author.id } })
+					client.db.Saves.decrement('saves', { where: { userID: message.author.id } })
 					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
 				} else if (serverSaves !== 0) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
