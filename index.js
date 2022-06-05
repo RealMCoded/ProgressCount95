@@ -59,6 +59,9 @@ client.on('interactionCreate', async interaction => {
 
 	try {
 		await command.execute(interaction);
+		
+		var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
+		numb = parseInt(numbdb.get("value"))
 	} catch (error) {
 		console.log(`${error}\n\n`)
 		if (interaction.user.id !== "284804878604435476") {
