@@ -12,7 +12,7 @@ module.exports = {
     async execute(interaction) {
         const lenum = interaction.options.getInteger('numb') || 10
         if(lenum < 1) {
-            interaction.reply({ content: `❌ **Provide a number greater than 0!**`, ephemeral: false });
+            interaction.reply({ content: `❌ **Provide a number greater than 0!**`, ephemeral: true });
             return;
         }
         const db = interaction.client.db.Counters;
