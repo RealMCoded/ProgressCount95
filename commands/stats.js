@@ -42,12 +42,15 @@ module.exports = {
             const usr = interaction.options.getUser("user") || interaction.member.user;
 
             const tag = await db.findOne({ where: { userID: usr.id } });
-
+              
             if (tag) {
+                const correct = tag.get("numbers")
+                const incorrect = tag.get("wrongNumbers")
+                const accuracy = ((correct / correct + incorrect) * 100).toFixed(3)
                 const embed = new MessageEmbed()
                     .setTitle(`Server Stats`)
                     .setColor("#0099ff")
-                    .setDescription(`<@${usr.id}> has counted **${tag.get('numbers')}** numbers with **${tag.get('wrongNumbers')}** wrong numbers`)
+                    .setDescription(`<@${usr.id}> has counted **${correct}** numbers with **${incorrect}}** wrong numbers (${accuracy}% accuracy)`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
