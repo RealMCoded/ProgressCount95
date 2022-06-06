@@ -156,8 +156,8 @@ client.on('messageCreate', async message => {
 
 			}
 
-			var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
-			numbdb.update({ value: numb.toString() })
+			var numbdb = await client.db.Data.findOne()
+			numbdb.update({ count: numb.toString() })
 		}
 
 		//DEBUG - Reset server saves to 3
