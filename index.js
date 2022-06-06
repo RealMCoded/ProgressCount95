@@ -29,10 +29,7 @@ for (const file of commandFiles) {
 
 client.once('ready', async () => {
 	//sync database tables
-	client.db.Saves.sync()
 	client.db.Counters.sync()
-	client.db.Bans.sync()
-	client.db.Ruins.sync()
 	client.db.Data.sync()
 
 	var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
