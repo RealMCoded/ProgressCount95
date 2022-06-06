@@ -35,7 +35,8 @@ client.once('ready', async () => {
 	var guildDB = await client.db.Data.findOne() // just get the first one
 
 	if(!guildDB){
-		client.db.Data.create({ count: "0", lastCounterID: "0", guildSaves: 3 })
+		let guild = await client.channels.fetch(countingCh); guild = guild.guild
+		client.db.Data.create({ guildID: guild.id, count: "0", lastCounterID: "0", guildSaves: 3 })
 		numb = 0 
 	}else{
 		numb = parseInt(guildDB.count)
