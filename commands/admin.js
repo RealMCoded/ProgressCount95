@@ -130,7 +130,7 @@ module.exports = {
                 const correctNumbers = interaction.options.getInteger("correct")
                 const incorrectNumbers = interaction.options.getInteger("incorrect")
                 const db = interaction.client.db.Counters
-                const [row, created] = await db.findOrCreate({ where: { userID: user.id } })
+                const [row,] = await db.findOrCreate({ where: { userID: user.id } })
                 row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
@@ -138,11 +138,11 @@ module.exports = {
                 const user = interaction.options.getUser("user")
                 const saves = interaction.options.getNumber("saves")
                 const slots = interaction.options.getInteger("slots")
-                const db = interaction.client.db.Saves
+                const db = interaction.client.db.Counters
                 let userSaves = await db.findOne({ where: { userID: user.id } });
-                userSaves.update({ saves: saves })
-                console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}`)
-                return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}.**`)
+                userSaves.update({ saves: saves, slots: slots || userSaves.slots })
+                console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
+                return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
             }
         
         } else {
