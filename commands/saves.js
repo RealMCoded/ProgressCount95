@@ -10,10 +10,7 @@ module.exports = {
 			.setDescription("Claim your saves!"))
         .addSubcommand(subcommand => subcommand
 			.setName("view")
-			.setDescription("View your saves!")
-            .addUserOption(o => o
-                .setName("user")
-                .setDescription("The user you want to see how many save he/she have"))),
+			.setDescription("View your saves!")),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
         const subcommand = interaction.options.getSubcommand();
@@ -30,8 +27,6 @@ module.exports = {
             return interaction.reply({embeds: [embed]});
 
         } else if (subcommand === "view") {
-            
-            if (interaction.options.getUser("user").id) save = interaction.options.getUser("user").id
             const row = await db.findOne({ where: { userID: interaction.user.id }})
             if (row) {
                 const embed = new MessageEmbed()
