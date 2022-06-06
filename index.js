@@ -124,7 +124,7 @@ client.on('messageCreate', async message => {
 					} else if (lecountr.saves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
-						message.reply(`${message.author}, wrong number! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
+						message.reply(`${message.author}, wrong number! You have used 1 of your saves and have ${lecountr.saves -1} saves remaining.\nThe next number is ${numb + 1}`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						--serverSaves
@@ -141,7 +141,7 @@ client.on('messageCreate', async message => {
 			    if (lecountr.saves >= 1) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 					lecountr.decrement('saves')
-					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
+					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${lecountr.saves -1} saves remaining.\nThe next number is ${numb + 1}`)
 				} else if (serverSaves !== 0) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 					--serverSaves
