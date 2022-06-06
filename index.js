@@ -32,7 +32,7 @@ client.once('ready', async () => {
 	client.db.Counters.sync()
 	client.db.Data.sync()
 
-	var guildDB = await client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
+	var guildDB = await client.db.Data.findOne() // just get the first one
 
 	if(!guildDB){
 		client.db.Data.create({ count: "0", lastCounterID: "0", guildSaves: 3 })
