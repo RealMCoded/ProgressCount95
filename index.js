@@ -32,13 +32,13 @@ client.once('ready', async () => {
 	client.db.Counters.sync()
 	client.db.Data.sync()
 
-	var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
+	var guildDB = await client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
 
-	if(!numbdb){
-		client.db.Data.create({ name: "numb", value: "0" })
+	if(!guildDB){
+		client.db.Data.create({ count: "0", lastCounterID: "0", guildSaves: 3 })
 		numb = 0 
 	}else{
-		numb = parseInt(numbdb.get("value"))
+		numb = parseInt(guildDB.count)
 	}
 
 	console.log('Ready!\n');
@@ -57,8 +57,8 @@ client.on('interactionCreate', async interaction => {
 	try {
 		await command.execute(interaction);
 		
-		var numbdb = await client.db.Data.findOne({ where: { name: "numb" }})
-		numb = parseInt(numbdb.get("value"))
+		var numbdb = await client.db.Data.findOne({ where: { guildID: interaction.guild.id }})
+		numb = parseInt(numbdb.get("count"))
 	} catch (error) {
 		console.log(`${error}\n\n`)
 		if (interaction.user.id !== "284804878604435476") {

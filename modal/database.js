@@ -50,11 +50,19 @@ const Ruins = sequelize.define('ruins', {
 });
 
 const Data = sequelize.define('data', {
-  name:{
+  guildID:{
     type: Sequelize.STRING,
-    defaultValue: 0
+    primaryKey: true
   },
-  value: {
+  count: {
+    type: Sequelize.STRING,
+    defaultValue: "0"
+  }, 
+  guildSaves: {
+    type: Sequelize.DOUBLE,
+    defaultValue: 3,
+  },
+  lastCounterID: {
     type: Sequelize.STRING,
     defaultValue: "0"
   }
