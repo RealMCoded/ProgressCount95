@@ -32,6 +32,10 @@ const Counters = sequelize.define('counters', {
     banned: {
       type: Sequelize.BOOLEAN,
       defaultValue: false
+    }, 
+    banReason: {
+      type: Sequelize.STRING,
+      defaultValue: "No reason provided."
     }
 });
 

@@ -77,12 +77,13 @@ module.exports = {
                 if (mbr == "513487616964952084") {
                     return interaction.reply("❌ **What did i ever do to you?**")
                 } else {
-                    const db = interaction.client.db.Bans;
+                    const db = interaction.client.db.Counters;
+                    const [row, ] = db.findOrCreate({ where: { id: mbr.id } })
                     if (ban) {
-                        await db.findOrCreate({ where: { userID: mbr.id }, defaults: { reason: reason} })
+                        await row.update({ banReason: reason, banned: true })
                         interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
                     } else {
-                        await db.destroy({ where: { userID: mbr.id } })
+                        await row.update({ banReason: null, banned: false })
                         interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
 
                     }
@@ -99,9 +100,9 @@ module.exports = {
                 return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
             } else if (subcommand == "banlist") {
                 let banlist = '';
-                const db = interaction.client.db.Bans;
+                const db = interaction.client.db.Counters;
 
-                let bans = await db.findAll();
+                let bans = await db.findAll({ where: { banned: true }});
                 if (bans.length == 0) {
 
                 } else {
