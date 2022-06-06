@@ -8,19 +8,10 @@ const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
   storage: 'database.sqlite'
 })
 
-const Saves = sequelize.define('saves', {
-  userID:{
-    type: Sequelize.STRING,
-  },
-  saves: {
-    type: Sequelize.NUMBER,
-    defaultValue: 2
-  }
-});
-
 const Counters = sequelize.define('counters', {
     userID:{
       type: Sequelize.STRING,
+      primaryKey: true
     },
     numbers: {
       type: Sequelize.NUMBER,
@@ -29,6 +20,18 @@ const Counters = sequelize.define('counters', {
     wrongNumbers: {
       type: Sequelize.NUMBER,
       defaultValue: 0
+    }, 
+    saves: {
+      type: Sequelize.DOUBLE,
+      defaultValue: 2
+    },
+    slots: {
+      type: Sequelize.INTEGER,
+      defaultValue: 5
+    },
+    banned: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
 });
 
@@ -39,16 +42,6 @@ const Ruins = sequelize.define('ruins', {
   ruin: {
     type: Sequelize.NUMBER,
     defaultValue: 0
-  }
-});
-
-const Bans = sequelize.define('banned', {
-  userID:{
-    type: Sequelize.STRING,
-  },
-  reason: {
-    type: Sequelize.STRING,
-    defaultValue: "No reason given."
   }
 });
 
@@ -63,4 +56,4 @@ const Data = sequelize.define('data', {
   }
 });
 
-module.exports = { Saves, Counters, Bans, Ruins, Data }
+module.exports = { Counters, Ruins, Data }

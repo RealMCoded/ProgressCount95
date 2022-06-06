@@ -81,10 +81,9 @@ client.on('messageCreate', async message => {
 	if (message.channel.id === countingCh) {
 		//console.log(message.type)
 
-		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
-		let lecountr = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0 } });
-		let [userSaves, _] = await client.db.Saves.findOrCreate({ where: { userID: message.author.id }, defaults: { saves: 2 }}); userSaves = userSaves.saves
-		if (bn) {
+		let [lecountr, _] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
+		//let [userSaves, _] = await client.db.Saves.findOrCreate({ where: { userID: message.author.id }, defaults: { saves: 2 }}); userSaves = userSaves.saves
+	if (lecountr.banned) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
 			}
@@ -121,13 +120,13 @@ client.on('messageCreate', async message => {
 					numb++
 					lastCounterId = message.author.id
 
-					client.db.Counters.increment('numbers', { where: { userID: message.author.id } });
+					lecountr.increment('numbers');
 				} else {
 					if (message.content.length >= 1500){
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 					} else if (userSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-						client.db.Saves.decrement('saves', { where: { userID: message.author.id } })
+						lecountr.decrement('saves')
 						message.reply(`${message.author}, wrong number! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
@@ -139,12 +138,12 @@ client.on('messageCreate', async message => {
 						numb = 0
 						lastCounterId = "0"
 					}
-					client.db.Counters.increment('wrongNumbers', { where: { userID: message.author.id } });
+					lecountr.increment('wrongNumbers');
 				}
 			} else {
 			    if (userSaves >= 1) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-					client.db.Saves.decrement('saves', { where: { userID: message.author.id } })
+					lecountr.decrement('saves')
 					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
 				} else if (serverSaves !== 0) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
@@ -156,7 +155,7 @@ client.on('messageCreate', async message => {
 					numb = 0
 					lastCounterId = "0"
 				}
-				client.db.Counters.increment('wrongNumbers', { where: { userID: message.author.id } });
+				lecountr.increment('wrongNumbers');
 
 			}
 
