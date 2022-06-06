@@ -83,9 +83,7 @@ client.on('messageCreate', async message => {
 
 		let bn = await client.db.Bans.findOne({ where: { userID: message.author.id } })
 		let lecountr = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0 } });
-		let userSaves = await client.db.Saves.findOne({ where: { userID: message.author.id } })//.saves
-		userSaves = userSaves.saves
-		console.log(userSaves)
+		let userSaves = await client.db.Saves.findOrCreate({ where: { userID: message.author.id }, defaults: { saves: 2 }}); userSaves = userSaves.saves
 		if (bn) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
