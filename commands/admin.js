@@ -93,8 +93,8 @@ module.exports = {
 
                 //interaction.numb = numb //it no work
 
-                var numbdb = await interaction.client.db.Data.findOne({ where: { name: "numb" }})
-                numbdb.update({ value: numb.toString() })
+                var numbdb = await interaction.client.db.Data.findOne()
+                numbdb.update({ count: numb.toString() })
 
                 console.log(`${interaction.user.tag} changed the number to ${numb}`)
                 return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
