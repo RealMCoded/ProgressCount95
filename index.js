@@ -78,9 +78,9 @@ client.on('messageCreate', async message => {
 	if (message.channel.id === countingCh) {
 		//console.log(message.type)
 
-		let [lecountr, _] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
-		//let [userSaves, _] = await client.db.Saves.findOrCreate({ where: { userID: message.author.id }, defaults: { saves: 2 }}); userSaves = userSaves.saves
-	if (lecountr.banned) {
+		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
+
+		if (lecountr.banned) {
 			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
 			}
@@ -121,7 +121,7 @@ client.on('messageCreate', async message => {
 				} else {
 					if (message.content.length >= 1500){
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
-					} else if (userSaves >= 1) {
+					} else if (lecountr.saves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
 						message.reply(`${message.author}, wrong number! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
@@ -138,7 +138,7 @@ client.on('messageCreate', async message => {
 					lecountr.increment('wrongNumbers');
 				}
 			} else {
-			    if (userSaves >= 1) {
+			    if (lecountr.saves >= 1) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 					lecountr.decrement('saves')
 					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${userSaves -1} saves remaining.\nThe next number is ${numb + 1}`)
