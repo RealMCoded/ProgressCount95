@@ -78,7 +78,7 @@ module.exports = {
                     return interaction.reply("❌ **What did i ever do to you?**")
                 } else {
                     const db = interaction.client.db.Counters;
-                    const row = db.findOrCreate({ where: { userID: mbr.id } })
+                    const [row,] = await db.findOrCreate({ where: { userID: mbr.id } })
                     if (ban) {
                         await row.update({ banReason: reason, banned: true })
                         interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
