@@ -15,7 +15,7 @@ module.exports = {
                 .setName("user")
                 .setDescription("The user you want to see how many save he/she have"))),
     async execute(interaction) {
-        const db = interaction.client.db.Saves;
+        const db = interaction.client.db.Counters;
         const subcommand = interaction.options.getSubcommand();
         let save = await db.findOne({ where: { userID: interaction.user.id } });
         
