@@ -22,6 +22,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 var lastCounterId
 var serverSaves
 var guildDB
+var _ // so the interpreter doesn't complain
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
