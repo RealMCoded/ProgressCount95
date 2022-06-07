@@ -21,8 +21,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 //var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
 var lastCounterId
 var serverSaves
-var guildDB
-var _ // so the interpreter doesn't complain
+//var guildDB 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
@@ -34,7 +33,7 @@ client.once('ready', async () => {
 	await client.db.Data.sync()
 
 	let guild = await client.channels.fetch(countingCh); guild = guild.guild
-	[guildDB, _]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
+	var [guildDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
 	numb = guildDB.count
 	serverSaves = guildDB.saves
 	lastCounterId = guildDB.lastCounterID
