@@ -127,6 +127,7 @@ client.on('messageCreate', async message => {
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						guildDB.decrement("guildSaves")
+						serverSaves--
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
 					} else {
 						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
@@ -141,9 +142,10 @@ client.on('messageCreate', async message => {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 					lecountr.decrement('saves')
 					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${lecountr.saves -1} saves remaining.\nThe next number is ${numb + 1}`)
-				} else if (serverSaves !== 0) {
+				} else if (serverSaves >= 1) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-					serverSaves = 
+					guildDB.decrement("guildSaves")
+					serverSaves--
 					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
 				} else {
 					if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
