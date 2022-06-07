@@ -41,7 +41,7 @@ module.exports = {
         } else if (subcommand === "user") {
             const usr = interaction.options.getUser("user") || interaction.member.user;
 
-            const tag = await db.findOne({ where: { userID: usr.id } });
+            const tag = await db.Counters.findOne({ where: { userID: usr.id } });
               
             if (tag) {
                 const correct = tag.get("numbers")
