@@ -163,7 +163,7 @@ module.exports = {
                 const saves = interaction.options.getNumber("saves")
                 const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
                 await guildDB.update({ guildSaves: saves })
-                console.log(`${interaction.user.id} changed the guild's saves to ${saves}`)
+                console.log(`${interaction.user.tag} changed the guild's saves to ${saves}`)
                 return interaction.reply(`✅ **Changed the guild's saves to ${saves}.**`)
             }
         
