@@ -108,10 +108,10 @@ client.on('messageCreate', async message => {
 							//NOT BAR GAME RELATED BUT STILL FUNNY
 							case "100": message.react("💯"); break;
 							case "1984": message.react("<a:1984:971405081817804800>"); break;
-							default: message.react("<:CheckMark:981961793800921140>"); break;
+							default: if (guildDB.highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 						}
 					} else {
-						message.react("✅");
+						if (guildDB.highscore < thec) message.react("☑"); else message.react("✅");
 					}
 					numb++
 					if (guildDB.highscore < numb) highscore = numb;
