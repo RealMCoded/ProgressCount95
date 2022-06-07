@@ -29,8 +29,8 @@ for (const file of commandFiles) {
 
 client.once('ready', async () => {
 	//sync database tables
-	client.db.Counters.sync()
-	client.db.Data.sync()
+	await client.db.Counters.sync()
+	await client.db.Data.sync()
 
 	let guild = await client.channels.fetch(countingCh); guild = guild.guild
 	var [guildDB,] = await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
