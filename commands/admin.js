@@ -137,12 +137,20 @@ module.exports = {
             } else if (subcommand == "setusersaves") {
                 const user = interaction.options.getUser("user")
                 const saves = interaction.options.getNumber("saves")
-                const slots = interaction.options.getInteger("slots")
                 const db = interaction.client.db.Counters
                 let userSaves = await db.findOne({ where: { userID: user.id } });
-                userSaves.update({ saves: saves, slots: slots || userSaves.slots })
+                const slots = interaction.options.getInteger("slots") || userSaves.slots
+        
+                userSaves.update({ saves: saves, slots: slots })
                 console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
+            } else if (subcommand == "sethighscore") {
+                const highscore = interaction.options.getInteger("highscore")
+                const db = interaction.client.db.Data
+                const guildDB = db.findOne({ where: { guildID: interaction.guild.id } })
+                await guildDB.update({ highscore: highscore })
+                console.log(`${interaction.user.tag} changed the highscore to ${highscore}`)
+                return interaction.reply(`✅ **Changed the highscore to ${highscore}.**`)
             }
         
         } else {
