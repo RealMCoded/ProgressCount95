@@ -15,25 +15,25 @@ module.exports = {
             .setDescription("View a user's stats")
             .addUserOption(option => option.setName('user').setDescription('the chosen one').setRequired(false))),
     async execute(interaction) {
-        const db = interaction.client.db.Counters;
+        const db = interaction.client.db;
         const subcommand = interaction.options.getSubcommand();
 
         if (subcommand === "server") {
             
             var tot = 0
+            const guildDB = await db.Data.findOne({ where: { guildID: interaction.guild.id }});
 
-            list = await db.findAll({
+            list = await db.Counters.findAll({
                 attributes: ['numbers']
             })
 
             for(var i=0; i < list.length; i++){
                 tot = tot + list[i].numbers
             }
-
             const embed = new MessageEmbed()
                 .setTitle(`Server Stats`)
                 .setColor("#0099ff")
-                .setDescription(`everyone in the server has counted a total of **${tot}** numbers ~~wow what losers~~`)
+                .setDescription(`**Numbers counted:** ${tot}\n**Highscore:** ${guildDB.highscore}`)
                 .setTimestamp()
 
 		    return interaction.reply({embeds: [embed]});
