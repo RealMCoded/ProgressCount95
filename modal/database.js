@@ -55,8 +55,8 @@ const Data = sequelize.define('data', {
     primaryKey: true
   },
   count: {
-    type: Sequelize.STRING,
-    defaultValue: "0"
+    type: Sequelize.BIGINT,
+    defaultValue: 0
   }, 
   guildSaves: {
     type: Sequelize.DOUBLE,
@@ -65,6 +65,10 @@ const Data = sequelize.define('data', {
   lastCounterID: {
     type: Sequelize.STRING,
     defaultValue: "0"
+  },
+  highscore: {
+    type: Sequelize.BIGINT,
+    defaultValue: 0
   }
 });
 
