@@ -115,7 +115,7 @@ client.on('messageCreate', async message => {
 					numb++
 					if (guildDB.highscore < numb) highscore = numb;
 					lastCounterId = message.author.id
-					
+					guildDB.update({ lastCounterID: message.author.id })
 					lecountr.increment('numbers');
 				} else {
 					if (message.content.length >= 1500){
