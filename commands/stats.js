@@ -22,7 +22,6 @@ module.exports = {
             
             var tot = 0
             const guildDB = await db.Data.findOne({ where: { guildID: interaction.guild.id }});
-
             list = await db.Counters.findAll({
                 attributes: ['numbers']
             })
@@ -30,10 +29,12 @@ module.exports = {
             for(var i=0; i < list.length; i++){
                 tot = tot + list[i].numbers
             }
+            const lastCounter = await interaction.client.users.fetch(guildDB.lastCounterID)
+
             const embed = new MessageEmbed()
                 .setTitle(`Server Stats`)
                 .setColor("#0099ff")
-                .setDescription(`**Numbers counted:** ${tot}\n**Highscore:** ${guildDB.highscore}`)
+                .setDescription(`**Numbers counted:** ${tot}\n**Highscore:** ${guildDB.highscore}\n**Last counter:** ${lastCounter}`)
                 .setTimestamp()
 
 		    return interaction.reply({embeds: [embed]});
