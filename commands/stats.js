@@ -30,7 +30,7 @@ module.exports = {
                 tot = tot + list[i].numbers
             }
             let lastCounter;
-            if(guildDB.lastCounterID !== "0") {
+            if(guildDB.lastCounterID != 0) {
                 lastCounter = await interaction.client.users.fetch(guildDB.lastCounterID)
             } else {
                 lastCounter = "(no one)"
