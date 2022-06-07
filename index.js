@@ -21,7 +21,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 //var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
 var lastCounterId
 var serverSaves
-//var guildDB 
+var guildDB 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
@@ -33,13 +33,14 @@ client.once('ready', async () => {
 	await client.db.Data.sync()
 
 	let guild = await client.channels.fetch(countingCh); guild = guild.guild
-	var [guildDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
+	let [guildDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
 	numb = guildDB.count
 	serverSaves = guildDB.saves
 	lastCounterId = guildDB.lastCounterID
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	client.user.setActivity('counting', { type: 'COMPETING' });
+	global.guildDB = guildDB
 });
 
 //All slash commands. check "commands" folder
