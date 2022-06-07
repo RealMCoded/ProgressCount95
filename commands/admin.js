@@ -66,7 +66,14 @@ module.exports = {
                 .setRequired(true))
             .addIntegerOption(option => option
                 .setName("slots")
-                .setDescription("the number of save slots"))),
+                .setDescription("the number of save slots")))
+        .addSubcommand(subcommand => subcommand
+            .setName("setguildsaves")
+            .setDescription("Set the guild's saves.")
+            .addNumberOption(option => option
+                .setName("saves")
+                .setDescription("the number of saves")
+                .setRequired(true))),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
@@ -151,6 +158,13 @@ module.exports = {
                 await guildDB.update({ highscore: highscore })
                 console.log(`${interaction.user.tag} changed the highscore to ${highscore}`)
                 return interaction.reply(`✅ **Changed the highscore to ${highscore}.**`)
+            } else if (subcommand == "setguildsaves") {
+                const db = interaction.client.db.Data
+                const saves = interaction.options.getNumber("saves")
+                const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
+                await guildDB.update({ guildSaves: saves })
+                console.log(`${interaction.user.id} changed the guild's saves to ${saves}`)
+                return interaction.reply(`✅ **Changed the guild's saves to ${saves}.**`)
             }
         
         } else {
