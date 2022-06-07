@@ -57,6 +57,7 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 		
 		numb = guildDB.count
+		console.log(guildDB.guildSaves)
 		serverSaves = guildDB.guildSaves
 	/*} catch (error) {
 		console.log(`${error}\n\n`)
