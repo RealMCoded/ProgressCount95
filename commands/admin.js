@@ -147,7 +147,7 @@ module.exports = {
             } else if (subcommand == "sethighscore") {
                 const highscore = interaction.options.getInteger("highscore")
                 const db = interaction.client.db.Data
-                const guildDB = db.findOne({ where: { guildID: interaction.guild.id } })
+                const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
                 await guildDB.update({ highscore: highscore })
                 console.log(`${interaction.user.tag} changed the highscore to ${highscore}`)
                 return interaction.reply(`✅ **Changed the highscore to ${highscore}.**`)
