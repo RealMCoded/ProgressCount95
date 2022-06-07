@@ -57,6 +57,7 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 		
 		numb = guildDB.count
+		serverSaves = guildDB.guildSaves
 	/*} catch (error) {
 		console.log(`${error}\n\n`)
 		if (interaction.user.id !== "284804878604435476") {
