@@ -22,6 +22,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 var lastCounterId
 var serverSaves
 var guildDB 
+var highscore
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
@@ -35,7 +36,8 @@ client.once('ready', async () => {
 	let guild = await client.channels.fetch(countingCh); guild = guild.guild
 	let [localDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
 	numb = localDB.count
-	serverSaves = localDB.saves
+	highscore = localDB.highscore
+	serverSaves = localDB.guildSaves
 	lastCounterId = localDB.lastCounterID
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
@@ -111,8 +113,9 @@ client.on('messageCreate', async message => {
 						message.react("✅");
 					}
 					numb++
+					if (guildDB.highscore < numb) highscore = numb;
 					lastCounterId = message.author.id
-
+					
 					lecountr.increment('numbers');
 				} else {
 					if (message.content.length >= 1500){
@@ -123,7 +126,7 @@ client.on('messageCreate', async message => {
 						message.reply(`${message.author}, wrong number! You have used 1 of your saves and have ${lecountr.saves -1} saves remaining.\nThe next number is ${numb + 1}`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-						--serverSaves
+						guildDB.decrement("guildSaves")
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
 					} else {
 						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
@@ -140,7 +143,7 @@ client.on('messageCreate', async message => {
 					message.reply(`${message.author}, you can't count twice in a row! You have used 1 of your saves and have ${lecountr.saves -1} saves remaining.\nThe next number is ${numb + 1}`)
 				} else if (serverSaves !== 0) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-					--serverSaves
+					serverSaves = 
 					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
 				} else {
 					if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
@@ -151,8 +154,7 @@ client.on('messageCreate', async message => {
 				lecountr.increment('wrongNumbers');
 
 			}
-
-			guildDB.update({ count: numb })
+			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 		}
 
 		//DEBUG - Reset server saves to 3
