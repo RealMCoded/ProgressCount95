@@ -29,8 +29,12 @@ module.exports = {
             for(var i=0; i < list.length; i++){
                 tot = tot + list[i].numbers
             }
-            const lastCounter = await interaction.client.users.fetch(guildDB.lastCounterID)
-
+            let lastCounter;
+            if(guildDB.lastCounterID !== "0") {
+                lastCounter = await interaction.client.users.fetch(guildDB.lastCounterID)
+            } else {
+                lastCounter = "(no one)"
+            }
             const embed = new MessageEmbed()
                 .setTitle(`Server Stats`)
                 .setColor("#0099ff")
