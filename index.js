@@ -33,14 +33,14 @@ client.once('ready', async () => {
 	await client.db.Data.sync()
 
 	let guild = await client.channels.fetch(countingCh); guild = guild.guild
-	let [guildDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
-	numb = guildDB.count
-	serverSaves = guildDB.saves
-	lastCounterId = guildDB.lastCounterID
+	let [localDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
+	numb = localDB.count
+	serverSaves = localDB.saves
+	lastCounterId = localDB.lastCounterID
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	client.user.setActivity('counting', { type: 'COMPETING' });
-	global.guildDB = guildDB
+	guildDB = localDB
 });
 
 //All slash commands. check "commands" folder
