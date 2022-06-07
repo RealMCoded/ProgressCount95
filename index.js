@@ -19,8 +19,8 @@ client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 //var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
-var lastCounterId= "0"
-var serverSaves= 3
+var lastCounterId
+var serverSaves
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
@@ -32,16 +32,11 @@ client.once('ready', async () => {
 	client.db.Counters.sync()
 	client.db.Data.sync()
 
-	var guildDB = await client.db.Data.findOne() // just get the first one
-
-	if(!guildDB){
-		let guild = await client.channels.fetch(countingCh); guild = guild.guild
-		client.db.Data.create({ guildID: guild.id, count: "0", lastCounterID: "0", guildSaves: 3 })
-		numb = 0 
-	}else{
-		numb = parseInt(guildDB.count)
-	}
-
+	let guild = await client.channels.fetch(countingCh); guild = guild.guild
+	var [guildDB,] = await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
+	numb = guildDB.count
+	serverSaves = guildDB.saves
+	lastCounterId = guildDB.lastCounterID
 	console.log('Ready!\n');
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	client.user.setActivity('counting', { type: 'COMPETING' });
@@ -58,8 +53,7 @@ client.on('interactionCreate', async interaction => {
 	//try {
 		await command.execute(interaction);
 		
-		var numbdb = await client.db.Data.findOne({ where: { guildID: interaction.guild.id }})
-		numb = numbdb.count
+		numb = guildDB.count
 	/*} catch (error) {
 		console.log(`${error}\n\n`)
 		if (interaction.user.id !== "284804878604435476") {
@@ -157,8 +151,7 @@ client.on('messageCreate', async message => {
 
 			}
 
-			var numbdb = await client.db.Data.findOne()
-			numbdb.update({ count: numb.toString() })
+			guildDB.update({ count: numb })
 		}
 
 		//DEBUG - Reset server saves to 3
