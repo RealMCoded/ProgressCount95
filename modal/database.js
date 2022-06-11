@@ -36,6 +36,10 @@ const Counters = sequelize.define('counters', {
     banReason: {
       type: Sequelize.STRING,
       defaultValue: "No reason provided."
+    },
+    saveCooldown: {
+      type: Sequelize.DATE,
+      defaultValue: 0
     }
 });
 
@@ -68,10 +72,6 @@ const Data = sequelize.define('data', {
   },
   highscore: {
     type: Sequelize.BIGINT,
-    defaultValue: 0
-  },
-  saveCooldown: {
-    type: Sequelize.DATE,
     defaultValue: 0
   }
 });
