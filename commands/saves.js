@@ -18,6 +18,7 @@ module.exports = {
         
         if (subcommand === "claim") {
             const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id }, defaults: { saves: 2, slots: 5 } })
+            console.log(row.saveCooldown)
             row.increment('saves', { by: 0.5 });
             const embed = new MessageEmbed()
                 .setTitle(`Saves`)

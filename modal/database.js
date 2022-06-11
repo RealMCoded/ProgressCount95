@@ -69,6 +69,10 @@ const Data = sequelize.define('data', {
   highscore: {
     type: Sequelize.BIGINT,
     defaultValue: 0
+  },
+  saveCooldown: {
+    type: Sequelize.DATE,
+    defaultValue: 0
   }
 });
 
