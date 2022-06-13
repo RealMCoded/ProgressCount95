@@ -78,7 +78,7 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
             if (subcommand == "setban") {
-                let mbr = await interaction.users.fetch(interaction.options.getUser("user"))
+                let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 let ban = interaction.options.getBoolean("ban")
                 let reason = interaction.options.getString("reason")
                 if (mbr == "513487616964952084") {
@@ -133,7 +133,7 @@ module.exports = {
                     .setColor('#ff0000')
                 return interaction.reply({embeds: [embed], ephemeral: true});
             } else if (subcommand == "setuserscore") {
-                const user = await interaction.users.fetch(interaction.options.getUser("user"))
+                const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 const correctNumbers = interaction.options.getInteger("correct")
                 const incorrectNumbers = interaction.options.getInteger("incorrect")
                 const db = interaction.client.db.Counters
@@ -142,7 +142,7 @@ module.exports = {
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
             } else if (subcommand == "setusersaves") {
-                const user = interaction.users.fetch(interaction.options.getUser("user"))
+                const user = interaction.client.users.fetch(interaction.options.getUser("user"))
                 const saves = interaction.options.getNumber("saves")
                 const db = interaction.client.db.Counters
                 let userSaves = await db.findOne({ where: { userID: user.id } });
