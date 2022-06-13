@@ -88,7 +88,7 @@ client.on('messageCreate', async message => {
 		}
 
 		//check if first string in message is a number
-		if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) {
+		if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
 			if (lastCounterId !== message.author.id) {
 				var thec = message.content.split(' ')[0]
 				if (thec == String(numb+1)) {
