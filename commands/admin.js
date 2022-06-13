@@ -145,7 +145,7 @@ module.exports = {
                 const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 const saves = interaction.options.getNumber("saves")
                 const db = interaction.client.db.Counters
-                let userSaves = await db.findOne({ where: { userID: user.id } });
+                let userSaves = await db.findOrCreate({ where: { userID: user.id } });
                 const slots = interaction.options.getInteger("slots") || userSaves.slots
         
                 userSaves.update({ saves: saves, slots: slots })
