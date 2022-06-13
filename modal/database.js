@@ -38,8 +38,8 @@ const Counters = sequelize.define('counters', {
       defaultValue: "No reason provided."
     },
     saveCooldown: {
-      type: Sequelize.DATE,
-      defaultValue: 0
+      type: Sequelize.STRING,
+      defaultValue: "0"
     }
 });
 
