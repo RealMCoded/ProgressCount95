@@ -147,7 +147,9 @@ module.exports = {
                 const db = interaction.client.db.Counters
                 let [userSaves,] = await db.findOrCreate({ where: { userID: user.id } });
                 const slots = interaction.options.getInteger("slots") || userSaves.slots
-        
+                if (saves > slots) { 
+                    return interaction.reply({ content: "❌ **You cannot set saves higher than slots!**", ephemeral: true })
+                }
                 userSaves.update({ saves: saves, slots: slots })
                 console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
