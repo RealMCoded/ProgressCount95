@@ -63,7 +63,7 @@ module.exports = {
                 return interaction.reply({embeds: [embed]});
             }
         } else if (subcommand === "donate") {
-            const guildDB = await interaction.client.db.Counters.findOne({ where: { guildID: interaction.guild.id } })
+            const guildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
             const [userDB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: interaction.user.id } })
             if (guildDB.guildSaves == guildSaveSlots) {
                 const replyEmbed = new MessageEmbed()
