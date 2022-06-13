@@ -158,12 +158,6 @@ client.on('messageCreate', async message => {
 			}
 			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 		}
-
-		//DEBUG - Reset server saves to 3
-		if (message.content == "bruhbruhbruh"){
-			message.channel.send("[DEBUG] restored server saves to 3")
-			serverSaves = 3
-		}
 	}
 
 });
