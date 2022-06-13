@@ -56,7 +56,7 @@ module.exports = {
                 const accuracy = (correct / (correct + incorrect) * 100).toFixed(3)
                 const person = await interaction.client.users.fetch(usr.id)
                 const embed = new MessageEmbed()
-                    .setTitle(`Stats for ${person}`)
+                    .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
                     .setDescription(`**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves}/${slots}`)
                     .setTimestamp()
