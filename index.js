@@ -162,6 +162,25 @@ client.on('messageCreate', async message => {
 
 });
 
+client.on('messageDelete', async message => {
+	if (message.author.bot) return
+
+	if (message.type !== "DEFAULT") return;
+
+	if (message.channel.id === countingCh) {
+		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
+
+		if (lecountr.banned) return;
+
+		if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) {
+			let thec = parseInt(message.content.split(' ')[0])
+			if (thec == String(numb)){
+				message.channel.send(`${message.author} deleted their number! The current number is **${numb}**.`)
+			}
+		}
+	}
+});
+
 process.on('uncaughtException', (error, origin) => {
     console.log('----- Uncaught exception -----')
     console.log(error)
