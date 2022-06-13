@@ -142,7 +142,7 @@ module.exports = {
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
             } else if (subcommand == "setusersaves") {
-                const user = interaction.client.users.fetch(interaction.options.getUser("user"))
+                const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 const saves = interaction.options.getNumber("saves")
                 const db = interaction.client.db.Counters
                 let userSaves = await db.findOne({ where: { userID: user.id } });
