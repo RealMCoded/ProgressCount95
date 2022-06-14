@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
 const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS } = require('./config.json');
-
+const meval = require('math-expression-evaluator').eval
 const client = new Client({ ws: { properties: { $browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 //database shit
@@ -87,10 +87,10 @@ client.on('messageCreate', async message => {
 			return;
 		}
 
-		//check if first string in message is a number
-		if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
+		//check if first string in message is a math expression
+		if (!/[a-z]/i.test(message.content) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
 			if (lastCounterId !== message.author.id) {
-				var thec = message.content.split(' ')[0]
+				var thec = meval(message.content.split(' ')[0])
 				if (thec == String(numb+1)) {
 					if (useCustomEmoji) {
 						switch (thec){
