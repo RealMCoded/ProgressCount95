@@ -70,8 +70,8 @@ module.exports = {
                 return interaction.reply({embeds: [embed]});
             }
         } else if (subcommand === "donate") {
-            const guildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
-            const [userDB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: interaction.user.id } })
+            let guildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
+            let [userDB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: interaction.user.id } })
             if (guildDB.guildSaves == guildSaveSlots) {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Save Donation")
@@ -90,6 +90,8 @@ module.exports = {
                 const saveRatio = 1 / userSavesPerGuildSave
                 await userDB.decrement('saves')
                 await guildDB.increment("guildSaves", { by: saveRatio })
+                guildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
+                userDB = await interaction.client.db.Counters.findOne({ where: { userID: interaction.user.id } })
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Save Donation")
                     .setColor("#00FF00")
