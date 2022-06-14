@@ -88,7 +88,7 @@ client.on('messageCreate', async message => {
 		}
 
 		//check if first string in message is a math expression
-		if (/[0-9+\-/*^]+$/i.test(message.content) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
+		if (/[0-9+\-/*^()]+$/i.test(message.content) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
 			if (lastCounterId !== message.author.id) {
 				var thec = mathx.eval(message.content.split(' ')[0])
 				if (thec == String(numb+1)) {
