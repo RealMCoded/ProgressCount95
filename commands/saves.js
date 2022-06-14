@@ -145,7 +145,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **1** of your saves to **${userA.tag}**. You now have **${userDBA.saves}** saves.`)
+                    .setDescription(`You have transferred **1** of your saves to **${userB.tag}**. You now have **${userDBA.saves}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})
             }
         }        
