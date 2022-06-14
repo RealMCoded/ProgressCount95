@@ -118,6 +118,7 @@ client.on('messageCreate', async message => {
 							case 95: message.react("<:PB95:662601719653597196>"); break; //95
 							//NOT BAR GAME RELATED BUT STILL FUNNY
 							case 100: message.react("💯"); break;
+							case 420: message.react("🌿"); break;
 							case 1984: message.react("<a:1984:971405081817804800>"); break;
 							default: if (guildDB.highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 						}
