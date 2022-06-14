@@ -103,7 +103,15 @@ module.exports = {
             const userB = await interaction.client.users.fetch(interaction.options.getUser("user"))
             let [userDBA,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userA.id}})
             let [userDBB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userB.id}})
-            if (userDBB.saves == userDBB.slots) {
+            if (userA == userB) {
+                const replyEmbed = new MessageEmbed()
+                .setTitle("Saves")
+                .setColor("#FF0000")
+                .setDescription(`You can't transfer saves to yourself!`)
+                .setTimestamp()
+            return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+            }
+            else if (userDBB.saves == userDBB.slots) {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FFFF00")
@@ -126,7 +134,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **${partialSave}** of your saves to **${userA.tag}**. You now have **${userDBA.saves}** saves.`)
+                    .setDescription(`You have transferred **${partialSave}** of your saves to **${userB.tag}**. You now have **${userDBA.saves}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})    
             
             } else {
