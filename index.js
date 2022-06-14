@@ -27,6 +27,9 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
+function validateExpresion(number) {
+	return /^[+\-*^0-9().]+$/.test(number)
+}
 
 client.once('ready', async () => {
 	//sync database tables
@@ -81,16 +84,18 @@ client.on('messageCreate', async message => {
 		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
 
 		if (lecountr.banned) {
-			if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
+			if (validateExpression(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
 			}
 			return;
 		}
 
 		//check if first string in message is a math expression
-		if (/[0-9+\-/*^()]+$/i.test(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
+		if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
 			if (lastCounterId !== message.author.id) {
-				var thec = mathx.eval(message.content.split(' ')[0])
+				try {
+					var thec = mathx.eval(message.content.split(' ')[0])
+				} catch(e) {return}
 				if (thec == String(numb+1)) {
 					if (useCustomEmoji) {
 						switch (thec){
