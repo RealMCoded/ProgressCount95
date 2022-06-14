@@ -89,7 +89,7 @@ client.on('messageCreate', async message => {
 		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
 
 		if (lecountr.banned) {
-			if (validateExpression(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) { 
+			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
 				message.react("<:NumberIgnored:981961793947705415>"); 
 			}
 			return;
@@ -188,7 +188,7 @@ client.on('messageDelete', async message => {
 
 		if (lecountr.banned) return;
 
-		if (!isNaN(message.content.split(' ')[0]) && message.attachments.size == 0 && message.stickers.size == 0) {
+		if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") {
 			let thec = parseInt(message.content.split(' ')[0])
 			if (thec == String(numb)){
 				message.channel.send(`${message.author} deleted their number! The current number is **${numb}**.`)
