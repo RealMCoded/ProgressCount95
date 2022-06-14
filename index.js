@@ -118,12 +118,16 @@ client.on('messageCreate', async message => {
 							case 95: message.react("<:PB95:662601719653597196>"); break; //95
 							//NOT BAR GAME RELATED BUT STILL FUNNY
 							case 100: message.react("💯"); break;
-							case 420: message.react("🌿"); break;
+							case 420: message.react("<a:420:986336382530256897>"); break;
 							case 1984: message.react("<a:1984:971405081817804800>"); break;
 							default: if (guildDB.highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 						}
 					} else {
-						if (guildDB.highscore < thec) message.react("☑"); else message.react("✅");
+						switch (thec){
+							case 100: message.react("💯"); break;
+							case 420: message.react("🌿"); break;
+							default: if (guildDB.highscore < thec) message.react("☑"); else message.react("✅"); break;
+						}
 					}
 					numb++
 					if (guildDB.highscore < numb) highscore = numb;
@@ -132,6 +136,7 @@ client.on('messageCreate', async message => {
 					lecountr.increment('numbers');
 				} else {
 					if (message.content.length >= 1500){
+						//sure we can just ignore it but it's funnier when the bot replies lol
 						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 					} else if (lecountr.saves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
