@@ -27,7 +27,7 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
-function validateExpresion(number) {
+function validateExpression(number) {
 	return /^[+\-*^0-9().]+$/.test(number)
 }
 
