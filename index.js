@@ -76,7 +76,12 @@ client.on('messageCreate', async message => {
 
 	if (message.author.bot) return
 
-	if (message.type !== "DEFAULT") return;
+	//if (message.type !== "DEFAULT") return;
+	switch (message.type){
+		case "DEFAULT": break;
+		case "REPLY": break;
+		default: return;
+	}
 
 	if (message.channel.id === countingCh) {
 		//console.log(message.type)
