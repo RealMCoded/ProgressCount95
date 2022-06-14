@@ -27,7 +27,7 @@ module.exports = {
 
         for(var i=0; i < list.length; i++){
             let user = await interaction.client.users.fetch(list[i].userID) 
-            var le = le + "**#" + (i+1).toString() + "** | <@" + user.tag + ">: **" + list[i].numbers.toString() + "**\n"
+            var le = le + "**#" + (i+1).toString() + "** |" + user.tag + ": **" + list[i].numbers.toString() + "**\n"
         }
 
         const embed = new MessageEmbed()
