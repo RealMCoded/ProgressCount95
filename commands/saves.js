@@ -13,7 +13,14 @@ module.exports = {
 			.setDescription("View your saves!"))
         .addSubcommand(subcommand => subcommand
             .setName("donate")
-            .setDescription(`Donate saves to the server! (${userSavesPerGuildSave} per guild save)`)),
+            .setDescription(`Donate saves to the server! (${userSavesPerGuildSave} per guild save)`))
+        .addSubcommand(subcommand => subcommand
+            .setName("transfer")
+            .setDescription("Transfer saves to other users")
+            .addUserOption(option => option
+                .setName("user")
+                .setDescription("the user")
+                .setRequired(true))),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
         const subcommand = interaction.options.getSubcommand();
@@ -41,7 +48,7 @@ module.exports = {
                     .setTitle("Saves")
                     .setColor("#0099ff")
                     .setTimestamp()
-                    .setDescription(`You have claimed **0.5** saves!\nYou now have **${row.get('saves')+0.5}/${row.get('slots')}** saves!`)
+                    .setDescription(`You have claimed **0.5** saves!\nYou now have **${row.get('saves')+0.5}** saves!`)
                 return interaction.reply({embeds: [embed]});
             }
 
@@ -51,7 +58,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Saves`)
                     .setColor("#0099ff")
-                    .setDescription(`You have **${row.get('saves')}/${row.get('slots')}** saves`)
+                    .setDescription(`You have **${row.get('saves')}** saves`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
@@ -89,6 +96,48 @@ module.exports = {
                     .setDescription(`You have donated **1** of your saves to the server, for a total of **${guildDB.guildSaves}/${guildSaveSlots}** server saves. You now have **${userDB.saves}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})
             }
-        }
+        } else if (subcommand === 'transfer') {
+            const userA = interaction.user
+            const userB = interaction.client.users.fetch(interaction.options.getUserOption("user"))
+            let [userDBA,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userA.id}})
+            let [userDBB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userB.id}})
+            if (userDBB.saves == userDBB.slots) {
+                const replyEmbed = new MessageEmbed()
+                    .setTitle("Saves")
+                    .setColor("#FFFF00")
+                    .setDescription(`**${userB.tag}** already has maximum saves! (${userDBB.saves})`)
+                    .setTimestamp()
+                return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+            } else if (userDBA.saves < 1) {
+                const replyEmbed = new MessageEmbed()
+                    .setTitle("Saves")
+                    .setColor("#FF0000")
+                    .setDescription(`You don't have enough saves to transfer! (${userDBA.saves}/${userDBA.slots})`)
+                    .setTimestamp()
+                return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+            } else if (userDBB.slots - userDBB.saves < 1) {
+                let partialSave = userDBB.slots - userDBB.saves
+                await userDBA.decrement("saves", { by: partialSave })
+                await userDBB.increment("saves", { by: partialSave })
+                userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})
+                userDBB = await interaction.client.db.Counters.findOne({ where: { userID: userB.id }})
+                const replyEmbed = new MessageEmbed()
+                    .setTitle("Saves")
+                    .setColor("#00FF00")
+                    .setDescription(`You have transferred **${partialSave}** of your saves to **${userA.tag}**. You now have **${userDBA.saves}** saves.`)
+                return interaction.reply({ embeds: [replyEmbed]})    
+            
+            } else {
+                await userDBA.decrement("saves")
+                await userDBB.increment("saves")
+                userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})
+                userDBB = await interaction.client.db.Counters.findOne({ where: { userID: userB.id }})
+                const replyEmbed = new MessageEmbed()
+                    .setTitle("Saves")
+                    .setColor("#00FF00")
+                    .setDescription(`You have transferred **1** of your saves to **${userA.tag}**. You now have **${userDBA.saves}** saves.`)
+                return interaction.reply({ embeds: [replyEmbed]})
+            }
+        }        
     },
 };
