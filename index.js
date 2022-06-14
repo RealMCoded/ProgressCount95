@@ -28,7 +28,7 @@ for (const file of commandFiles) {
 	client.commands.set(command.data.name, command);
 }
 function validateExpression(number) {
-	return /^[+\-*^0-9().]+$/.test(number)
+	return /^[+\-/*^0-9().]+$/.test(number)
 }
 
 client.once('ready', async () => {
