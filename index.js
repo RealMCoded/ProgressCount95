@@ -170,7 +170,12 @@ client.on('messageCreate', async message => {
 client.on('messageDelete', async message => {
 	if (message.author.bot) return
 
-	if (message.type !== "DEFAULT") return;
+	//if (message.type !== "DEFAULT") return;
+	switch (message.type){
+		case "DEFAULT": break;
+		case "REPLY": break;
+		default: return;
+	}
 
 	if (message.channel.id === countingCh) {
 		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
