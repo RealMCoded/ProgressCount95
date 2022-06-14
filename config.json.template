@@ -5,5 +5,7 @@
     "token":"",
     "useCustomEmoji":false,
     "SQL_USER":"",
-    "SQL_PASS":""
+    "SQL_PASS":"",
+    "guildSaveSlots": 2,
+    "userSavesPerGuildSave": 4
 }

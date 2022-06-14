@@ -19,17 +19,22 @@ rl.question('Enter your bot\'s ClientID: ', function (clientId) {
             rl.question('Enter your bot token: ', function (token) {
                 rl.question('Enter your SQL Username: ', function (SQL_USER) {
                     rl.question('Enter your SQL Password: ', function (SQL_PASS) {
-                        fs.writeFileSync('config.json', JSON.stringify({
-                            "token": token,
-                            "clientId": clientId,
-                            "guildId": guildId,
-                            "countingCh": countingCh,
-                            "useCustomEmoji": false, //force this to false
-                            "SQL_USER": SQL_USER,
-                            "SQL_PASS": SQL_PASS
-                         })
-                        );
-                        rl.close();
+                        rl.question('How many guild save slots? (default: 2): ', function (guildSaveSlots) {
+                            rl.question('How many user saves per guild saves? (default: 4): ', function (userSaveSlots) {
+                                fs.writeFileSync('config.json', JSON.stringify({
+                                    "token": token,
+                                    "clientId": clientId,
+                                    "guildId": guildId,
+                                    "countingCh": countingCh,
+                                    "useCustomEmoji": false, //force this to false
+                                    "SQL_USER": SQL_USER,
+                                    "SQL_PASS": SQL_PASS,
+                                    "guildSaveSlots": parseInt(guildSaveSlots),
+                                    "userSavesPerGuildSave": parseInt(userSaveSlots)
+                                }));
+                                rl.close();
+                            });
+                        });
                     });
                 });
             });
