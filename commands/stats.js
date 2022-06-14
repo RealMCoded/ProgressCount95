@@ -63,9 +63,9 @@ module.exports = {
                 return interaction.reply({embeds: [embed]});
             } else {
                 const embed = new MessageEmbed()
-                    .setTitle(`User Stats`)
+                    .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`<@${usr.id}> has not counted any numbers`)
+                    .setDescription(`***${person.tag} does not have any stats yet!***`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             }
