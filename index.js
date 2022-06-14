@@ -94,21 +94,21 @@ client.on('messageCreate', async message => {
 				if (thec == String(numb+1)) {
 					if (useCustomEmoji) {
 						switch (thec){
-							case "32": message.react("<:sys32:817120108761186405>"); break; //Sys32
-							case "67": message.react("<:pBarFlint67:892434159300120629>"); break; //pbar67
-							case "66": message.react("<:pBar66:868370162187927632>"); break; //pbar66
-							case "65": message.react("<:pBar65:856835166374199297>"); break; //pbar65
-							case "64": message.react("<:pBar64:853138163827212308>"); break; //pbar64
-							case "63": message.react("<:pBar63:840276684556337172>"); break; //pbar63
-							case "9000": message.react("<:ProgreshPower9000:825373078368288798>"); break; //power9000
-							case "800": message.react("<:ProgreshBC800:819147801425477652>"); break; //BC800
-							case "64": message.react("<:Progresh64KB:819147680089374730>"); break; //64KB
-							case "36": message.react("<:PBNOT36:819147051912134657>"); break; //NOT36
-							case "98": message.react("<:PB98:819146172928491580>"); break; //98
-							case "95": message.react("<:PB95:662601719653597196>"); break; //95
+							case 32: message.react("<:sys32:817120108761186405>"); break; //Sys32
+							case 67: message.react("<:pBarFlint67:892434159300120629>"); break; //pbar67
+							case 66: message.react("<:pBar66:868370162187927632>"); break; //pbar66
+							case 65: message.react("<:pBar65:856835166374199297>"); break; //pbar65
+							case 64: message.react("<:pBar64:853138163827212308>"); break; //pbar64
+							case 63: message.react("<:pBar63:840276684556337172>"); break; //pbar63
+							case 9000: message.react("<:ProgreshPower9000:825373078368288798>"); break; //power9000
+							case 800: message.react("<:ProgreshBC800:819147801425477652>"); break; //BC800
+							case 64: message.react("<:Progresh64KB:819147680089374730>"); break; //64KB
+							case 36: message.react("<:PBNOT36:819147051912134657>"); break; //NOT36
+							case 98: message.react("<:PB98:819146172928491580>"); break; //98
+							case 95: message.react("<:PB95:662601719653597196>"); break; //95
 							//NOT BAR GAME RELATED BUT STILL FUNNY
-							case "100": message.react("💯"); break;
-							case "1984": message.react("<a:1984:971405081817804800>"); break;
+							case 100: message.react("💯"); break;
+							case 1984: message.react("<a:1984:971405081817804800>"); break;
 							default: if (guildDB.highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 						}
 					} else {
