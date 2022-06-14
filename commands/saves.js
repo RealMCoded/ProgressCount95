@@ -48,7 +48,7 @@ module.exports = {
                     .setTitle("Saves")
                     .setColor("#0099ff")
                     .setTimestamp()
-                    .setDescription(`You have claimed **0.5** saves!\nYou now have **${row.get('saves')+0.5}** saves!`)
+                    .setDescription(`You have claimed **0.5** saves!\nYou now have **${row.get('saves')+0.5}/${row.get('slots')}** saves!`)
                 return interaction.reply({embeds: [embed]});
             }
 
