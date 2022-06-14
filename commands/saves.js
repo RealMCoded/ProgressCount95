@@ -100,7 +100,7 @@ module.exports = {
             }
         } else if (subcommand === 'transfer') {
             const userA = interaction.user
-            const userB = interaction.client.users.fetch(interaction.options.getUser("user"))
+            const userB = await interaction.client.users.fetch(interaction.options.getUser("user"))
             let [userDBA,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userA.id}})
             let [userDBB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userB.id}})
             if (userDBB.saves == userDBB.slots) {
