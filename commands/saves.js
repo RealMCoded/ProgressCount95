@@ -40,7 +40,13 @@ module.exports = {
                     .setDescription(`You've already claimed recently! Try again <t:${lastBeg+delay}:R> (<t:${lastBeg+delay}:f>)`)
                 return interaction.reply({embeds: [embed]});
             } else {
-                
+                if (row.get('saves') >= row.get('slots')) {
+                    let embed = new MessageEmbed()
+                        .setTitle("Saves")
+                        .setColor("#FF9900")
+                        .setDescription(`Your save slots are full! (${row.get('saves')}/${row.get('slots')})`)
+                    return interaction.reply({embeds: [embed]})
+                }
                 row.increment('saves', { by: 0.5 });
                 row.update({ saveCooldown: n });
 
