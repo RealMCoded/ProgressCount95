@@ -1,11 +1,9 @@
 {
     "clientId":"",
-    "testGuildId":"",
     "guildId":"",
     "countingCh":"",
-    "logChannel":"",
     "token":"",
-    "useCustomEmoji":false
+    "useCustomEmoji":false,
     "SQL_USER":"",
     "SQL_PASS":""
 }
