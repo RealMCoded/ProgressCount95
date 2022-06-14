@@ -58,7 +58,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Saves`)
                     .setColor("#0099ff")
-                    .setDescription(`You have **${row.get('saves')}** saves`)
+                    .setDescription(`You have **${row.get('saves')}/${row.get('slots')}** saves`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
