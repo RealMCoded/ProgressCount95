@@ -142,7 +142,7 @@ client.on('messageCreate', async message => {
 					} else if (lecountr.saves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
-						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						serverSaves--
@@ -156,21 +156,21 @@ client.on('messageCreate', async message => {
 					lecountr.increment('wrongNumbers');
 				}
 				} else {
-			    if (lecountr.saves >= 1) {
-					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-					lecountr.decrement('saves')
-					message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
-				} else if (serverSaves >= 1) {
-					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-					serverSaves--
-					message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
-				} else {
-					if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
-					message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
-					numb = 0
-					lastCounterId = "0"
-				}
-				lecountr.increment('wrongNumbers');
+					if (lecountr.saves >= 1) {
+						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
+						lecountr.decrement('saves')
+						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+					} else if (serverSaves >= 1) {
+						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
+						serverSaves--
+						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
+					} else {
+						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
+						message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
+						numb = 0
+						lastCounterId = "0"
+					}
+					lecountr.increment('wrongNumbers');
 			}
 			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 		}
