@@ -97,10 +97,11 @@ client.on('messageCreate', async message => {
 
 		//check if first string in message is a math expression
 		if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
-			if (lastCounterId !== message.author.id) {
-				try {
-					var thec = mathx.eval(message.content.split(' ')[0])
-				} catch(e) {return}
+			try {
+				var thec = mathx.eval(message.content.split(' ')[0])
+			} catch(e) {return}
+			if (!isNaN(thec)) {
+				if (lastCounterId !== message.author.id) {
 				if (thec == String(numb+1)) {
 					if (useCustomEmoji) {
 						switch (thec){
@@ -154,7 +155,7 @@ client.on('messageCreate', async message => {
 					}
 					lecountr.increment('wrongNumbers');
 				}
-			} else {
+				} else {
 			    if (lecountr.saves >= 1) {
 					if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 					lecountr.decrement('saves')
@@ -170,10 +171,10 @@ client.on('messageCreate', async message => {
 					lastCounterId = "0"
 				}
 				lecountr.increment('wrongNumbers');
-
 			}
 			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 		}
+	}
 	}
 
 });
