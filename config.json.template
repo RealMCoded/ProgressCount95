@@ -11,5 +11,7 @@
     "saveClaimCooldown": 43200,
     "defaultSlots": 5,
     "initialSaves": 2,
-    "savesPerClaim": 0.5
+    "savesPerClaim": 0.5,
+    "numbersRequiredForFreeSave": 50,
+    "freeSave": 0.1
 }

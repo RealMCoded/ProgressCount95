@@ -24,22 +24,28 @@ rl.question('Enter your bot\'s ClientID: ', function (clientId) {
                                 rl.question('How many default save slots? (default: 5): ', function (defaultSlots) {
                                     rl.question('How many saves should the user start with? (default: 2): ', function (initialSaves) {
                                         rl.question('How many saves should the user claim with /saves claim (default: 0.5): ', function (savesPerClaim) {
-                                            fs.writeFileSync('config.json', JSON.stringify({
-                                                "token": token,
-                                                "clientId": clientId,
-                                                "guildId": guildId,
-                                                "countingCh": countingCh,
-                                                "useCustomEmoji": false, //force this to false
-                                                "SQL_USER": SQL_USER,
-                                                "SQL_PASS": SQL_PASS,
-                                                "guildSaveSlots": parseInt(guildSaveSlots),
-                                                "userSavesPerGuildSave": parseInt(userSaveSlots),
-                                                "saveClaimCooldown": 43200,
-                                                "defaultSlots": parseInt(defaultSlots),
-                                                "initialSaves": parseInt(initialSaves),
-                                                "savesPerClaim": parseFloat(savesPerClaim)
-                                            }));
-                                            rl.close();
+                                            rl.question('How many numbers are required for a free save (default: 50): ', function (numbersRequiredForFreeSave) {
+                                                rl.question('How many free saves should be given after that number? (default: 0.1): ', function (freeSave) {
+                                                    fs.writeFileSync('config.json', JSON.stringify({
+                                                        "token": token,
+                                                        "clientId": clientId,
+                                                        "guildId": guildId,
+                                                        "countingCh": countingCh,
+                                                        "useCustomEmoji": false, //force this to false
+                                                        "SQL_USER": SQL_USER,
+                                                        "SQL_PASS": SQL_PASS,
+                                                        "guildSaveSlots": parseInt(guildSaveSlots),
+                                                        "userSavesPerGuildSave": parseInt(userSaveSlots),
+                                                        "saveClaimCooldown": 43200,
+                                                        "defaultSlots": parseInt(defaultSlots),
+                                                        "initialSaves": parseInt(initialSaves),
+                                                        "savesPerClaim": parseFloat(savesPerClaim),
+                                                        "numbersRequiredForFreeSave": parseInt(numbersRequiredForFreeSave),
+                                                        "freeSave": parseInt(freeSave)
+                                                    }));
+                                                    rl.close();
+                                                });
+                                            });
                                         });
                                     });
                                 });

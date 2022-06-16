@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave } = require('./config.json');
 const mathx = require('math-expression-evaluator')
 const client = new Client({ ws: { properties: { $browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -179,8 +179,8 @@ client.on('messageCreate', async message => {
 			}
 			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 
-			if(lecountr.numbers % 50 == 0) { //every 50 numbers
-				lecountr.increment('saves', { by: 0.1 })
+			if(lecountr.numbers % numbersRequiredForFreeSave == 0) { //every 50(by default) numbers
+				lecountr.increment('saves', { by: freeSave })
 			}
 		}
 	}
