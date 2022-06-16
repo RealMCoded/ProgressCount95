@@ -118,8 +118,14 @@ module.exports = {
                 .setDescription(`You can't transfer saves to yourself!`)
                 .setTimestamp()
             return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
-            }
-            else if (userDBB.saves == userDBB.slots) {
+            } else if (userDBB.banned) {
+                const replyEmbed = new MessageEmbed()
+                    .setTitle("Saves")
+                    .setColor("#FF0000")
+                    .setDescription(`This user is banned from counting!`)
+                    .setTimestamp()
+                return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+            } else if (userDBB.saves == userDBB.slots) {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FFFF00")
