@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {MessageEmbed, Permissions} = require('discord.js');
-const { userSavesPerGuildSave, guildSaveSlots, saveClaimCooldown, savesPerClaim } = require('../config.json')
+const { userSavesPerGuildSave, guildSaveSlots, saveClaimCooldown, savesPerClaim, clientId } = require('../config.json')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('saves')
@@ -112,10 +112,17 @@ module.exports = {
             let [userDBA,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userA.id}})
             let [userDBB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userB.id}})
             if (userA == userB) {
-                const replyEmbed = new MessageEmbed()
+            const replyEmbed = new MessageEmbed()
                 .setTitle("Saves")
                 .setColor("#FF0000")
                 .setDescription(`❌ **You can't transfer saves to yourself!**`)
+                .setTimestamp()
+            return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
+            } else if (userB.id == clientId){
+                const replyEmbed = new MessageEmbed()
+                .setTitle("Saves")
+                .setColor("#FF0000")
+                .setDescription(`❌ **You can't transfer saves to me!**`)
                 .setTimestamp()
             return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBB.banned) {
