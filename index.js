@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown } = require('./config.json');
 const mathx = require('math-expression-evaluator')
 const client = new Client({ ws: { properties: { $browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -211,6 +211,31 @@ client.on('messageDelete', async message => {
 		}
 	}
 });
+
+//check every second asyncronously
+setInterval(async () => {
+	const n = Math.floor(Date.now() / 1000)
+	//get list of all counters
+	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown'] })
+
+	//loop through all counters
+	for (let i = 0; i < counters.length; i++) {
+		const lastBeg= parseInt(counters[i].get('saveCooldown'))
+		if(n !== lastBeg+saveClaimCooldown){
+			continue
+		} else {
+			let user = await client.users.fetch(counters[i].get('userID'))
+			//check if we can dm the user
+			user.send(`Your save is ready! Use \`/save claim\` to claim it!`)
+				.catch(err => {
+					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}`)
+					//send notification to counting channel
+					client.channels.cache.get(countingCh).send(`${user} your save is ready! Use \`/save claim\` to claim it!`)
+				})
+		}
+	}
+	
+}, 1000);
 
 process.on('uncaughtException', (error, origin) => {
     console.log('----- Uncaught exception -----')
