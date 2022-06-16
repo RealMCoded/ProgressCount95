@@ -26,7 +26,7 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
         let [author,] = await db.findOrCreate({ where: { userID: interaction.user.id } });
         if (author.banned) {
-            return interaction.reply({ content: `Sorry, you can't use this command because you're currently banned from using ProgressCount95. Bans are usually issued for trolling or ruining counts on purpose.\n\nReason of the ban: ${row.banReason}`, ephemeral: true })
+            return interaction.reply({ content: `❌ Sorry, you can't use this command because you're currently banned from using ProgressCount95. Bans are usually issued for trolling or ruining counts on purpose.\n\n**Reason for the ban:** "${row.banReason}"`, ephemeral: true })
         }
         if (subcommand === "claim") {
             //let delay = 43200 //10 seconds for testing
@@ -115,14 +115,14 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                 .setTitle("Saves")
                 .setColor("#FF0000")
-                .setDescription(`You can't transfer saves to yourself!`)
+                .setDescription(`❌ **You can't transfer saves to yourself!**`)
                 .setTimestamp()
             return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBB.banned) {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FF0000")
-                    .setDescription(`This user is banned from counting!`)
+                    .setDescription(`❌ **You cannot transfer saves to a banned user!**`)
                     .setTimestamp()
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBB.saves == userDBB.slots) {
