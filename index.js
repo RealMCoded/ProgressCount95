@@ -178,6 +178,10 @@ client.on('messageCreate', async message => {
 					lecountr.increment('wrongNumbers');
 			}
 			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
+
+			if(lecountr.numbers % 50 == 0) { //every 50 numbers
+				lecountr.increment('saves', { by: 0.1 })
+			}
 		}
 	}
 	}
