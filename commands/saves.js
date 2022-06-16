@@ -24,7 +24,7 @@ module.exports = {
     async execute(interaction) {
         const db = interaction.client.db.Counters;
         const subcommand = interaction.options.getSubcommand();
-        let author = await db.findOne({ where: { userID: interaction.user.id } });
+        let [author,] = await db.findOrCreate({ where: { userID: interaction.user.id } });
         if (author.banned) {
             return interaction.reply({ content: `Sorry, you can't use this command because you're currently banned from using ProgressCount95. Bans are usually issued for trolling or ruining counts on purpose.\n\nReason of the ban: ${row.banReason}`, ephemeral: true })
         }
