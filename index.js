@@ -105,12 +105,17 @@ client.on('messageCreate', async message => {
 				if (thec == String(numb+1)) {
 					if (useCustomEmoji) {
 						switch (thec){
+							case 2: message.react("<:PB2:819146879727566873>"); break; //PB2
+							case 11: message.react("<:PB11:868370023104798720>"); break; //PB11
+							case 81: message.react("<:PB81:819147983667986432> "); break; //PB81
+							case 7: message.react("<:PB7:704867972182704178>"); break; //PB7
 							case 32: message.react("<:sys32:817120108761186405>"); break; //Sys32
 							case 67: message.react("<:pBarFlint67:892434159300120629>"); break; //pbar67
 							case 66: message.react("<:pBar66:868370162187927632>"); break; //pbar66
 							case 65: message.react("<:pBar65:856835166374199297>"); break; //pbar65
 							case 64: message.react("<:pBar64:853138163827212308>"); break; //pbar64
 							case 63: message.react("<:pBar63:840276684556337172>"); break; //pbar63
+							case 2000: message.react("<:PB2000:819147424466993212>"); break; //pb2000
 							case 9000: message.react("<:ProgreshPower9000:825373078368288798>"); break; //power9000
 							case 800: message.react("<:ProgreshBC800:819147801425477652>"); break; //BC800
 							case 64: message.react("<:Progresh64KB:819147680089374730>"); break; //64KB
