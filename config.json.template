@@ -7,5 +7,9 @@
     "SQL_USER":"",
     "SQL_PASS":"",
     "guildSaveSlots": 2,
-    "userSavesPerGuildSave": 4
+    "userSavesPerGuildSave": 4,
+    "saveClaimCooldown": 43200,
+    "defaultSlots": 5,
+    "initialSaves": 2,
+    "savesPerClaim": 0.5
 }

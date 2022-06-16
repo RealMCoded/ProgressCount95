@@ -1,4 +1,4 @@
-const { SQL_USER, SQL_PASS } = require('../config.json');
+const { SQL_USER, SQL_PASS, defaultSlots, initialSaves  } = require('../config.json');
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
@@ -23,11 +23,11 @@ const Counters = sequelize.define('counters', {
     }, 
     saves: {
       type: Sequelize.DOUBLE,
-      defaultValue: 2
+      defaultValue: initialSaves
     },
     slots: {
       type: Sequelize.INTEGER,
-      defaultValue: 5
+      defaultValue: defaultSlots
     },
     banned: {
       type: Sequelize.BOOLEAN,
@@ -64,7 +64,7 @@ const Data = sequelize.define('data', {
   }, 
   guildSaves: {
     type: Sequelize.DOUBLE,
-    defaultValue: 3,
+    defaultValue: guildSaveSlots,
   },
   lastCounterID: {
     type: Sequelize.STRING,

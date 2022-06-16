@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {MessageEmbed, Permissions} = require('discord.js');
-const { userSavesPerGuildSave, guildSaveSlots } = require('../config.json')
+const { userSavesPerGuildSave, guildSaveSlots, saveClaimCooldown, savesPerClaim } = require('../config.json')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('saves')
@@ -27,12 +27,12 @@ module.exports = {
         let save = await db.findOne({ where: { userID: interaction.user.id } });
         
         if (subcommand === "claim") {
-            let delay = 43200 //10 seconds for testing
-            let [row,] = await db.findOrCreate({ where: { userID: interaction.user.id }, defaults: { saves: 2, slots: 5 } })
+            //let delay = 43200 //10 seconds for testing
+            let [row,] = await db.findOrCreate({ where: { userID: interaction.user.id }})
             const lastBeg= parseInt(row.get('saveCooldown'))
             const n = Math.floor(Date.now() / 1000)
 
-            if(n <= lastBeg+delay){
+            if(n <= lastBeg+saveClaimCooldown){
                 let embed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FF9900")
@@ -47,14 +47,14 @@ module.exports = {
                         .setDescription(`Your save slots are full! (${row.get('saves')}/${row.get('slots')})`)
                     return interaction.reply({embeds: [embed]})
                 }
-                row.increment('saves', { by: 0.5 });
+                row.increment('saves', { by: savesPerClaim });
                 row.update({ saveCooldown: n });
 
                 let embed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#0099ff")
                     .setTimestamp()
-                    .setDescription(`You have claimed **0.5** saves!\nYou now have **${row.get('saves')+0.5}/${row.get('slots')}** saves!`)
+                    .setDescription(`You have claimed **0.5** saves!\nYou now have **${row.get('saves')+savesPerClaim}/${row.get('slots')}** saves!`)
                 return interaction.reply({embeds: [embed]});
             }
 

@@ -37,7 +37,7 @@ client.once('ready', async () => {
 	await client.db.Data.sync()
 
 	let guild = await client.channels.fetch(countingCh); guild = guild.guild
-	let [localDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }, defaults: { count: 0, highscore: 0, lastCounterID: "0", guildSaves: 3 } }) 
+	let [localDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }}) 
 	numb = localDB.count
 	highscore = localDB.highscore
 	serverSaves = localDB.guildSaves
@@ -86,7 +86,7 @@ client.on('messageCreate', async message => {
 	if (message.channel.id === countingCh) {
 		//console.log(message.type)
 
-		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
+		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id } });
 
 		if (lecountr.banned) {
 			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
@@ -190,7 +190,7 @@ client.on('messageDelete', async message => {
 	}
 
 	if (message.channel.id === countingCh) {
-		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id }, defaults: { numbers: 0, wrongNumbers: 0, saves: 2, slots: 5 } });
+		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id } });
 
 		if (lecountr.banned) return;
 
