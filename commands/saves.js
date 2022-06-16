@@ -40,7 +40,7 @@ module.exports = {
                     .setTitle("Saves")
                     .setColor("#FF9900")
                     .setTimestamp()
-                    .setDescription(`You've already claimed recently! Try again <t:${lastBeg+delay}:R> (<t:${lastBeg+delay}:f>)`)
+                    .setDescription(`You've already claimed recently! Try again <t:${lastBeg+saveClaimCooldown}:R> (<t:${lastBeg+saveClaimCooldown}:f>)`)
                 return interaction.reply({embeds: [embed]});
             } else {
                 if (row.get('saves') >= row.get('slots')) {
