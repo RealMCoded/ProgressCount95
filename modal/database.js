@@ -1,4 +1,4 @@
-const { SQL_USER, SQL_PASS, defaultSlots, initialSaves  } = require('../config.json');
+const { SQL_USER, SQL_PASS, defaultSlots, initialSaves, guildSaveSlots  } = require('../config.json');
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
