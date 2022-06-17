@@ -181,7 +181,10 @@ client.on('messageCreate', async message => {
 			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 
 			if(lecountr.numbers % numbersRequiredForFreeSave == 0) { //every 50(by default) numbers
-				lecountr.increment('saves', { by: freeSave.toFixed(1) })
+				//lecountr.increment('saves', { by: freeSave.toFixed(1) })
+				lecountr.update({
+					saves: (lecountr.saves + freeSave).toFixed(1)
+				})
 			}
 		}
 	}
