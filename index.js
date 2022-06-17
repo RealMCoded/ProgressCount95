@@ -61,6 +61,7 @@ client.on('interactionCreate', async interaction => {
 
 		let guildDB = await client.db.Data.findOne({ where: { guildID: interaction.guild.id} }) //i can run this instead of findOrCreate because it already exists by now lol
 		numb = guildDB.count
+		highscore = guildDB.highscore
 		serverSaves = guildDB.guildSaves
 	} catch (error) {
 		console.log(`${error}\n\n`)
