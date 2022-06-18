@@ -149,7 +149,7 @@ client.on('messageCreate', async message => {
 						canAllCount = false;
 							setTimeout(() => {
 								canAllCount = true;
-							}, 1000);
+							}, 3000);
 						if (message.content.length >= 1500){
 							//sure we can just ignore it but it's funnier when the bot replies lol
 							message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
@@ -173,7 +173,7 @@ client.on('messageCreate', async message => {
 					canAllCount = false;
 						setTimeout(() => {
 							canAllCount = true;
-						}, 1000);
+						}, 3000);
 					if (lecountr.saves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
