@@ -18,7 +18,9 @@ client.db = require('./modal/database.js')
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-//var numb = parseInt(fs.readFileSync('./data/numb.txt', 'utf8'))
+const recentCountRuiners= new Set();
+
+var canAllCount = true
 var lastCounterId
 var serverSaves
 var guildDB 
@@ -77,6 +79,8 @@ client.on('messageCreate', async message => {
 
 	if (message.author.bot) return
 
+	if (!canAllCount) return
+
 	//if (message.type !== "DEFAULT") return;
 	switch (message.type){
 		case "DEFAULT": break;
@@ -103,65 +107,73 @@ client.on('messageCreate', async message => {
 			} catch(e) {return}
 			if (!isNaN(thec)) {
 				if (lastCounterId !== message.author.id) {
-				if (thec == String(numb+1)) {
-					if (useCustomEmoji) {
-						switch (thec){
-							case 2: message.react("<:PB2:819146879727566873>"); break; //PB2
-							case 11: message.react("<:PB11:868370023104798720>"); break; //PB11
-							case 81: message.react("<:PB81:819147983667986432> "); break; //PB81
-							case 7: message.react("<:PB7:704867972182704178>"); break; //PB7
-							case 32: message.react("<:sys32:817120108761186405>"); break; //Sys32
-							case 67: message.react("<:pBarFlint67:892434159300120629>"); break; //pbar67
-							case 66: message.react("<:pBar66:868370162187927632>"); break; //pbar66
-							case 65: message.react("<:pBar65:856835166374199297>"); break; //pbar65
-							case 64: message.react("<:pBar64:853138163827212308>"); break; //pbar64
-							case 63: message.react("<:pBar63:840276684556337172>"); break; //pbar63
-							case 2000: message.react("<:PB2000:819147424466993212>"); break; //pb2000
-							case 9000: message.react("<:ProgreshPower9000:825373078368288798>"); break; //power9000
-							case 800: message.react("<:ProgreshBC800:819147801425477652>"); break; //BC800
-							case 64: message.react("<:Progresh64KB:819147680089374730>"); break; //64KB
-							case 36: message.react("<:PBNOT36:819147051912134657>"); break; //NOT36
-							case 98: message.react("<:PB98:819146172928491580>"); break; //98
-							case 95: message.react("<:PB95:662601719653597196>"); break; //95
-							//NOT BAR GAME RELATED BUT STILL FUNNY
-							case 100: message.react("💯"); break;
-							case 420: message.react("<a:420:986336382530256897>"); break;
-							case 1984: message.react("<a:1984:971405081817804800>"); break;
-							default: if (highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
+					if (thec == String(numb+1)) {
+						if (useCustomEmoji) {
+							switch (thec){
+								case 2: message.react("<:PB2:819146879727566873>"); break; //PB2
+								case 11: message.react("<:PB11:868370023104798720>"); break; //PB11
+								case 81: message.react("<:PB81:819147983667986432> "); break; //PB81
+								case 7: message.react("<:PB7:704867972182704178>"); break; //PB7
+								case 32: message.react("<:sys32:817120108761186405>"); break; //Sys32
+								case 67: message.react("<:pBarFlint67:892434159300120629>"); break; //pbar67
+								case 66: message.react("<:pBar66:868370162187927632>"); break; //pbar66
+								case 65: message.react("<:pBar65:856835166374199297>"); break; //pbar65
+								case 64: message.react("<:pBar64:853138163827212308>"); break; //pbar64
+								case 63: message.react("<:pBar63:840276684556337172>"); break; //pbar63
+								case 2000: message.react("<:PB2000:819147424466993212>"); break; //pb2000
+								case 9000: message.react("<:ProgreshPower9000:825373078368288798>"); break; //power9000
+								case 800: message.react("<:ProgreshBC800:819147801425477652>"); break; //BC800
+								case 64: message.react("<:Progresh64KB:819147680089374730>"); break; //64KB
+								case 36: message.react("<:PBNOT36:819147051912134657>"); break; //NOT36
+								case 98: message.react("<:PB98:819146172928491580>"); break; //98
+								case 95: message.react("<:PB95:662601719653597196>"); break; //95
+								//NOT BAR GAME RELATED BUT STILL FUNNY
+								case 100: message.react("💯"); break;
+								case 420: message.react("<a:420:986336382530256897>"); break;
+								case 1984: message.react("<a:1984:971405081817804800>"); break;
+								default: if (highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
+							}
+						} else {
+							switch (thec){
+								case 100: message.react("💯"); break;
+								case 420: message.react("🌿"); break;
+								default: if (highscore < thec) message.react("☑"); else message.react("✅"); break;
+							}
 						}
+						numb++
+						if (highscore < numb) highscore = numb;
+						lastCounterId = message.author.id
+						guildDB.update({ lastCounterID: message.author.id })
+						lecountr.increment('numbers');
 					} else {
-						switch (thec){
-							case 100: message.react("💯"); break;
-							case 420: message.react("🌿"); break;
-							default: if (highscore < thec) message.react("☑"); else message.react("✅"); break;
+						canAllCount = false;
+							setTimeout(() => {
+								canAllCount = true;
+							}, 1000);
+						if (message.content.length >= 1500){
+							//sure we can just ignore it but it's funnier when the bot replies lol
+							message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
+						} else if (lecountr.saves >= 1) {
+							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
+							lecountr.decrement('saves')
+							message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+						} else if (serverSaves >= 1) {
+							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
+							serverSaves--
+							message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
+						} else {
+							if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
+							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
+							numb = 0
+							lastCounterId = "0"
 						}
+						lecountr.increment('wrongNumbers');
 					}
-					numb++
-					if (highscore < numb) highscore = numb;
-					lastCounterId = message.author.id
-					guildDB.update({ lastCounterID: message.author.id })
-					lecountr.increment('numbers');
 				} else {
-					if (message.content.length >= 1500){
-						//sure we can just ignore it but it's funnier when the bot replies lol
-						message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
-					} else if (lecountr.saves >= 1) {
-						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-						lecountr.decrement('saves')
-						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
-					} else if (serverSaves >= 1) {
-						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-						serverSaves--
-						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
-					} else {
-						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
-						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
-						numb = 0
-						lastCounterId = "0"
-					}
-					lecountr.increment('wrongNumbers');
-				}
-				} else {
+					canAllCount = false;
+						setTimeout(() => {
+							canAllCount = true;
+						}, 1000);
 					if (lecountr.saves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
