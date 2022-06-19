@@ -90,12 +90,20 @@ client.on('messageCreate', async message => {
 
 	if (message.channel.id === countingCh) {
 		//console.log(message.type)
+		
+		if (Date.now() - message.author.createdAt < 1000*60*60*24*7) {
+			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
+				if (useCustomEmoji) {message.react("<:NumberIgnored:981961793947705415>")} else {message.react("⛔")}
+				message.reply("⚠️ **Your account is too young to count! Your account must be 7 days old to count.**")
+				return;
+			}
+		  }
 
 		let [lecountr, ] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id } });
 
 		if (lecountr.banned) {
 			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
-				message.react("<:NumberIgnored:981961793947705415>"); 
+				if (useCustomEmoji) {message.react("<:NumberIgnored:981961793947705415>")} else {message.react("⛔")}
 			}
 			return;
 		}
