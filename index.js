@@ -136,10 +136,15 @@ client.on('messageCreate', async message => {
 								case 98: message.react("<:PB98:819146172928491580>"); break; //98
 								case 95: message.react("<:PB95:662601719653597196>"); break; //95
 								//NOT BAR GAME RELATED BUT STILL FUNNY
-								case 100: message.react("💯"); break;
 								case 420: message.react("<a:420:986336382530256897>"); break;
 								case 1984: message.react("<a:1984:971405081817804800>"); break;
-								default: if (highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
+								default: 
+									if (thec % 1000 == 0) { message.react("<:Grand:988213488591712316>")}
+									else if (thec % 500 == 0) {message.react("<:Adept:988214389683400774>")}
+									else if (thec % 250 == 0) {message.react("<:Master:988212695994077224>")}
+									else if (thec % 100 == 0) {message.react("<:Expert:988206723393290250>")}
+
+									else if (highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 							}
 						} else {
 							switch (thec){
