@@ -136,7 +136,7 @@ client.on('messageCreate', async message => {
 								case 98: message.react("<:PB98:819146172928491580>"); break; //98
 								case 95: message.react("<:PB95:662601719653597196>"); break; //95
 								//NOT BAR GAME RELATED BUT STILL FUNNY
-								case 420: message.react("<a:420:986336382530256897>"); break;
+								case 420: message.react("<:bonus_420:988207606055194644>"); break;
 								case 1984: message.react("<a:1984:971405081817804800>"); break;
 								default: 
 									if (thec % 1000 == 0) { message.react("<:Grand:988213488591712316>")}
