@@ -258,7 +258,7 @@ setInterval(async () => {
 			//check if we can dm the user
 			user.send(`Your save is ready! Use \`/save claim\` to claim it!`)
 				.catch(err => {
-					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}`)
+					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
 					client.channels.cache.get(countingCh).send(`${user} your save is ready! Use \`/save claim\` to claim it!`)
 				})
