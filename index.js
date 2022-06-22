@@ -161,6 +161,7 @@ client.on('messageCreate', async message => {
 						
 						if(lecountr.numbers % numbersRequiredForFreeSave == 0) { //every 50(by default) numbers
 							//lecountr.increment('saves', { by: freeSave.toFixed(1) })
+							if (lecountr.saves >= lecountr.slots) return;
 							lecountr.update({
 								saves: (lecountr.saves + freeSave).toFixed(1)
 							})
