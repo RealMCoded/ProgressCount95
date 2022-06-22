@@ -50,7 +50,7 @@ module.exports = {
                     return interaction.reply({embeds: [embed]})
                 }
                 if (row.get('saves')+savesPerClaim > row.get('slots')) {
-                    let partialSave = row.get("slots")-row.get("saves")
+                    let partialSave = (row.slots*10-row.get("saves")*10)/10
                     row.update({ saves: (row.saves*10+partialSave*10)/10 })
                     let embed = new MessageEmbed()
                         .setTitle("Saves")
