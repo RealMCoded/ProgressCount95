@@ -49,6 +49,15 @@ module.exports = {
                         .setDescription(`Your save slots are full! (${row.get('saves')}/${row.get('slots')})`)
                     return interaction.reply({embeds: [embed]})
                 }
+                if (row.get('saves')+savesPerClaim > row.get('slots')) {
+                    let partialSave = row.get("slots")-row.get("saves")
+                    let embed = new MessageEmbed()
+                        .setTitle("Saves")
+                        .setColor("#0099ff")
+                        .setTimestamp()
+                        .setDescription(`You have claimed **${partialSave}** saves!\nYou now have **${row.get('saves')+partialSave}/${row.get('slots')}** saves!`)
+                    return interaction.reply({embeds: [embed]})
+                }
                 row.increment('saves', { by: savesPerClaim });
                 row.update({ saveCooldown: n });
 
