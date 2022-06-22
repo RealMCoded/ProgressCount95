@@ -51,6 +51,7 @@ module.exports = {
                 }
                 if (row.get('saves')+savesPerClaim > row.get('slots')) {
                     let partialSave = row.get("slots")-row.get("saves")
+                    row.update({ saves: (row.saves*10)+(partialSave*10)/10 })
                     let embed = new MessageEmbed()
                         .setTitle("Saves")
                         .setColor("#0099ff")
