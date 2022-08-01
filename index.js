@@ -174,10 +174,11 @@ client.on('messageCreate', async message => {
 						if (message.content.length >= 1500){
 							//sure we can just ignore it but it's funnier when the bot replies lol
 							message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
-						} else if (lecountr.saves >= 1) {
+						} else if (lecountr.saves >= 10) {
 							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
-							lecountr.decrement('saves')
-							message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+							const ten = 10
+							lecountr.decrement('saves', { by: ten})
+							message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 							serverSaves--
@@ -195,10 +196,10 @@ client.on('messageCreate', async message => {
 						setTimeout(() => {
 							canAllCount = true;
 						}, 3000);
-					if (lecountr.saves >= 1) {
+					if (lecountr.saves >= 10) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
-						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${lecountr.saves -1}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						serverSaves--

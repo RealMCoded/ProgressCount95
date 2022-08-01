@@ -150,7 +150,7 @@ module.exports = {
                 if (saves > slots) { 
                     return interaction.reply({ content: "❌ **You cannot set saves higher than slots!**", ephemeral: true })
                 }
-                userSaves.update({ saves: saves, slots: slots })
+                userSaves.update({ saves: saves*10, slots: slots })
                 console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
             } else if (subcommand == "sethighscore") {

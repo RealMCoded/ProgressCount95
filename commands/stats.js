@@ -58,7 +58,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves}/${slots}`)
+                    .setDescription(`**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves/10}/${slots}`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
