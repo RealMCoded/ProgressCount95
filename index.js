@@ -118,23 +118,23 @@ client.on('messageCreate', async message => {
 					if (thec == String(numb+1)) {
 						if (useCustomEmoji) {
 							switch (thec){
-								case 2: message.react("<:PB2:819146879727566873>"); break; //PB2
-								case 11: message.react("<:PB11:868370023104798720>"); break; //PB11
-								case 81: message.react("<:PB81:819147983667986432> "); break; //PB81
-								case 7: message.react("<:PB7:704867972182704178>"); break; //PB7
-								case 32: message.react("<:sys32:817120108761186405>"); break; //Sys32
-								case 67: message.react("<:pBarFlint67:892434159300120629>"); break; //pbar67
-								case 66: message.react("<:pBar66:868370162187927632>"); break; //pbar66
-								case 65: message.react("<:pBar65:856835166374199297>"); break; //pbar65
-								case 64: message.react("<:pBar64:853138163827212308>"); break; //pbar64
-								case 63: message.react("<:pBar63:840276684556337172>"); break; //pbar63
-								case 2000: message.react("<:PB2000:819147424466993212>"); break; //pb2000
-								case 9000: message.react("<:ProgreshPower9000:825373078368288798>"); break; //power9000
-								case 800: message.react("<:ProgreshBC800:819147801425477652>"); break; //BC800
-								case 64: message.react("<:Progresh64KB:819147680089374730>"); break; //64KB
-								case 36: message.react("<:PBNOT36:819147051912134657>"); break; //NOT36
-								case 98: message.react("<:PB98:819146172928491580>"); break; //98
-								case 95: message.react("<:PB95:662601719653597196>"); break; //95
+								case 2: message.react("<:PB2:990638339927453786>"); break; //PB2
+                                case 11: message.react("<:PB11:990668993033547866>"); break; //PB11
+                                case 81: message.react("<:PB81:990638353953210458>"); break; //PB81
+                                case 7: message.react("<:PB7:990638301809618987>"); break; //PB7
+                                case 32: message.react("<:Sys32:990638327856259092>"); break; //Sys32
+                                case 67: message.react("<:pBarFlint67:990669006669217812>"); break; //pbar67
+                                case 66: message.react("<:pBar66:990668996321878126>"); break; //pbar66
+                                case 65: message.react("<:pBar65:990668986628833361>"); break; //pbar65
+                                case 64: message.react("<:pBar64:990668948045463602>"); break; //pbar64
+                                case 63: message.react("<:pBar63:990638375159611392>"); break; //pbar63
+                                case 2000: message.react("<:PB2000:990638347783393390>"); break; //pb2000
+                                case 9000: message.react("<:ProgreshPower9000:990638365051322408>"); break; //power9000
+                                case 800: message.react("<:ProgreshBC800:990638352141258812>"); break; //BC800
+                                case 64: message.react("<:Progresh64KB:990638349268185099>"); break; //64KB
+                                case 36: message.react("<:PBNOT36:990638344411168788>"); break; //NOT36
+                                case 98: message.react("<:PB98:990638331727597578>"); break; //98
+                                case 95: message.react("<:PB95:990638256079118406>"); break; //95
 								//NOT BAR GAME RELATED BUT STILL FUNNY
 								case 420: message.react("<:bonus_420:988207606055194644>"); break;
 								case 1984: message.react("<a:1984:971405081817804800>"); break;
