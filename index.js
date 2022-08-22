@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents } = require('discord.js');
 const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown } = require('./config.json');
-const mathx = require('math-expression-evaluator')
+const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 //database shit
@@ -143,7 +143,7 @@ client.on('messageCreate', async message => {
 									else if (thec % 500 == 0) {message.react("<:Adept:988214389683400774>")}
 									else if (thec % 250 == 0) {message.react("<:Master:988212695994077224>")}
 									else if (thec % 100 == 0) {message.react("<:Expert:988206723393290250>")}
-
+									else if (thec.toString().length > 2 && thec.toString() == thec.toString().split('').reverse().join('')) {message.react("<:arrows_left_right:1011069506803740692>")}
 									else if (highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 							}
 						} else {
