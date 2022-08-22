@@ -1,4 +1,4 @@
-const { generateDependencyReport } = require('@discordjs/voice');
+//const { generateDependencyReport } = require('@discordjs/voice');
 const { Sequelize } = require('sequelize');
 const { SQL_USER, SQL_PASS } = require('./config.json')
 const fs = require('node:fs')

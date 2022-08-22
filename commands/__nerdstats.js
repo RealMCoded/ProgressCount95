@@ -22,7 +22,7 @@ module.exports = {
 			const cpuSpeed = `${Math.round(process.cpuUsage().system / 1000 / 1000 * 100) / 100} MHz`;
 			//store node total cpu usage
 			const cpuUsage = `${Math.round(process.cpuUsage().user / 1000 / 1000 * 100) / 100} MHz`;
-			const ping = `${interaction.message.client.ws.ping}`;
+			const ping = `${interaction.client.ws.ping}`;
 
 			//create new MessageEmbed
 			const embed = new MessageEmbed()
