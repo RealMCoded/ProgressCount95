@@ -128,7 +128,7 @@ module.exports = {
                 }
                 //create message embed
                 const embed = new MessageEmbed()
-                    .setTitle('List of banned members from Counting - Work in progress')
+                    .setTitle('List of banned members from Counting')
                     .setDescription(banlist)
                     .setColor('#ff0000')
                 return interaction.reply({embeds: [embed], ephemeral: true});
