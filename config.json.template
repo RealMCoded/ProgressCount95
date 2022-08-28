@@ -4,7 +4,6 @@
     "testGuildId":"",
     "guildId":"",
     "countingCh":"",
-    "logChannel":"",
     "token":"",
     "SQL_USER":"",
     "SQL_PASS":"",
