@@ -1,6 +1,7 @@
 const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Permissions, MessageEmbed } = require('discord.js');
+const { Permissions, MessageEmbed, WebhookClient } = require('discord.js');
+const { logHook } = require("./../config.json")
 
 module.exports = { 
     data: new SlashCommandBuilder()
@@ -75,13 +76,14 @@ module.exports = {
                 .setDescription("the number of saves")
                 .setRequired(true))),
     async execute(interaction) {
+        const webhookClient = new WebhookClient({ url: logWebhookURL });
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
             if (subcommand == "setban") {
                 let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 let ban = interaction.options.getBoolean("ban")
                 let reason = interaction.options.getString("reason")
-                if (mbr == "513487616964952084") {
+                if (mbr.id == "513487616964952084") {
                     return interaction.reply("❌ **What did i ever do to you?**")
                 } else {
                     const db = interaction.client.db.Counters;
@@ -89,10 +91,11 @@ module.exports = {
                     if (ban) {
                         await row.update({ banReason: reason, banned: true })
                         interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
+                        webhookClient.send(`${interaction.user.tag} has banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".`);
                     } else {
                         await row.update({ banReason: null, banned: false })
                         interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
-
+                        webhookClient.send(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
                     }
                 }
             } else if (subcommand == "setcount") {
@@ -104,6 +107,8 @@ module.exports = {
                 numbdb.update({ count: numb.toString() })
 
                 console.log(`${interaction.user.tag} changed the number to ${numb}`)
+                webhookClient.send(`${interaction.user.tag} has changed the number to ${numb}.`);
+
                 return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
             } else if (subcommand == "banlist") {
                 let banlist = '';
