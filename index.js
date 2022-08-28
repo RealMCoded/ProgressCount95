@@ -274,7 +274,7 @@ process.on('uncaughtException', (error, origin) => {
     console.log(error)
     console.log('----- Exception origin -----')
     console.log(origin)
-	let webhookClient = new WebhookClient({ url: logWebhookURL });
+	let webhookClient = new WebhookClient({ url: logHook });
 	webhookClient.send(`[ERR]\n\`\`\`${error}\`\`\`\n\n\`\`\`${origin}\`\`\``);
 })
 
@@ -283,7 +283,7 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log(promise)
     console.log('----- Reason -----')
     console.log(reason)
-	let webhookClient = new WebhookClient({ url: logWebhookURL });
+	let webhookClient = new WebhookClient({ url: logHook });
 	webhookClient.send(`[REJ]\n\`\`\`${promise}\`\`\`\n\n\`\`\`${reason}\`\`\``);
 })
 

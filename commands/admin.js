@@ -76,7 +76,7 @@ module.exports = {
                 .setDescription("the number of saves")
                 .setRequired(true))),
     async execute(interaction) {
-        const webhookClient = new WebhookClient({ url: logWebhookURL });
+        const webhookClient = new WebhookClient({ url: logHook });
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
             if (subcommand == "setban") {
