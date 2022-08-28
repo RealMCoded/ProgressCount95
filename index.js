@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
-const { Client, Collection, Intents } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown } = require('./config.json');
+const { Client, Collection, Intents, WebhookClient } = require('discord.js');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -274,6 +274,8 @@ process.on('uncaughtException', (error, origin) => {
     console.log(error)
     console.log('----- Exception origin -----')
     console.log(origin)
+	let webhookClient = new WebhookClient({ url: logWebhookURL });
+	webhookClient.send(`[ERR]\n\`\`\`${error}\`\`\`\n\n\`\`\`${origin}\`\`\``);
 })
 
 process.on('unhandledRejection', (reason, promise) => {
@@ -281,6 +283,8 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log(promise)
     console.log('----- Reason -----')
     console.log(reason)
+	let webhookClient = new WebhookClient({ url: logWebhookURL });
+	webhookClient.send(`[REJ]\n\`\`\`${promise}\`\`\`\n\n\`\`\`${reason}\`\`\``);
 })
 
 client.login(token);
