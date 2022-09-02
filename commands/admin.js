@@ -145,6 +145,7 @@ module.exports = {
                 const [row,] = await db.findOrCreate({ where: { userID: user.id } })
                 row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
+                webhookClient.send(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`);
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
             } else if (subcommand == "setusersaves") {
                 const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
@@ -157,6 +158,7 @@ module.exports = {
                 }
                 userSaves.update({ saves: saves*10, slots: slots })
                 console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
+                webhookClient.send(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`);
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
             } else if (subcommand == "sethighscore") {
                 const highscore = interaction.options.getInteger("highscore")

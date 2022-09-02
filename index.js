@@ -261,6 +261,8 @@ setInterval(async () => {
 			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				.catch(err => {
 					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
+					let webhookClient = new WebhookClient({ url: logHook });
+					webhookClient.send(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`);
 					//send notification to counting channel
 					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				})
@@ -270,21 +272,21 @@ setInterval(async () => {
 }, 1000);
 
 process.on('uncaughtException', (error, origin) => {
+	let webhookClient = new WebhookClient({ url: logHook });
+	webhookClient.send(`Uncaught exception\n\`\`\`${error}\`\`\`\nException origin\n\`\`\`${origin}\`\`\``);
     console.log('----- Uncaught exception -----')
     console.log(error)
     console.log('----- Exception origin -----')
     console.log(origin)
-	let webhookClient = new WebhookClient({ url: logHook });
-	webhookClient.send(`[ERR]\n\`\`\`${error}\`\`\`\n\n\`\`\`${origin}\`\`\``);
 })
 
 process.on('unhandledRejection', (reason, promise) => {
+	let webhookClient = new WebhookClient({ url: logHook });
+	webhookClient.send(`Unhandled Rejection at\n\`\`\`${promise}\`\`\`\nReason\n\`\`\`${reason}\`\`\``);
     console.log('----- Unhandled Rejection at -----')
     console.log(promise)
     console.log('----- Reason -----')
     console.log(reason)
-	let webhookClient = new WebhookClient({ url: logHook });
-	webhookClient.send(`[REJ]\n\`\`\`${promise}\`\`\`\n\n\`\`\`${reason}\`\`\``);
 })
 
 client.login(token);
