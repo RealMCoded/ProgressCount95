@@ -178,7 +178,7 @@ client.on('messageCreate', async message => {
 							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 							const ten = 10
 							lecountr.decrement('saves', { by: ten})
-							message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 							serverSaves--
@@ -199,14 +199,14 @@ client.on('messageCreate', async message => {
 					if (lecountr.saves >= 10) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
-						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						serverSaves--
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
 					} else {
 						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
-						message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
+						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 						numb = 0
 						lastCounterId = "0"
 					}
@@ -258,11 +258,11 @@ setInterval(async () => {
 		} else {
 			let user = await client.users.fetch(counters[i].get('userID'))
 			//check if we can dm the user
-			user.send(`Your save is ready! Use \`/save claim\` to claim it!`)
+			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				.catch(err => {
 					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
-					client.channels.cache.get(countingCh).send(`${user} your save is ready! Use \`/save claim\` to claim it!`)
+					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				})
 		}
 	}
