@@ -49,6 +49,18 @@ module.exports = {
             const tag = await db.Counters.findOne({ where: { userID: usr.id } });
               
             if (tag) {
+                var list = await db.Counters.findAll({
+                    attributes: ['numbers', 'userID']
+                })
+    
+                list = list.sort((a, b) => b.numbers - a.numbers)
+
+                let lbpos = 0
+
+                for(var i=0; i < list.length; i++){
+                    if (list[i].userID == usr.id) {lbpos = i+1; break;}  
+                }
+
                 const correct = tag.get("numbers")
                 const incorrect = tag.get("wrongNumbers")
                 const saves = tag.get("saves")
@@ -58,7 +70,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves/10}/${slots}`)
+                    .setDescription(`**Leaderboard Position:** #${lbpos}\n**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves/10}/${slots}`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
