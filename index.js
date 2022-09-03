@@ -1,8 +1,8 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
-const { Client, Collection, Intents } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown } = require('./config.json');
-const mathx = require('math-expression-evaluator')
+const { Client, Collection, Intents, WebhookClient } = require('discord.js');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook } = require('./config.json');
+const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 //database shit
@@ -143,7 +143,7 @@ client.on('messageCreate', async message => {
 									else if (thec % 500 == 0) {message.react("<:Adept:988214389683400774>")}
 									else if (thec % 250 == 0) {message.react("<:Master:988212695994077224>")}
 									else if (thec % 100 == 0) {message.react("<:Expert:988206723393290250>")}
-
+									else if (thec.toString().length > 2 && thec.toString() == thec.toString().split('').reverse().join('')) {message.react("<:arrows_left_right:1011069506803740692>")}
 									else if (highscore < thec) message.react("<:CheckBlue:983780095628042260>"); else message.react("<:CheckMark:981961793800921140>"); break;
 							}
 						} else {
@@ -178,7 +178,7 @@ client.on('messageCreate', async message => {
 							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 							const ten = 10
 							lecountr.decrement('saves', { by: ten})
-							message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 							serverSaves--
@@ -199,14 +199,14 @@ client.on('messageCreate', async message => {
 					if (lecountr.saves >= 10) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						lecountr.decrement('saves')
-						message.reply(`${message.author} almost ruined the count, but they used one of their user saves!\n${message.author.tag} has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react('<:CountingWarn:981961793515716630>')} else {message.react('⚠️')}
 						serverSaves--
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
 					} else {
 						if (useCustomEmoji) {message.react('<:XMark:981961793817694259>')} else {message.react('❌')}
-						message.reply(`${message.author} ruined the count!\nThe next number is **1** | **You cannot count more than one time in a row**!`)
+						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 						numb = 0
 						lastCounterId = "0"
 					}
@@ -258,11 +258,13 @@ setInterval(async () => {
 		} else {
 			let user = await client.users.fetch(counters[i].get('userID'))
 			//check if we can dm the user
-			user.send(`Your save is ready! Use \`/save claim\` to claim it!`)
+			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				.catch(err => {
 					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
+					let webhookClient = new WebhookClient({ url: logHook });
+					webhookClient.send(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`);
 					//send notification to counting channel
-					client.channels.cache.get(countingCh).send(`${user} your save is ready! Use \`/save claim\` to claim it!`)
+					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				})
 		}
 	}
@@ -270,6 +272,8 @@ setInterval(async () => {
 }, 1000);
 
 process.on('uncaughtException', (error, origin) => {
+	let webhookClient = new WebhookClient({ url: logHook });
+	webhookClient.send(`Uncaught exception\n\`\`\`${error}\`\`\`\nException origin\n\`\`\`${origin}\`\`\``);
     console.log('----- Uncaught exception -----')
     console.log(error)
     console.log('----- Exception origin -----')
@@ -277,6 +281,8 @@ process.on('uncaughtException', (error, origin) => {
 })
 
 process.on('unhandledRejection', (reason, promise) => {
+	let webhookClient = new WebhookClient({ url: logHook });
+	webhookClient.send(`Unhandled Rejection at\n\`\`\`${promise}\`\`\`\nReason\n\`\`\`${reason}\`\`\``);
     console.log('----- Unhandled Rejection at -----')
     console.log(promise)
     console.log('----- Reason -----')

@@ -1,13 +1,12 @@
 # ProgressCount95
 
-The counting bot for the Progressbar95 Fan Server - Now open sourced by request.
+The counting bot for the [Progressbar95 +Plus server](https://discord.gg/PGMB93T5yJ) created by [stuartt](https://github.com/RealMCoded) (with help from [luihum](https://github.com/luihum) and [5jiji](https://github.com/5jiji))
 
-**[Trello Board](https://trello.com/b/WMZYOuTd/progresscount95)**
-
-**Warning: The code used for this is very half assed and very unstable.**
+**[Privacy Policy](https://github.com/RealMCoded/ProgressCount95/blob/master/PRIVACY-POLICY.md)** - **[Trello Board](https://trello.com/b/WMZYOuTd/progresscount95)**
 
 ## Known issues
 
+- Sometimes, the bot doesn't update the current number (i still do not know how this happens plz help me fix it).
 - If an emoji doesn't exist and the bot tries to use it, the bot crashes. You can turn `useCustomEmoji` to `false` in the `config.json` file if you wish.
 
 ## Required Files
