@@ -1,17 +1,20 @@
 {
+    "nerdstatExecutor":["user", "ids", "here"],
     "clientId":"",
+    "testGuildId":"",
     "guildId":"",
     "countingCh":"",
     "token":"",
-    "useCustomEmoji":false,
     "SQL_USER":"",
     "SQL_PASS":"",
+    "useCustomEmoji": false,
     "guildSaveSlots": 2,
     "userSavesPerGuildSave": 4,
     "saveClaimCooldown": 43200,
     "defaultSlots": 5,
-    "initialSaves": 2,
-    "savesPerClaim": 0.5,
+    "initialSaves": 20,
+    "savesPerClaim": 5,
     "numbersRequiredForFreeSave": 50,
-    "freeSave": 0.1
+    "freeSave": 1,
+    "logHook": "https://discord.com/api/webhooks/webhook_id/webhook_token"
 }

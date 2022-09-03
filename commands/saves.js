@@ -159,8 +159,8 @@ module.exports = {
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBB.slots - userDBB.saves/10 < 1) {
                 let partialSave = userDBB.slots - userDBB.saves/10
-                await userDBA.decrement("saves", { by: partialSave })
-                await userDBB.increment("saves", { by: partialSave })
+                await userDBA.decrement("saves", { by: partialSave*10 })
+                await userDBB.increment("saves", { by: partialSave*10 })
                 userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})
                 userDBB = await interaction.client.db.Counters.findOne({ where: { userID: userB.id }})
                 const replyEmbed = new MessageEmbed()
@@ -170,8 +170,8 @@ module.exports = {
                 return interaction.reply({ embeds: [replyEmbed]})    
             
             } else {
-                await userDBA.decrement("saves")
-                await userDBB.increment("saves")
+                await userDBA.decrement("saves", { by: 10 })
+                await userDBB.increment("saves", { by: 10 })
                 userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})
                 userDBB = await interaction.client.db.Counters.findOne({ where: { userID: userB.id }})
                 const replyEmbed = new MessageEmbed()
