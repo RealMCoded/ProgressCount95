@@ -46,6 +46,8 @@ module.exports = {
         } else if (subcommand === "user") {
             const usr = interaction.options.getUser("user") || interaction.member.user;
 
+            if (usr.bot) return interaction.reply({content:"❌ **Bots don't have counting stats!**", ephemeral: true})
+
             const tag = await db.Counters.findOne({ where: { userID: usr.id } });
               
             if (tag) {
