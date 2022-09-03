@@ -31,7 +31,7 @@ module.exports = {
         const message = await interaction.reply({embeds: [questionEmbed], components: [answerButtons], fetchReply: true});
         const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: time});
         collector.on('collect', async i => {
-                if (i.user.id === interaction.user.id) {
+            if (i.user.id === interaction.user.id) {
                 if (i.component.customId === 'yes_delete_my_data') {
                     answerCorrectButton.setDisabled(true);
                     answerWrong1Button.setDisabled(true);
@@ -55,7 +55,7 @@ module.exports = {
                     answerWrong1Button.setDisabled(true);
                     answerButtonFinished = new MessageActionRow().addComponents(answers);
                     i.update({components: [answerButtonFinished]})
-                    interaction.followUp("❌ **Canceled - Canceled by user.**")
+                    interaction.followUp("❌ **Cancelled - Cancelled by user.**")
                     collector.stop();
                 }
             } else {
@@ -69,7 +69,7 @@ module.exports = {
                 answerWrong1Button.setDisabled(true);
                 let answerButtonFinished = new MessageActionRow().addComponents(answers);
                 interaction.editReply({components: [answerButtonFinished]})
-                interaction.followUp("❌ **Canceled - Timeout.**")
+                interaction.followUp("❌ **Cancelled - Timeout.**")
             } else {
                 return;
             }
