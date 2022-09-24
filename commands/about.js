@@ -1,4 +1,5 @@
-const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 const project = require('../package.json')
 
 module.exports = {
@@ -12,7 +13,7 @@ module.exports = {
             .toString().substring(0, 7);
         const currentTimestamp = Math.round(+new Date() / 1000);
         const timestampColour = currentTimestamp.toString(16).substring(2, 10);
-        const embed = new EmbedBuilder()
+        const embed = new MessageEmbed()
             .setTitle('ProgressCount95')
             .setDescription(`Version ${project.version} ([commit \`${revision}\`](https://github.com/RealMCoded/ProgressCount95/commit/${revision}))\n\nBot created by stuartt#2419, Assisted by Luihum#1287 and 5jiji#2022`)
             .setColor(`${timestampColour}`);
