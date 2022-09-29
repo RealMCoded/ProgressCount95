@@ -15,6 +15,6 @@ module.exports = {
 			.setTitle('It has been 0 days since the last JavaScript framework was released.')
             .setFooter('Updated daily!')
 
-		await interaction.reply({embeds: [embed]});
+		await interaction.editReply({embeds: [embed]});
     },
 };
