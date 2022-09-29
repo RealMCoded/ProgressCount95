@@ -4,7 +4,7 @@ const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('days-since-last-javascript-framework')
+        .setName('days-since-last-js-framework')
         .setDescription(`How many days since the last JavaScript framework?`),
     async execute(interaction) {
         await interaction.deferReply();
