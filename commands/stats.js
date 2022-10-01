@@ -69,10 +69,14 @@ module.exports = {
                 const slots = tag.get("slots")
                 const accuracy = (correct / (correct + incorrect) * 100).toFixed(3)
                 const person = await interaction.client.users.fetch(usr.id)
+
+                const activeDate = new Date(tag.get("updatedAt")).valueOf().toString().slice(0, -3)
+                const createdAt = new Date(tag.get("createdAt")).valueOf().toString().slice(0, -3)
+
                 const embed = new MessageEmbed()
                     .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`**Leaderboard Position:** #${lbpos}\n**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves/10}/${slots}`)
+                    .setDescription(`**Leaderboard Position:** #${lbpos}\n**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves/10}/${slots}\n**Last Active:** <t:${activeDate}:f> (<t:${activeDate}:R>)\n**Started counting:** <t:${createdAt}:f> (<t:${createdAt}:R>)`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
