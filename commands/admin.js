@@ -76,7 +76,7 @@ module.exports = {
                 .setDescription("the number of saves")
                 .setRequired(true))),
     async execute(interaction) {
-        const webhookClient = new WebhookClient({ url: logHook });
+        //const webhookClient = new WebhookClient({ url: logHook });
         const subcommand = interaction.options.getSubcommand()
         if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
             if (subcommand == "setban") {
@@ -91,11 +91,11 @@ module.exports = {
                     if (ban) {
                         await row.update({ banReason: reason, banned: true })
                         interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
-                        webhookClient.send(`${interaction.user.tag} has banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".`);
+                        console.log(`${interaction.user.tag} has banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".`);
                     } else {
                         await row.update({ banReason: null, banned: false })
                         interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
-                        webhookClient.send(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
+                        console.log(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
                     }
                 }
             } else if (subcommand == "setcount") {
@@ -107,7 +107,6 @@ module.exports = {
                 numbdb.update({ count: numb.toString() })
 
                 console.log(`${interaction.user.tag} changed the number to ${numb}`)
-                webhookClient.send(`${interaction.user.tag} has changed the number to ${numb}.`);
 
                 return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
             } else if (subcommand == "banlist") {
@@ -145,7 +144,7 @@ module.exports = {
                 const [row,] = await db.findOrCreate({ where: { userID: user.id } })
                 row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
                 console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
-                webhookClient.send(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`);
+                //webhookClient.send(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`);
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
             } else if (subcommand == "setusersaves") {
                 const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
@@ -158,7 +157,7 @@ module.exports = {
                 }
                 userSaves.update({ saves: saves*10, slots: slots })
                 console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
-                webhookClient.send(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`);
+                //webhookClient.send(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`);
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
             } else if (subcommand == "sethighscore") {
                 const highscore = interaction.options.getInteger("highscore")

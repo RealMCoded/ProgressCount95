@@ -18,6 +18,14 @@ client.db = require('./modal/database.js')
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+console.log = function(e) {
+	if (redirectConsoleOutputToWebhook) {
+		let webhookClient = new WebhookClient({ url: logHook });
+		webhookClient.send(`\`\`\`\n${e}\n\`\`\``);
+	}
+	process.stdout.write(`${e}\n`);
+}
+
 const recentCountRuiners= new Set();
 
 var canAllCount = true
@@ -44,7 +52,7 @@ client.once('ready', async () => {
 	highscore = localDB.highscore
 	serverSaves = localDB.guildSaves
 	lastCounterId = localDB.lastCounterID
-	console.log('Ready!\n');
+	console.log(`✅ Signed in as ${client.user.tag}! \n`);
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
 	guildDB = localDB
@@ -274,8 +282,6 @@ setInterval(async () => {
 			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				.catch(err => {
 					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
-					let webhookClient = new WebhookClient({ url: logHook });
-					webhookClient.send(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`);
 					//send notification to counting channel
 					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				})
@@ -284,6 +290,27 @@ setInterval(async () => {
 	
 }, 1000);
 
+process.on('uncaughtException', (error, origin) => {
+    //console.log('----- Uncaught exception -----')
+    //console.log(error)
+    //console.log('----- Exception origin -----')
+    //console.log(origin)
+	console.log(`❌ Uncaught exception\n-----\n${error}\n-----\nException origin\n${origin}`)
+	//let webhookClient = new WebhookClient({ url: logWebhookURL });
+	//webhookClient.send(`<@284804878604435476> [ERR]\n\`\`\`${error}\`\`\`\n\n\`\`\`${origin}\`\`\``);
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+    //console.log('----- Unhandled Rejection at -----')
+    //console.log(promise)
+    //console.log('----- Reason -----')
+    //console.log(reason)
+	console.log(`❌ Unhandled Rejection\n-----\n${promise}\n-----\nReason\n${reason}`)
+	//let webhookClient = new WebhookClient({ url: logWebhookURL });
+	//webhookClient.send(`<@284804878604435476> [REJ]\n\`\`\`${promise}\`\`\`\n\n\`\`\`${reason}\`\`\``);
+})
+
+/*
 process.on('uncaughtException', (error, origin) => {
 	let webhookClient = new WebhookClient({ url: logHook });
 	webhookClient.send(`Uncaught exception\n\`\`\`${error}\`\`\`\nException origin\n\`\`\`${origin}\`\`\``);
@@ -301,5 +328,6 @@ process.on('unhandledRejection', (reason, promise) => {
     console.log('----- Reason -----')
     console.log(reason)
 })
+*/
 
 client.login(token);
