@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
