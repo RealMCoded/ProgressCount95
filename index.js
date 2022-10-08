@@ -18,12 +18,41 @@ client.db = require('./modal/database.js')
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+//redef some console functions here
 console.log = function(e) {
-	if (redirectConsoleOutputToWebhook) {
-		let webhookClient = new WebhookClient({ url: logHook });
-		webhookClient.send(`\`\`\`\n${e}\n\`\`\``);
+	try {
+		if (redirectConsoleOutputToWebhook) {
+			let webhookClient = new WebhookClient({ url: logHook });
+			webhookClient.send(`\`\`\`\n${e}\n\`\`\``);
+		}
+	} catch(e) {
+		process.stdout.write(`Unable to redirect output: ${e}\n`);
 	}
 	process.stdout.write(`${e}\n`);
+}
+
+console.warn = function(e) {
+	try {
+		if (redirectConsoleOutputToWebhook) {
+			let webhookClient = new WebhookClient({ url: logHook });
+			webhookClient.send(`\`\`\`\n[WARN] ${e}\n\`\`\``);
+		}
+	} catch(e) {
+		process.stdout.write(`Unable to redirect output: ${e}\n`);
+	}
+	process.stdout.write(`[WARN] ${e}\n`);
+}
+
+console.error = function(e) {
+	try {
+		if (redirectConsoleOutputToWebhook) {
+			let webhookClient = new WebhookClient({ url: logHook });
+			webhookClient.send(`\`\`\`\n[ERROR] ${e}\n\`\`\``);
+		}
+	} catch(e) {
+		process.stdout.write(`Unable to redirect output: ${e}\n`);
+	}
+	process.stdout.write(`[ERROR] ${e}\n`);
 }
 
 const recentCountRuiners= new Set();
@@ -281,7 +310,7 @@ setInterval(async () => {
 			//check if we can dm the user
 			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				.catch(err => {
-					console.log(`[WARN] Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
+					console.warn(`Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
 					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				})
