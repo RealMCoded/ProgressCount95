@@ -30,6 +30,17 @@ module.exports = {
                 .setDescription("the reason for the ban. Unused for unbans.")
                 .setRequired(true)))
         .addSubcommand(subcommand => subcommand
+            .setName("updateban")
+            .setDescription("Update the ban reason for a user")
+            .addUserOption(option => option
+                .setName("user")
+                .setDescription("the user")
+                .setRequired(true))
+            .addStringOption(option => option
+                .setName("reason")
+                .setDescription("the reason for the ban.")
+                .setRequired(true)))
+        .addSubcommand(subcommand => subcommand
             .setName("banlist")
             .setDescription("Look at all the dead people."))
         .addSubcommand(subcommand => subcommand
@@ -96,6 +107,22 @@ module.exports = {
                         await row.update({ banReason: null, banned: false })
                         interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
                         console.log(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
+                    }
+                }
+            } else if (subcommand == "updateban") {
+                let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
+                let reason = interaction.options.getString("reason")
+                if (mbr.id == "513487616964952084") {
+                    return interaction.reply("❌ **What did i ever do to you?**")
+                } else {
+                    const db = interaction.client.db.Counters;
+                    const row = await db.findOne({ where: { userID: mbr.id } })
+                    if (row) {
+                        await row.update({ banReason: reason })
+                        interaction.reply(`✅ **Updated ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".**`)
+                        console.log(`${interaction.user.tag} has updated the ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".`);
+                    } else {
+                        return interaction.reply({ content: `❌ **This person is not banned from counting!**`, ephemeral: true });
                     }
                 }
             } else if (subcommand == "setcount") {
