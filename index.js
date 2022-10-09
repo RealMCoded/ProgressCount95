@@ -146,6 +146,10 @@ client.on('messageCreate', async message => {
 
 		let [lecountr, isNewCounter] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id } });
 
+		if (isNewCounter) {
+			message.reply(fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'}));
+		}
+
 		if (lecountr.banned) {
 			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
 				if (useCustomEmoji) {message.react("<:NumberIgnored:981961793947705415>")} else {message.react("⛔")}
@@ -155,11 +159,6 @@ client.on('messageCreate', async message => {
 
 		//check if first string in message is a math expression
 		if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { //MAKE INFINITY DETECTION BETTER
-
-			if (isNewCounter) {
-				message.reply(fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'}));
-			}
-			
 			try {
 				var thec = mathx.eval(message.content.split(' ')[0])
 			} catch(e) {return}
