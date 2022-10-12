@@ -24,6 +24,7 @@
         "ruin": "<:ruin:id>",
         "warn": "<:warn:id>",
         "ignored": "<:ignored:id>",
+        "palindrome": "<:palindrome:id>",
         "other": {
            "393": "<:piplup:id>",
            "493": "<:arceus:id>"
