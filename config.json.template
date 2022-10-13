@@ -25,6 +25,7 @@
         "warn": "<:warn:id>",
         "ignored": "<:ignored:id>",
         "palindrome": "<:palindrome:id>",
+        "typing": "<a:typing:id>",
         "other": {
            "393": "<:piplup:id>",
            "493": "<:arceus:id>"

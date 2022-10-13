@@ -1,16 +1,24 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageAttachment } = require('discord.js');
-
+const { customEmojiList, useCustomEmoji } = require("../config.json")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('export-leaderboard')
 		.setDescription(`Exports leaderboard as a JSON file`),
 	async execute(interaction) {
 		if(interaction.client.isDumping) {
-			return interaction.reply("<:CountingWarn:981961793515716630> **The bot is currently generating a leaderboard file, please wait until this is finished before requesting.**")
+			if (useCustomEmoji) {
+				return interaction.reply(`${customEmojiList.warn} **The bot is currently generating a leaderboard file, please wait until this is finished before requesting.**`)
+			} else {
+				return interaction.reply("⚠️ **The bot is currently generating a leaderboard file, please wait until this is finished before requesting.**`")
+			}
 		}
 		interaction.client.isDumping = true
-		await interaction.reply("<a:typing:1017890251236200569> **The file is being generated and will be sent to you soon!**")
+		if (useCustomEmoji) {
+			await interaction.reply(`${customEmojiList.typing} **The file is being generated and will be sent to you soon!**`)
+		} else {
+			await interaction.reply("••• **The file is being generated and will be sent to you soon!**")
+		}
 		console.log(`${interaction.user.tag} requested a leaderboard dump`)
 		let db = interaction.client.db
 		var data = new Array();
