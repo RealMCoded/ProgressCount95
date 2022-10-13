@@ -17,5 +17,25 @@
     "numbersRequiredForFreeSave": 50,
     "freeSave": 1,
     "redirectConsoleOutputToWebhook":false,
-    "logHook": "https://discord.com/api/webhooks/webhook_id/webhook_token"
+    "logHook": "https://discord.com/api/webhooks/webhook_id/webhook_token",
+    "customEmojiList": {
+        "normal": "<:normal:id>",
+        "highscore": "<:highscore:id>",
+        "ruin": "<:ruin:id>",
+        "warn": "<:warn:id>",
+        "ignored": "<:ignored:id>",
+        "palindrome": "<:palindrome:id>",
+        "other": {
+           "393": "<:piplup:id>",
+           "493": "<:arceus:id>"
+        },
+        "milestones": {
+            "1000": "<:1000:id>",
+            "500": "<:500:id>"
+        },
+        "endings": {
+            "69": "<:69:id>",
+            "420": "<:420:id>"
+        }
+    }
 }
