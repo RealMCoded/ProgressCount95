@@ -169,25 +169,30 @@ client.on('messageCreate', async message => {
 							if (thec in customEmojiList.other) {
 								message.react(customEmojiList.other[thec])
 							} else {
+								let hasReacted=0
 								for (const [key,value] of Object.entries(customEmojiList.milestones).reverse()) {
 									let remainder = thec % +key
 									if (remainder === 0) {
 										message.react(value)
-										break
+										hasReacted = 1 
+										break;
 									}
 								}
 								for (const [key,value] of Object.entries(customEmojiList.endings)) {
 									if (thec.toString().endsWith(key)) {
 										message.react(value)
-										break
+										hasReacted = 1 
+										break;
 									}
 								}
-								if (thec.toString().length > 2 && thec.toString() == thec.toString().split('').reverse().join('')) {
-									message.react(customEmojiList.palindrome)
-								} else if (highscore < thec) {
-									message.react(customEmojiList.highscore)
-								} else {
-									message.react(customEmojiList.normal)
+								if (!hasReacted) {
+									if (thec.toString().length > 2 && thec.toString() == thec.toString().split('').reverse().join('')) {
+										message.react(customEmojiList.palindrome)
+									} else if (highscore < thec) {
+										message.react(customEmojiList.highscore)
+									} else {
+										message.react(customEmojiList.normal)
+									}
 								}
 							}
  						} else {
