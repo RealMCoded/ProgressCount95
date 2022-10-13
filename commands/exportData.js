@@ -12,7 +12,7 @@ module.exports = {
 		}
 		interaction.client.isDumping = true
 		await interaction.reply("<a:typing:1017890251236200569> **The file is being generated and will be sent to you soon!**")
-		console.log(`${interaction.user.tag} requested leaderboard dump`)
+		console.log(`${interaction.user.tag} requested a leaderboard dump`)
 		let db = interaction.client.db
 		var data = new Array();
 
@@ -40,7 +40,8 @@ module.exports = {
 		}
 		interaction.client.isDumping = false
 		const dump = new MessageAttachment(Buffer.from(JSON.stringify(data)), "leaderboard.json")
-		interaction.followUp({ content: `${interaction.user} Here's your leaderboard export file!`, files: [dump], ephemeral: true })
-
+		interaction.followUp({ content: `Here is the exported leaderboard file!`, files: [dump], ephemeral: true })
+		interaction.editReply("✅ **Done!**")
+		return;
 	},
 };
