@@ -176,6 +176,12 @@ client.on('messageCreate', async message => {
 										break
 									}
 								}
+								for (const [key,value] of Object.entries(customEmojiList.endings)) {
+									if (thec.toString().endsWith(key)) {
+										message.react(value)
+										break
+									}
+								}
 							}
 
  						} else {
