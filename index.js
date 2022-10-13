@@ -167,9 +167,15 @@ client.on('messageCreate', async message => {
 					if (thec == String(numb+1)) {
 						if (useCustomEmoji) {
 							if (thec in customEmojiList.other) {
-								let reaction = customEmojiList.other[thec]
-								console.log(reaction)
-								message.react(reaction)
+								message.react(customEmojiList.other[thec])
+							} else {
+								for (const [key,value] of Object.entries(customEmojiList.milestones).reverse()) {
+									let remainder = thec % +key
+									if (remainder === 0) {
+										message.react(value)
+										break
+									}
+								}
 							}
 
  						} else {
@@ -199,7 +205,7 @@ client.on('messageCreate', async message => {
 							}, 3000);
 						if (message.content.length >= 1500){
 							//sure we can just ignore it but it's funnier when the bot replies lol
-							if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
+							if (useCustomEmoji) {message.react(customEmojiList.i)} else {message.react("⛔")}
 							message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
 						} else if (lecountr.saves >= 10) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
