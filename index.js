@@ -182,8 +182,14 @@ client.on('messageCreate', async message => {
 										break
 									}
 								}
+								if (thec.toString().length > 2 && thec.toString() == thec.toString().split('').reverse().join('')) {
+									message.react(customEmojiList.palindrome)
+								} else if (highscore < thec) {
+									message.react(customEmojiList.highscore)
+								} else {
+									message.react(customEmojiList.normal)
+								}
 							}
-
  						} else {
 							switch (thec){
 								case 100: message.react("💯"); break;
