@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageAttachment } = require('discord.js');
-const fs = require('node:fs');
 
 module.exports = {
 	data: new SlashCommandBuilder()
