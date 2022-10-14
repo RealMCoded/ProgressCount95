@@ -13,7 +13,7 @@ module.exports = {
         const embed = new MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('It has been 0 days since the last JavaScript framework was released.')
-            .setFooter('Updated daily!')
+            .setFooter({text:'Updated daily!'})
 
 		await interaction.editReply({embeds: [embed]});
     },
