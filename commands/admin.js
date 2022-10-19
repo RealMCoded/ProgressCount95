@@ -1,7 +1,7 @@
 const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Permissions, MessageEmbed } = require('discord.js');
-const { adminCommandPermission } = require("./../config.json")
+const { adminCommandPermission, countingCh } = require("./../config.json")
 
 module.exports = { 
     data: new SlashCommandBuilder()
@@ -141,7 +141,7 @@ module.exports = {
                 numbdb.update({ count: numb.toString() })
 
                 console.log(`${interaction.user.tag} changed the number to ${numb}`)
-
+                await interaction.client.channels.cache.get(countingCh).send(`⚠️ The count was changed to **${numb}**\nThe next number is **${numb+1}**`)
                 return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
             } else if (subcommand == "banlist") {
                 let banlist = '';
