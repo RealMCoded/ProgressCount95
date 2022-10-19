@@ -47,12 +47,12 @@ console.error = function(e) {
 	try {
 		if (redirectConsoleOutputToWebhook) {
 			let webhookClient = new WebhookClient({ url: logHook });
-			webhookClient.send(`\`\`\`\n[ERROR] ${e}\n\`\`\``);
+			webhookClient.send(`\`\`\`\n[ERROR] ${e.stack}\n\`\`\``);
 		}
 	} catch(e) {
-		process.stdout.write(`Unable to redirect output: ${e}\n`);
+		process.stdout.write(`Unable to redirect output: ${e.stack}\n`);
 	}
-	process.stdout.write(`[ERROR] ${e}\n`);
+	process.stdout.write(`[ERROR] ${e.stack}`);
 }
 
 const recentCountRuiners= new Set();
