@@ -207,6 +207,13 @@ module.exports = {
                 await guildDB.update({ guildSaves: saves })
                 console.log(`${interaction.user.tag} changed the guild's saves to ${saves}`)
                 return interaction.reply(`✅ **Changed the guild's saves to ${saves}.**`)
+            } else if (subcommand == "resetclaimcooldown") {
+                const db = interaction.client.db.Counters
+                const user = interaction.options.getUser("user")
+                const [userDB,] = await db.findOrCreate({ where: { userID: user.id }})
+                await userDB.update({ saveCooldown: 0 })
+                console.log(`${interaction.user.tag} reset save claim cooldown for ${user.tag}`)
+                return interaction.reply(`✅ **Reset save claim cooldown for ${user}.**`)
             }
         
         } else {
