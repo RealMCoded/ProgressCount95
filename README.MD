@@ -24,7 +24,15 @@ Alternatively, you can do it manually:
 
 - Copy `config.json.template`, rename it to `config.json` and replace the variables with your own.
 
-## Buidling
+Notes:
+* For the `freeSave`, `savesPerClaim`, `initialSaves` variables, multiply the desired value by 10. (The bot handles saves as integers internally)
+* Unicode emoji can be used instead of Discord custom emoji.
+* Permission flags can be found [here](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS).
+* The `ruinDelay` value is in miliseconds.
+* If you don't want free saves, set the `freeSave` variable to 0.
+* The `pushPrivateCommands` variable is specific to the Progressbar95 (+Plus!) server. It should be set to false.
+
+## Building
 
 The bot is built with Node.js.
 

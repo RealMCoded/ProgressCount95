@@ -49,8 +49,8 @@ module.exports = {
                         .setDescription(`Your save slots are full! (${row.get('saves')/10}/${row.get('slots')})`)
                     return interaction.reply({embeds: [embed]})
                 }
-                if ((row.get('saves')/+savesPerClaim)/10 > row.get('slots')) {
-                    let partialSave = (row.slots*10-row.get("saves"))/10
+                if ((row.get('saves')+savesPerClaim)> row.get('slots')*10) {
+                    let partialSave = (row.slots*10-row.get("saves"))
                     row.update({ saves: (row.saves+partialSave)})
                     let embed = new MessageEmbed()
                         .setTitle("Saves")
@@ -158,7 +158,7 @@ module.exports = {
                     .setTimestamp()
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBB.slots - userDBB.saves/10 < 1) {
-                let partialSave = userDBB.slots - userDBB.saves/10
+                let partialSave = (userDBB.slots*10 - userDBB.saves)
                 await userDBA.decrement("saves", { by: partialSave*10 })
                 await userDBB.increment("saves", { by: partialSave*10 })
                 userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})

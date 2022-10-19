@@ -1,7 +1,7 @@
 const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { Permissions, MessageEmbed, WebhookClient } = require('discord.js');
-const { logHook } = require("./../config.json")
+const { Permissions, MessageEmbed } = require('discord.js');
+const { adminCommandPermission } = require("./../config.json")
 
 module.exports = { 
     data: new SlashCommandBuilder()
@@ -89,13 +89,13 @@ module.exports = {
     async execute(interaction) {
         //const webhookClient = new WebhookClient({ url: logHook });
         const subcommand = interaction.options.getSubcommand()
-        if (interaction.member.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) { //I'm using MANAGE_ROLES because it's a permission that is only available to all staff members - even helpers. This can be bumped to MANAGE_MEMBERS later.
+        if (interaction.member.permissions.has(Permissions.FLAGS[adminCommandPermission])) {
             if (subcommand == "setban") {
                 let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 let ban = interaction.options.getBoolean("ban")
                 let reason = interaction.options.getString("reason")
-                if (mbr.id == "513487616964952084") {
-                    return interaction.reply("❌ **What did i ever do to you?**")
+                if (mbr.id ==  interaction.client.user.id) {
+                    return interaction.reply("❌ **What did I ever do to you?**")
                 } else {
                     const db = interaction.client.db.Counters;
                     const [row,] = await db.findOrCreate({ where: { userID: mbr.id } })
@@ -112,8 +112,8 @@ module.exports = {
             } else if (subcommand == "updateban") {
                 let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
                 let reason = interaction.options.getString("reason")
-                if (mbr.id == "513487616964952084") {
-                    return interaction.reply("❌ **What did i ever do to you?**")
+                if (mbr.id == interaction.client.user.id) {
+                    return interaction.reply("❌ **What did I ever do to you?**")
                 } else {
                     const db = interaction.client.db.Counters;
                     const row = await db.findOne({ where: { userID: mbr.id } })

@@ -1,9 +1,9 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor } = require('./config.json');
 const mathx = require('math-expression-evaluator');
-const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
 //database shit
 const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
@@ -110,10 +110,10 @@ client.on('interactionCreate', async interaction => {
 		serverSaves = guildDB.guildSaves
 	} catch (error) {
 		console.log(`${error}\n\n`)
-		if (interaction.user.id !== "284804878604435476") {
-            await interaction.reply({content: `if you are seeing this, <@284804878604435476> or <@808720142137294949> messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
+		if (!nerdstatExecutor.includes(interaction.user.id)) {
+            await interaction.reply({content: `if you are seeing this, one of the devs messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
         } else {
-            await interaction.reply({content: `wow good job you fucked something up (again)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
+            await interaction.reply({content: `wow good job you messed something up (again)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
         }
 	}
 });
@@ -210,20 +210,25 @@ client.on('messageCreate', async message => {
 						
 						if(lecountr.numbers % numbersRequiredForFreeSave == 0) { //every 50(by default) numbers
 							//lecountr.increment('saves', { by: freeSave.toFixed(1) })
-							if (lecountr.saves >= lecountr.slots) return;
-							lecountr.update({
-								saves: (lecountr.saves + freeSave).toFixed(1)
-							})
+							if (lecountr.saves >= lecountr.slots*10) return;
+							let freeSaveClamped
+							if ((lecountr.saves + freeSave) > lecountr.slots*10) {
+								freeSaveClamped = lecountr.slots*10 - lecountr.saves 
+								console.log(`clamped: ${freeSaveClamped}`)
+							} else freeSaveClamped = freeSave
+							lecountr.update({saves: (lecountr.saves + freeSaveClamped)})
+							lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
 						}
 					} else {
 						canAllCount = false;
 							setTimeout(() => {
 								canAllCount = true;
-							}, 3000);
+							}, ruinDelay);
 						if (message.content.length >= 1500){
-							//sure we can just ignore it but it's funnier when the bot replies lol
 							if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
-							message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
+							if (longMessageEasterEgg) {
+								message.reply(longMessageEasterEggContent)
+							}
 						} else if (lecountr.saves >= 10) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							const ten = 10
@@ -308,6 +313,8 @@ setInterval(async () => {
 		} else {
 			let user = await client.users.fetch(counters[i].get('userID'))
 			//check if we can dm the user
+			let savesClaimCommandID = await client.guilds.get(guildID).commands.fetch().first()
+			console.log(savesClaimCommandID)
 			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
 				.catch(err => {
 					console.warn(`Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
