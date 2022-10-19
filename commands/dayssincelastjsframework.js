@@ -6,6 +6,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('days-since-last-js-framework')
         .setDescription(`How many days since the last JavaScript framework?`),
+    private: true,
     async execute(interaction) {
         await interaction.deferReply();
 		await wait(2500);

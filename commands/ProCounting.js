@@ -5,6 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('procounting-eligibility')
         .setDescription(`procounting-eligibility`),
+    private: true,
     async execute(interaction) {
         //initial variable definition
         const db = interaction.client.db.Counters;

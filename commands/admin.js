@@ -85,6 +85,13 @@ module.exports = {
             .addNumberOption(option => option
                 .setName("saves")
                 .setDescription("the number of saves")
+                .setRequired(true)))
+        .addSubcommand(subcommand => subcommand
+            .setName("resetclaimcooldown")
+            .setDescription("Reset an user's save claim cooldown")
+            .addUserOption(option => option
+                .setName("user")
+                .setDescription("the user")
                 .setRequired(true))),
     async execute(interaction) {
         //const webhookClient = new WebhookClient({ url: logHook });
