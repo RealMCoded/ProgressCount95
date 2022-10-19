@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -75,7 +75,7 @@ client.once('ready', async () => {
 	await client.db.Counters.sync()
 	await client.db.Data.sync()
 
-	let guild = await client.channels.fetch(countingCh); guild = guild.guild
+	let guild = await client.guilds.fetch(guildId)
 	let [localDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }}) 
 	numb = localDB.count
 	highscore = localDB.highscore
@@ -312,14 +312,15 @@ setInterval(async () => {
 			continue
 		} else {
 			let user = await client.users.fetch(counters[i].get('userID'))
+			let guild = await client.guilds.cache.get(guildId)
+			let savesClaimCommandID = await guild.commands.fetch()
+			savesClaimCommandID = savesClaimCommandID.find(c => c.name == "saves").id
 			//check if we can dm the user
-			let savesClaimCommandID = await client.guilds.get(guildID).commands.fetch().first()
-			console.log(savesClaimCommandID)
-			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
+			user.send(`Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				.catch(err => {
 					console.warn(`Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
-					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
+					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				})
 		}
 	}
