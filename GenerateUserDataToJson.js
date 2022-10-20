@@ -1,12 +1,11 @@
 //const { generateDependencyReport } = require('@discordjs/voice');
 const { Sequelize } = require('sequelize');
-const { SQL_USER, SQL_PASS } = require('./config.json')
 const fs = require('node:fs')
 
 var data = new Array();
 
 //database shit
-const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
+const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,

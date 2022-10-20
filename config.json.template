@@ -5,8 +5,6 @@
     "guildId":"",
     "countingCh":"",
     "token":"",
-    "SQL_USER":"",
-    "SQL_PASS":"",
     "useCustomEmoji": false,
     "guildSaveSlots": 2,
     "userSavesPerGuildSave": 4,
