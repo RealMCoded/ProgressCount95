@@ -152,7 +152,7 @@ module.exports = {
                     .setDescription(`**${userB.tag}** already has maximum saves! (${userDBB.saves/10})`)
                     .setTimestamp()
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
-            } else if (userDBA.saves/10 < 1+transferTax) {
+            } else if (userDBA.saves < 10+transferTax) {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FF0000")
