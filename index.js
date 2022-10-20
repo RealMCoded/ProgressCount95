@@ -235,11 +235,11 @@ client.on('messageCreate', async message => {
 							lecountr.decrement('saves', { by: ten})
 							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
 							if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-1)/10}`)
-
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							serverSaves--
 							message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
+							if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 						} else {
 							if (useCustomEmoji) {message.react(customEmojiList.ruin)} else {message.react('❌')}
 							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
@@ -269,7 +269,7 @@ client.on('messageCreate', async message => {
 						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 						numb = 0
 						lastCounterId = "0"
-						if (logRuins) console.log(`${mesage.author.tag} ruined the count at ${numb}!`)
+						if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 					}
 					lecountr.increment('wrongNumbers');
 			}
