@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {MessageEmbed, Permissions} = require('discord.js');
-const { userSavesPerGuildSave, guildSaveSlots, saveClaimCooldown, savesPerClaim, clientId } = require('../config.json')
+const { userSavesPerGuildSave, guildSaveSlots, saveClaimCooldown, savesPerClaim, clientId, transferTax } = require('../config.json')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('saves')
@@ -122,6 +122,8 @@ module.exports = {
             const userB = await interaction.client.users.fetch(interaction.options.getUser("user"))
             let [userDBA,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userA.id}})
             let [userDBB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: userB.id}})
+            let taxMessage = ""
+            if (transferTax) taxMessage = ` (+${transferTax/10} tax)`
             if (userA == userB) {
             const replyEmbed = new MessageEmbed()
                 .setTitle("Saves")
@@ -150,7 +152,7 @@ module.exports = {
                     .setDescription(`**${userB.tag}** already has maximum saves! (${userDBB.saves/10})`)
                     .setTimestamp()
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
-            } else if (userDBA.saves/10 < 1) {
+            } else if (userDBA.saves/10 < 1+transferTax) {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FF0000")
@@ -159,25 +161,25 @@ module.exports = {
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBB.slots - userDBB.saves/10 < 1) {
                 let partialSave = (userDBB.slots*10 - userDBB.saves)
-                await userDBA.decrement("saves", { by: partialSave*10 })
-                await userDBB.increment("saves", { by: partialSave*10 })
+                await userDBA.decrement("saves", { by: (partialSave)+transferTax })
+                await userDBB.increment("saves", { by: partialSave})
                 userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})
                 userDBB = await interaction.client.db.Counters.findOne({ where: { userID: userB.id }})
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **${partialSave}** of your saves to **${userB.tag}**. You now have **${userDBA.saves/10}** saves.`)
+                    .setDescription(`You have transferred **${partialSave/10}**${taxMessage} of your saves to **${userB.tag}**. You now have **${userDBA.saves/10}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})    
             
             } else {
-                await userDBA.decrement("saves", { by: 10 })
+                await userDBA.decrement("saves", { by: 10+transferTax })
                 await userDBB.increment("saves", { by: 10 })
                 userDBA = await interaction.client.db.Counters.findOne({ where: { userID: userA.id }})
                 userDBB = await interaction.client.db.Counters.findOne({ where: { userID: userB.id }})
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **1** of your saves to **${userB.tag}**. You now have **${userDBA.saves/10}** saves.`)
+                    .setDescription(`You have transferred **1**${taxMessage} of your saves to **${userB.tag}**.$You now have **${userDBA.saves/10}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})
             }
         }        

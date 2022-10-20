@@ -25,7 +25,7 @@ Alternatively, you can do it manually:
 - Copy `config.json.template`, rename it to `config.json` and replace the variables with your own.
 
 Notes:
-* For the `freeSave`, `savesPerClaim`, `initialSaves` variables, multiply the desired value by 10. (The bot handles saves as integers internally)
+* For the `freeSave`, `savesPerClaim`, `initialSaves` and `transferTax` variables, multiply the desired value by 10. (The bot handles saves as integers internally)
 * Unicode emoji can be used instead of Discord custom emoji.
 * Permission flags can be found [here](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS).
 * The `ruinDelay` value is in miliseconds.

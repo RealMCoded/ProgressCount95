@@ -23,6 +23,9 @@
     "longMessageEasterEggContent": "Whatever you want the long message easter egg to say when triggered (1500+ character)",
     "ruinDelay": 3000,
     "pushPrivateCommands": false,
+    "logRuins": true,
+    "logSaveUses": false,
+    "transferTax": 0,
     "customEmojiList": {
         "normal": "<:normal:id>",
         "highscore": "<:highscore:id>",

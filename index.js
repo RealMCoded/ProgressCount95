@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId } = require('./config.json');
+const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 
@@ -234,6 +234,8 @@ client.on('messageCreate', async message => {
 							const ten = 10
 							lecountr.decrement('saves', { by: ten})
 							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+							if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-1)/10}`)
+
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							serverSaves--
@@ -243,6 +245,7 @@ client.on('messageCreate', async message => {
 							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
 							numb = 0
 							lastCounterId = "0"
+							if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 						}
 						lecountr.increment('wrongNumbers');
 					}
@@ -255,19 +258,22 @@ client.on('messageCreate', async message => {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						lecountr.decrement('saves', {by: 10})
 						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-10)/10}`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						serverSaves--
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
+						if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 					} else {
 						if (useCustomEmoji) {message.react(customEmojiList.ruin)} else {message.react('❌')}
 						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 						numb = 0
 						lastCounterId = "0"
+						if (logRuins) console.log(`${mesage.author.tag} ruined the count at ${numb}!`)
 					}
 					lecountr.increment('wrongNumbers');
 			}
-			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
+			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore, lastCounterId: lastCounterId })
 
 		}
 	}
