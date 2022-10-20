@@ -213,7 +213,7 @@ module.exports = {
                 const [userDB,] = await db.findOrCreate({ where: { userID: user.id }})
                 await userDB.update({ saveCooldown: 0 })
                 console.log(`${interaction.user.tag} reset save claim cooldown for ${user.tag}`)
-                return interaction.reply(`✅ **Reset save claim cooldown for ${user}.**`)
+                return interaction.reply(`✅ **Reset save claim cooldown for ${user.tag}.**`)
             }
         
         } else {
