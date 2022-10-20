@@ -43,15 +43,6 @@ const Counters = sequelize.define('counters', {
     }
 });
 
-const Ruins = sequelize.define('ruins', {
-  userID:{
-    type: Sequelize.STRING,
-  },
-  ruin: {
-    type: Sequelize.NUMBER,
-    defaultValue: 0
-  }
-});
 
 const Data = sequelize.define('data', {
   guildID:{
@@ -76,4 +67,4 @@ const Data = sequelize.define('data', {
   }
 });
 
-module.exports = { Counters, Ruins, Data }
+module.exports = { Counters, Data }
