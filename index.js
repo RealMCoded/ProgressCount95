@@ -245,6 +245,7 @@ client.on('messageCreate', async message => {
 							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
 							numb = 0
 							lastCounterId = "0"
+							guildDB.update({ lastCounterId: "0" })
 							if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 						}
 						lecountr.increment('wrongNumbers');
@@ -269,11 +270,12 @@ client.on('messageCreate', async message => {
 						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 						numb = 0
 						lastCounterId = "0"
+						guildDB.update({ lastCounterId: "0" })
 						if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 					}
 					lecountr.increment('wrongNumbers');
 			}
-			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore, lastCounterId: lastCounterId })
+			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
 
 		}
 	}
