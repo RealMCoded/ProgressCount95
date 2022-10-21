@@ -9,7 +9,7 @@ module.exports = {
     private: true,
     async execute(interaction) {
         await interaction.deferReply();
-		await wait(2500);
+		await wait(1500);
 
         const embed = new MessageEmbed()
 			.setColor('#0099ff')
