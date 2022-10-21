@@ -3,8 +3,8 @@ const { MessageEmbed } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('nerdstats')
-		.setDescription(`get node info`),
+		.setName('node-info')
+		.setDescription(`Get ram usage, uptime, and more.`),
 	async execute(interaction) {
 			//store node memory usage
 			const mem = `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100} MB`;
@@ -27,9 +27,9 @@ module.exports = {
 			//create new MessageEmbed
 			const embed = new MessageEmbed()
 				.setColor('#0099ff')
-				.setTitle('Node Stats')
+				.setTitle('Node Info')
 				.setDescription(
-					`**Memory Usage**: \`${mem}\`\n**Uptime**: \`${uptime}\`\n**Version**: \`${version}\`\n**Platform**: \`${platform}\`\n**Arch**: \`${arch}\`\n**CPU Speed**: \`${cpuSpeed}\`\n**CPU Usage**: \`${cpuUsage}\`\n**Ping**: \`${ping}\``
+					`**Memory Usage**: \`${mem}\`\n**Uptime**: \`${uptime/60}\`\n**Version**: \`${version}\`\n**Platform**: \`${platform}\`\n**Architecture**: \`${arch}\`\n**CPU Speed**: \`${cpuSpeed}\`\n**CPU Usage**: \`${cpuUsage}\`\n**Ping**: \`${ping}\``
 				);
 
 			await interaction.reply({embeds: [embed], ephemeral: true });
