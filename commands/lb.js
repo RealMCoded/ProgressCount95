@@ -5,7 +5,7 @@ const wait = require('node:timers/promises').setTimeout;
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('leaderboard')
-        .setDescription(`Get the leaderboard`)
+        .setDescription(`Get the counting leaderboard`)
         .addIntegerOption(option => 
             option.setRequired(false)
                 .setName("page")
@@ -41,7 +41,7 @@ module.exports = {
 			}
 
 			const embed = new MessageEmbed()
-                .setTitle(`Counting Leaderboard | Page ${page/10} (10 users/page)`)
+                .setTitle(`ProgressCount95 Leaderboard | Page ${page/10} (10 users/page)`)
 				.setColor("#0099ff")
 				.setDescription(`${le}`)
 				.setTimestamp()

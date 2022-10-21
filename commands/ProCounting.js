@@ -4,7 +4,7 @@ const { MessageEmbed } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('procounting-eligibility')
-        .setDescription(`procounting-eligibility`),
+        .setDescription(`Check if you can get access to the pro-counting channel!`),
     private: true,
     async execute(interaction) {
         //initial variable definition

@@ -7,10 +7,10 @@ module.exports = {
         .setDescription(`Some important links you might want to check out!`)
         .addSubcommand(subcommand => subcommand
             .setName("github")
-            .setDescription("check out the source code of this hot mess"))
+            .setDescription("Check out the source code for the bot!"))
         .addSubcommand(subcommand => subcommand
             .setName("trello")
-            .setDescription("look at the shit we need to still do"))
+            .setDescription("Future improvements coming to the bot!"))
         .addSubcommand(subcommand => subcommand
             .setName("privacy-policy")
             .setDescription("Read the bot's privacy policy.")),

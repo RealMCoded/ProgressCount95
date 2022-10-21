@@ -19,7 +19,7 @@ module.exports = {
             .setDescription("Transfer saves to other users")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("the user")
+                .setDescription("The user to transfer tge saves to.")
                 .setRequired(true))),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
@@ -39,7 +39,7 @@ module.exports = {
                     .setTitle("Saves")
                     .setColor("#FF9900")
                     .setTimestamp()
-                    .setDescription(`You've already claimed recently! Try again <t:${lastBeg+saveClaimCooldown}:R> (<t:${lastBeg+saveClaimCooldown}:f>)`)
+                    .setDescription(`You've already claimed a save recently! Try again <t:${lastBeg+saveClaimCooldown}:R> (<t:${lastBeg+saveClaimCooldown}:f>)`)
                 return interaction.reply({embeds: [embed]});
             } else {
                 if (row.get('saves')/10 >= row.get('slots')) {
@@ -56,7 +56,7 @@ module.exports = {
                         .setTitle("Saves")
                         .setColor("#0099ff")
                         .setTimestamp()
-                        .setDescription(`You have claimed **${partialSave/10}** saves!\nYou now have **${row.get('saves')/10}/${row.get('slots')}** saves!`)
+                        .setDescription(`You've claimed **${partialSave/10}** saves!\nYou now have **${row.get('saves')/10}/${row.get('slots')}** saves!`)
                     return interaction.reply({embeds: [embed]})
                 }
                 row.increment('saves', { by: savesPerClaim });
@@ -66,7 +66,7 @@ module.exports = {
                     .setTitle("Saves")
                     .setColor("#0099ff")
                     .setTimestamp()
-                    .setDescription(`You have claimed **${savesPerClaim/10}** saves!\nYou now have **${(row.get('saves')+savesPerClaim)/10}/${row.get('slots')}** saves!`)
+                    .setDescription(`You've claimed **${savesPerClaim/10}** saves!\nYou now have **${(row.get('saves')+savesPerClaim)/10}/${row.get('slots')}** saves!`)
                 return interaction.reply({embeds: [embed]});
             }
 
@@ -83,7 +83,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Saves`)
                     .setColor("#0099ff")
-                    .setDescription(`**You have not claimed any saves! Use \`/saves claim\`!**`)
+                    .setDescription(`**You have not claimed any saves! Use \`/saves claim\` to claim some!**`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             }
@@ -101,7 +101,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Save Donation")
                     .setColor("#FF0000")
-                    .setDescription(`You need at least 1 save to donate, but you have ${userDB.saves/10}!)`)
+                    .setDescription(`You need at least **1** save to donate, but you only have ${userDB.saves/10}!`)
                     .setTimestamp()
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else {
@@ -114,7 +114,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Save Donation")
                     .setColor("#00FF00")
-                    .setDescription(`You have donated **1** of your saves to the server, for a total of **${guildDB.guildSaves}/${guildSaveSlots}** server saves. You now have **${userDB.saves/10}** saves.`)
+                    .setDescription(`You have donated **1** of your saves to the server, for a total of **${guildDB.guildSaves}/${guildSaveSlots}** server saves.\nYou now have **${userDB.saves/10}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})
             }
         } else if (subcommand === 'transfer') {
@@ -179,7 +179,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **1**${taxMessage} of your saves to **${userB.tag}**.$You now have **${userDBA.saves/10}** saves.`)
+                    .setDescription(`You have transferred **1**${taxMessage} of your saves to **${userB.tag}**. You now have **${userDBA.saves/10}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})
             }
         }        

@@ -4,16 +4,16 @@ const { guildSaveSlots } = require('../config.json')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stats')
-        .setDescription(`Viewstats!`)
+        .setDescription(`View stats!`)
         .addSubcommand(subcommand =>
 			subcommand
 			.setName("server")
-			.setDescription("View server stats"))
+			.setDescription("View the servers counting stats"))
         .addSubcommand(subcommand =>
             subcommand
             .setName("user")
-            .setDescription("View a user's stats")
-            .addUserOption(option => option.setName('user').setDescription('the chosen one').setRequired(false))),
+            .setDescription("View a user's counting stats")
+            .addUserOption(option => option.setName('user').setDescription('The user to view the stats of').setRequired(false))),
     async execute(interaction) {
         const db = interaction.client.db;
         const subcommand = interaction.options.getSubcommand();
@@ -83,7 +83,7 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`***${person.tag} does not have any stats yet!***`)
+                    .setDescription(`***${person.tag} does not have any counting stats yet!***`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             }

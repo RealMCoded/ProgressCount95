@@ -4,7 +4,7 @@ const { customEmojiList, useCustomEmoji } = require("../config.json")
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('export-leaderboard')
-		.setDescription(`Exports leaderboard as a JSON file`),
+		.setDescription(`Export the leaderboard as a JSON file`),
 	async execute(interaction) {
 		if(interaction.client.isDumping) {
 			if (useCustomEmoji) {
@@ -47,7 +47,7 @@ module.exports = {
 		}
 		interaction.client.isDumping = false
 		const dump = new MessageAttachment(Buffer.from(JSON.stringify(data)), "leaderboard.json")
-		interaction.followUp({ content: `Here is the exported leaderboard file!`, files: [dump], ephemeral: true })
+		interaction.followUp({ content: `✅ **Here is the exported leaderboard file!**`, files: [dump], ephemeral: true })
 		interaction.editReply("✅ **Done!**")
 		return;
 	},
