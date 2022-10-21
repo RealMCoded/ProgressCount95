@@ -32,6 +32,8 @@ module.exports = {
 			}
 		}
 
+		var totalNumbers = 0
+
 		/*
 		data.push({
 			userID: "User ID",
@@ -53,10 +55,12 @@ module.exports = {
 				userID: list[i].userID,
 				numbers: list[i].numbers,
 			})
+
+			totalNumbers+= list[i].numbers
 		}
 
-		data.server_count = interaction.guild.id
-
+		data.server_count = totalNumbers
+		
 		interaction.client.isDumping = false
 		const dump = new MessageAttachment(Buffer.from(JSON.stringify(data, null, 2)), "leaderboard.json")
 		interaction.followUp({ content: `✅ **Here is the exported leaderboard file!**`, files: [dump], ephemeral: true })
