@@ -9,7 +9,7 @@ module.exports = {
 			//store node memory usage
 			const mem = `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100} MB`;
 			//store node uptime
-			const uptime = `${Math.round(process.uptime() * 100) / 100} seconds`;
+			const uptime = `${(Math.round(process.uptime() * 100) / 100)/60} seconds`;
 			//store node version
 			const version = `${process.version}`;
 			//store node platform
@@ -29,7 +29,7 @@ module.exports = {
 				.setColor('#0099ff')
 				.setTitle('Node Info')
 				.setDescription(
-					`**Memory Usage**: \`${mem}\`\n**Uptime**: \`${uptime/60}\`\n**Version**: \`${version}\`\n**Platform**: \`${platform}\`\n**Architecture**: \`${arch}\`\n**CPU Speed**: \`${cpuSpeed}\`\n**CPU Usage**: \`${cpuUsage}\`\n**Ping**: \`${ping}\``
+					`**Memory Usage**: \`${mem}\`\n**Uptime**: \`${uptime}\`\n**Version**: \`${version}\`\n**Platform**: \`${platform}\`\n**Architecture**: \`${arch}\`\n**CPU Speed**: \`${cpuSpeed}\`\n**CPU Usage**: \`${cpuUsage}\`\n**Ping**: \`${ping}\``
 				);
 
 			await interaction.reply({embeds: [embed], ephemeral: true });
