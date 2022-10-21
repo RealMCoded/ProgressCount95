@@ -2,9 +2,13 @@
 const { Sequelize } = require('sequelize');
 const fs = require('node:fs')
 
-var data = new Array();
+var data = {
+	leaderboard:[],
+	info:{
+		export_date: Date.now()
+	}
+}
 
-//database shit
 const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
 	dialect: 'sqlite',
@@ -28,7 +32,7 @@ async function gen() {
 	for(var i=0; i < list.length; i++){
 		//console.log(`GOT ${list[i].userID} (${i+1} / ${list.length})`)
 		//push the userID and numbers to the data array
-		data.push({
+		data.leaderboard.push({
 			userID: list[i].userID,
 			numbers: list[i].numbers,
 			wrongNumbers: list[i].wrongNumbers
