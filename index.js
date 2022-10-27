@@ -4,7 +4,7 @@ const { Client, Collection, Intents, WebhookClient } = require('discord.js');
 const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
-
+const { validateExpression } = require('./Util.js')
 //database shit
 const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
@@ -65,9 +65,6 @@ var highscore
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
-}
-function validateExpression(number) {
-	return /^[+\-/*^0-9().]+$/.test(number)
 }
 
 client.once('ready', async () => {
