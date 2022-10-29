@@ -16,9 +16,11 @@ module.exports = {
         let finalMessage = "❌ Ultra rare error!"
         let color = "#FF0000"
         let numbers = row.get("numbers")
+        let wrongNumb = row.get("wrongNumbers")
+        let score = numbers - wrongNumb
 
         //do epic checks
-        if (numbers > 499) hasScoreRequirement = "✅"
+        if (score > 499) hasScoreRequirement = "✅"
 
         let accuracy = (row.get("numbers") / (row.get("numbers") + row.get("wrongNumbers")) * 100).toFixed(3)
 
@@ -31,7 +33,7 @@ module.exports = {
                     .setTitle("#🏆pro-counting eligibility")
                     .setColor(color)
                     .setTimestamp()
-                    .setDescription(`**At least 500 score:** ${hasScoreRequirement} (You have ${numbers})\n**At least 98% accuracy:** ${hasAccuracyRequirement} (You have ${accuracy}%)\n**At least one <@510016054391734273> save:** ⚠️ (Unable to check)\n\n**${finalMessage}**\n\n*ℹ️ this command only checks your ProgressCount95 stats, if you meet all these requirements on <@510016054391734273>, you could be eligible!*`)
+                    .setDescription(`**At least 500 score:** ${hasScoreRequirement} (You have ${score}, ${numbers} correct - ${wrongNumb} incorrect)\n**At least 98% accuracy:** ${hasAccuracyRequirement} (You have ${accuracy}%)\n**At least one <@510016054391734273> save:** ⚠️ (Unable to check)\n\n**${finalMessage}**\n\n*ℹ️ this command only checks your ProgressCount95 stats, if you meet all these requirements on <@510016054391734273>, you could be eligible!*`)
         return interaction.reply({embeds: [embed]});
     },
 };
