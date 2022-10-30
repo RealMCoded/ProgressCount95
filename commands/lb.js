@@ -28,14 +28,13 @@ module.exports = {
 			list = list.slice((page-10), page);
 
 			for(var i=0; i < list.length; i++){
-
 				//TODO: Prevent rate limiting for this, causing it to hang. - mildly fixed
 				var gli = i
 				let user = await interaction.client.users.fetch(list[i].userID);
 				if(user){
-					var le = le + "**#" + ((i+1)+(page-10)).toString() + "** | `" + user.tag + "`: **" + list[i].numbers.toString() + "**\n"
+					var le = le + "**#" + ((i+1)+(page-10)).toString() + "** | `" + user.tag + "`: **" + list[i].numbers.toString() + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
 				} else {
-					var le = le + "**#" + (i+1).toString() + "** | `Unknown#" + list[i].userID + "`: **" + list[i].numbers.toString() + "**\n"
+					var le = le + "**#" + (i+1).toString() + "** | `Unknown#" + list[i].userID + "`: **" + list[i].numbers.toString() + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
 				}
 				await wait(250);
 			}
