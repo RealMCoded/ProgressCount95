@@ -17,7 +17,7 @@ const sequelize = new Sequelize('database', "", "", {
 	storage: 'database.sqlite',
 });
 
-const db = require('./modal/database.js')
+const db = require('../modal/database.js')
 
 gen()
 

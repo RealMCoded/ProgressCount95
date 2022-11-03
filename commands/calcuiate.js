@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const mathx = require('math-expression-evaluator');
-const { validateExpression }= require("../Util.js");
+const { validateExpression }= require("../utils/validateExpression.js");
 
 module.exports = { 
     data: new SlashCommandBuilder()

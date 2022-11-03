@@ -4,7 +4,7 @@ const { Client, Collection, Intents, WebhookClient } = require('discord.js');
 const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
-const { validateExpression } = require('./Util.js')
+const { validateExpression } = require('./utils/validateExpression.js')
 //database shit
 const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
