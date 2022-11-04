@@ -3,3 +3,4 @@ config.json
 database.sqlite
 *.old
 GeneratedUserData.json
+package-lock.json
