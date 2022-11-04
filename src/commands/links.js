@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const {MessageEmbed} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,15 +13,18 @@ module.exports = {
         .addSubcommand(subcommand => subcommand
             .setName("privacy-policy")
             .setDescription("Read the bot's privacy policy.")),
-    async execute(interaction) {
+    execute(interaction) {
         const subcommand = interaction.options.getSubcommand();
-
-        if (subcommand === "github") {
-            interaction.reply({ content: "Here's the Github: https://github.com/RealMCoded/ProgressCount95", ephemeral: true });
-        } else if (subcommand === "trello") {
-            interaction.reply({ content: "Here's the Trello: https://trello.com/b/WMZYOuTd/progresscount95", ephemeral: true });
-        }else if (subcommand === "privacy-policy") {
-            interaction.reply({ content: "Here's the Privacy Policy: https://github.com/RealMCoded/ProgressCount95/blob/master/PRIVACY-POLICY.MD", ephemeral: true });
+        switch (subcommand) {
+            case "github":
+                interaction.reply({ content: "Here's the Github: https://github.com/RealMCoded/ProgressCount95", ephemeral: true });
+                break;
+            case "trello":
+                interaction.reply({ content: "Here's the Trello: https://trello.com/b/WMZYOuTd/progresscount95", ephemeral: true });
+                break;
+            case "privacy-policy":
+                interaction.reply({ content: "Here's the Privacy Policy: https://github.com/RealMCoded/ProgressCount95/blob/master/PRIVACY-POLICY.MD", ephemeral: true });
+                break;
         }
-    },
+    }
 };

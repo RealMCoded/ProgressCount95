@@ -8,25 +8,20 @@ module.exports = {
 		.setName('export-leaderboard')
 		.setDescription(`Export the leaderboard as a JSON file`),
 	async execute(interaction) {
-		if(interaction.client.isDumping) {
-			if (useCustomEmoji) {
-				return interaction.reply(`${customEmojiList.warn} **The bot is currently generating a leaderboard file, please wait until this is finished before requesting.**`)
-			} else {
-				return interaction.reply("⚠️ **The bot is currently generating a leaderboard file, please wait until this is finished before requesting.**`")
-			}
-		}
-		interaction.client.isDumping = true
-		if (useCustomEmoji) {
-			await interaction.reply(`${customEmojiList.typing} **The file is being generated and will be sent to you soon!**`)
-		} else {
-			await interaction.reply("••• **The file is being generated and will be sent to you soon!**")
-		}
+		const db = interaction.client.db
+
+		await interaction.reply(useCustomEmoji ? `${customEmojiList.typing} **The file is being generated and will be sent to you soon!**` : "••• **The file is being generated and will be sent to you soon!**")
+	
 		logger.log(`${interaction.user.tag} requested a leaderboard dump`)
-		let db = interaction.client.db
-		//var data = new Array();
-		var data = {
-			leaderboard:[],
-			server_count: undefined,
+	
+		const list = await db.Counters.findAll({
+			attributes: ['numbers', 'userID']
+		})
+		const sortedList = list.sort((a, b) => b.numbers - a.numbers)
+	
+		const data = {
+			leaderboard:sortedList,
+			server_count: sortedList.reduce((a, b) => a + b.numbers, 0),
 			info:{
 				export_date: Date.now(),
 				guildID: interaction.guild.id,
@@ -34,39 +29,8 @@ module.exports = {
 			}
 		}
 
-		var totalNumbers = 0
-
-		/*
-		data.push({
-			userID: "User ID",
-			numbers: "Numbers counted"
-		})
-		*/
-
-		var list = await db.Counters.findAll({
-			attributes: ['numbers', 'userID', 'wrongNumbers']
-		})
-	
-	
-		list = list.sort((a, b) => b.numbers - a.numbers)
-	
-		for(var i=0; i < list.length; i++){
-			//logger.log(`GOT ${list[i].userID} (${i+1} / ${list.length})`)
-			//push the userID and numbers to the data array
-			data.leaderboard.push({
-				userID: list[i].userID,
-				numbers: list[i].numbers,
-			})
-
-			totalNumbers+= list[i].numbers
-		}
-
-		data.server_count = totalNumbers
-		
-		interaction.client.isDumping = false
 		const dump = new MessageAttachment(Buffer.from(JSON.stringify(data, null, 2)), "leaderboard.json")
 		interaction.followUp({ content: `✅ **Here is the exported leaderboard file!**`, files: [dump], ephemeral: true })
 		interaction.editReply("✅ **Done!**")
-		return;
 	},
 };

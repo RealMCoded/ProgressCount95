@@ -5,13 +5,11 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('uptime')
 		.setDescription(`get how long the bot has been online`),
-	async execute(interaction) {
-		const uptime = `${(Math.round(process.uptime() * 100) / 100)/60} minutes`;
-
+	execute(interaction) {
 		const embed = new MessageEmbed()
 			.setColor('#0099ff')
-			.setTitle(`The bot has been online for ${uptime}.`)
+			.setTitle(`The bot has been online for ${(Math.round(process.uptime() * 100) / 100) / 60} minutes.`)
 
-		await interaction.reply({embeds: [embed]});
+		interaction.reply({ embeds: [embed] });
 	},
 };

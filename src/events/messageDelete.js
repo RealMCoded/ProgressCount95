@@ -10,7 +10,7 @@ module.exports.eventLogic = async (message, client) => {
 	if (lecountr.banned) return;
 
 	// return if number sent is not a number
-	if (isNaN(message.content.split(' ')[0])) return; 
+	if (isNaN(message.content.split(' ')[0])) return;
 
 	// get current number and send deleted message
 	const guildDB = await client.db.Data.findOne({ where: { guildID: interaction.guild.id } }) //i can run this instead of findOrCreate because it already exists by now lol

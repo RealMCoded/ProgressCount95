@@ -1,4 +1,3 @@
-const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Permissions, MessageEmbed } = require('discord.js');
 const { adminCommandPermission, countingCh } = require("../config.json")
@@ -95,127 +94,125 @@ module.exports = {
                 .setDescription("The user")
                 .setRequired(true))),
     async execute(interaction) {
-        //const webhookClient = new WebhookClient({ url: logHook });
-        const subcommand = interaction.options.getSubcommand()
-        if (interaction.member.permissions.has(Permissions.FLAGS[adminCommandPermission])) {
-            if (subcommand == "setban") {
-                let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
-                let ban = interaction.options.getBoolean("ban")
-                let reason = interaction.options.getString("reason")
-                if (mbr.id ==  interaction.client.user.id) {
-                    return interaction.reply("❌ **What did I ever do to you?**")
-                } else {
-                    const db = interaction.client.db.Counters;
-                    const [row,] = await db.findOrCreate({ where: { userID: mbr.id } })
-                    if (ban) {
-                        await row.update({ banReason: reason, banned: true })
-                        interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
-                        logger.log(`${interaction.user.tag} has banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".`);
-                    } else {
-                        await row.update({ banReason: null, banned: false })
-                        interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
-                        logger.log(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
-                    }
-                }
-            } else if (subcommand == "updateban") {
-                let mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
-                let reason = interaction.options.getString("reason")
-                if (mbr.id == interaction.client.user.id) {
-                    return interaction.reply("❌ **What did I ever do to you?**")
-                } else {
-                    const db = interaction.client.db.Counters;
-                    const row = await db.findOne({ where: { userID: mbr.id } })
-                    if (row) {
-                        await row.update({ banReason: reason })
-                        interaction.reply(`✅ **Updated ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".**`)
-                        logger.log(`${interaction.user.tag} has updated the ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".`);
-                    } else {
-                        return interaction.reply({ content: `❌ **This person is not banned from counting!**`, ephemeral: true });
-                    }
-                }
-            } else if (subcommand == "setcount") {
-                var numb = interaction.options.getInteger("count")
+        if (!interaction.member.permissions.has(Permissions.FLAGS[adminCommandPermission])) return interaction.reply({ content: `❌ **You must have the \`${adminCommandPermission}\` permission to run this command!**`, ephemeral: true });
 
-                //interaction.numb = numb //it no work
+        switch(interaction.options.getSubcommand()){
+            case "setban":
+                const setbanMbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
+                if (mbr.id ==  interaction.client.user.id) return interaction.reply("❌ **What did I ever do to you?**")
 
-                var numbdb = await interaction.client.db.Data.findOne()
-                numbdb.update({ count: numb.toString() })
+                const ban = interaction.options.getBoolean("ban")
+                const setbanReason = interaction.options.getString("reason")
 
-                logger.log(`${interaction.user.tag} changed the number to ${numb}`)
-                await interaction.client.channels.cache.get(countingCh).send(`⚠️ The count was changed to **${numb}**! The next number is **${numb+1}**`)
-                return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
-            } else if (subcommand == "banlist") {
+                const setbanRow = await interaction.client.db.Counters.findOrCreate({ where: { userID: setbanMbr.id } })
+                await setbanRow.row.update(ban ? { banReason: setbanReason, banned: true } : { banReason: null, banned: false })
+
+                interaction.reply(ban ? `✅ **Banned ${setbanMbr.username}#${setbanMbr.discriminator} from counting for "${interaction.options.getString("reason")}".**` : `✅ **Unbanned ${setbanMbr.username}#${setbanMbr.discriminator} from counting.**`)
+                logger.log(ban ? `${interaction.user.tag} has banned ${setbanMbr.username}#${setbanMbr.discriminator} from counting for "${interaction.options.getString("reason")}".`  : `${interaction.user.tag} has unbanned ${setbanMbr.username}#${setbanMbr.discriminator} from counting.`);
+            break;
+            case "updateban":
+                const updatebanMbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
+                if (updatebanMbr.id == interaction.client.user.id) return interaction.reply("❌ **What did I ever do to you?**")
+
+                const updatebanRow = await interaction.client.db.Counters.findOne({ where: { userID: updatebanMbr.id } })
+                if (!updatebanRow) return interaction.reply({ content: `❌ **This person is not banned from counting!**`, ephemeral: true });
+                                
+                const updatebanReason = interaction.options.getString("reason")
+                await updatebanRow.update({ banReason: updatebanReason })
+
+                interaction.reply(`✅ **Updated ban reason for ${updatebanMbr.username}#${updatebanMbr.discriminator} to "${interaction.options.getString("reason")}".**`)
+                logger.log(`${interaction.user.tag} has updated the ban reason for ${updatebanMbr.username}#${updatebanMbr.discriminator} to "${interaction.options.getString("reason")}".`);
+            break;
+            case "updateban":
+                const mbr = await interaction.client.users.fetch(interaction.options.getUser("user"))
+                if (mbr.id == interaction.client.user.id) return interaction.reply("❌ **What did I ever do to you?**")
+
+                const row = await interaction.client.db.Counters.findOne({ where: { userID: mbr.id } })
+                if (!row) return interaction.reply({ content: `❌ **This person is not banned from counting!**`, ephemeral: true });
+
+                const reason = interaction.options.getString("reason")
+                await row.update({ banReason: reason })
+
+                interaction.reply(`✅ **Updated ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".**`)
+                logger.log(`${interaction.user.tag} has updated the ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".`);
+            break;
+            case "banlist":
                 let banlist = '';
-                const db = interaction.client.db.Counters;
 
-                let bans = await db.findAll({ where: { banned: true }});
-                if (bans.length == 0) {
-
-                } else {
-                    for (let i = 0; i < bans.length; i++) {
-                        //TODO: Fix caching.
-                        let user = await interaction.client.users.fetch(bans[i].userID);
-                        if (user) {
-                            banlist += `**${user.username}#${user.discriminator}** - ${bans[i].banReason}\n`
-                        } else {
-                            banlist += `**<@${bans[i].userID}>**  - ${bans[i].banReason}\n`
-                        }
-                    }
-                }      
-                if (banlist == '') {
-                    banlist = '**No one is banned from counting (yet).**'
-                }
-                //create message embed
+                const bans = await interaction.client.db.Counters.findAll({ where: { banned: true }});
+                const bansOutput = bans.map(bannedUser => {
+                    const user = interaction.guild.members.cache.get(bannedUser.userID)
+                    return user ? `**${user.username}#${user.discriminator}** - ${bans[i].banReason}` : `**<@${bans[i].userID}>**  - ${bans[i].banReason}\n`
+                })
+   
                 const embed = new MessageEmbed()
                     .setTitle('List of banned members from counting')
-                    .setDescription(banlist)
+                    .setDescription(bans.length == 0 ? '**No one is banned from counting (yet).**' : bansOutput.join("\n"))
                     .setColor('#ff0000')
-                return interaction.reply({embeds: [embed], ephemeral: true});
-            } else if (subcommand == "setuserscore") {
-                const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
+                interaction.reply({embeds: [embed], ephemeral: true});
+            break;
+            case "setcount":
+                const numb = interaction.options.getInteger("count")
+
+                const numbdb = await interaction.client.db.Data.findOne()
+                numbdb.update({ count: numb.toString() })
+    
+                logger.log(`${interaction.user.tag} changed the number to ${numb}`)
+                await interaction.client.channels.cache.get(countingCh).send(`⚠️ The count was changed to **${numb}**! The next number is **${numb+1}**`)
+                interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
+            break;
+            case "setuserscore":
                 const correctNumbers = interaction.options.getInteger("correct")
                 const incorrectNumbers = interaction.options.getInteger("incorrect")
-                const db = interaction.client.db.Counters
-                const [row,] = await db.findOrCreate({ where: { userID: user.id } })
-                row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
-                logger.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
-                return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
-            } else if (subcommand == "setusersaves") {
-                const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
+
+                const setuserscoreUser = await interaction.client.users.fetch(interaction.options.getUser("user"))
+
+                const setuserscoreRow = await interaction.client.db.Counters.findOrCreate({ where: { userID: setuserscoreUser.id } })
+                setuserscoreRow.row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
+
+                logger.log(`${interaction.user.tag} changed the score for ${setuserscoreUser.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
+                interaction.reply({ content: `✅ **Changed the score for ${setuserscoreUser.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
+            break;
+            case "setusersaves":
                 const saves = interaction.options.getNumber("saves")
-                const db = interaction.client.db.Counters
-                let [userSaves,] = await db.findOrCreate({ where: { userID: user.id } });
                 const slots = interaction.options.getInteger("slots") || userSaves.slots
+
+                const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
+
+                const [userSaves,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: user.id } });
                 if (saves > slots) { return interaction.reply({ content: "❌ **You cannot set saves higher than slots!**", ephemeral: true })}
+
                 userSaves.update({ saves: saves*10, slots: slots })
+
                 logger.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
-                return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
-            } else if (subcommand == "sethighscore") {
+                interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
+            break;
+            case "sethighscore":
                 const highscore = interaction.options.getInteger("highscore")
-                const db = interaction.client.db.Data
-                const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
+
+                const guildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
                 await guildDB.update({ highscore: highscore })
+
                 logger.log(`${interaction.user.tag} changed the highscore to ${highscore}`)
-                return interaction.reply(`✅ **Changed the highscore to ${highscore}.**`)
-            } else if (subcommand == "setguildsaves") {
-                const db = interaction.client.db.Data
-                const saves = interaction.options.getNumber("saves")
-                const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
-                await guildDB.update({ guildSaves: saves })
-                logger.log(`${interaction.user.tag} changed the guild's saves to ${saves}`)
-                return interaction.reply(`✅ **Changed the guild's saves to ${saves}.**`)
-            } else if (subcommand == "resetclaimcooldown") {
-                const db = interaction.client.db.Counters
-                const user = interaction.options.getUser("user")
-                const [userDB,] = await db.findOrCreate({ where: { userID: user.id }})
+                interaction.reply(`✅ **Changed the highscore to ${highscore}.**`)
+            break;
+            case "setguildsaves":
+                const setguildsavesSaves = interaction.options.getNumber("saves")
+
+                const setguildsavesGuildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id } })
+                await setguildsavesGuildDB.update({ guildSaves: setguildsavesSaves })
+
+                logger.log(`${interaction.user.tag} changed the guild's saves to ${setguildsavesSaves}`)
+            break;
+            case "resetclaimcooldown":
+                const resetclaimcooldownUser = interaction.options.getUser("user")
+
+                const [userDB,] = await interaction.client.db.Counters.findOrCreate({ where: { userID: resetclaimcooldownUser.id }})
                 await userDB.update({ saveCooldown: 0 })
-                logger.log(`${interaction.user.tag} reset save claim cooldown for ${user.tag}`)
-                return interaction.reply(`✅ **Reset save claim cooldown for ${user.tag}.**`)
-            }
-        
-        } else {
-            return interaction.reply({ content: `❌ **You must have the \`${adminCommandPermission}\` permission to run this command!**`, ephemeral: true });
+
+                logger.log(`${interaction.user.tag} reset save claim cooldown for ${resetclaimcooldownUser.tag}`)
+                interaction.reply(`✅ **Reset save claim cooldown for ${resetclaimcooldownUser.tag}.**`)
+            break;
         }
     }
-
 }

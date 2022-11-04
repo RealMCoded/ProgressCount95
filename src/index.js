@@ -22,7 +22,7 @@ client.commands = new Collection(
 // load events
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 eventFiles.map(event => {
-	const {eventLogic, recurring} = require(`./events/${event}`);
+	const { eventLogic, recurring } = require(`./events/${event}`);
 	client[recurring ? "on" : "once"]('interactionCreate', eventLogic.bind(null, client));
 })
 
@@ -37,7 +37,7 @@ setInterval(async () => {
 	//loop through all counters
 	counters.map(async counter => {
 		const lastBeg = parseInt(counter.get('saveCooldown'))
-		if (n === (lastBeg + saveClaimCooldown)){
+		if (n === (lastBeg + saveClaimCooldown)) {
 			let user = await client.users.fetch(counter.get('userID'))
 			let guild = await client.guilds.cache.get(guildId)
 			let savesClaimCommandID = await guild.commands.fetch()

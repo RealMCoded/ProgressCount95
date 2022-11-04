@@ -7,13 +7,13 @@ module.exports.eventLogic = async (interaction, client) => {
 	const command = client.commands.get(interaction.commandName);
 
 	try {
-		await command.execute(interaction);
+		command.execute(interaction);
 	} catch (error) {
 		logger.log(`${error}\n\n`)
 		if (!nerdstatExecutor.includes(interaction.user.id)) {
-			await interaction.reply({ content: `if you are seeing this, one of the devs messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true })
+			interaction.reply({ content: `if you are seeing this, one of the devs messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true })
 		} else {
-			await interaction.reply({ content: `Something bad happened! \n\n\`\`\`${error}\`\`\``, ephemeral: true })
+			interaction.reply({ content: `Something bad happened! \n\n\`\`\`${error}\`\`\``, ephemeral: true })
 		}
 	}
 }

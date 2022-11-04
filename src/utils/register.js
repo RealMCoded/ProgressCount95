@@ -24,7 +24,6 @@ const rest = new REST({ version: '9' }).setToken(token);
 			Routes.applicationGuildCommands(clientId, guildId),
 			{ body: commands },
 		);
-		//console.error(commands);
 		console.log(`✅ Successfully refreshed ${commands.length} commands!`);
 	} catch (error) {
 		console.error(error);
