@@ -10,11 +10,6 @@ const logger = require("./utils/logger.js")
 const client = new Client({ ws: { properties: { browser: "Discord iOS" } }, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 client.db = require('./modal/database.js')
 
-// re define console functions
-console.log = logger.log;
-console.warn = logger.warn;
-console.error = logger.error;
-
 // import commands
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 client.commands = new Collection(
@@ -50,7 +45,7 @@ setInterval(async () => {
 			//check if we can dm the user
 			user.send(`Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				.catch(err => {
-					console.warn(`Unable to DM user with ID ${counter.get('userID')}, notifying them in counting channel!`)
+					logger.warn(`Unable to DM user with ID ${counter.get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
 					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				})
@@ -59,11 +54,11 @@ setInterval(async () => {
 }, 1000);
 
 process.on('uncaughtException', (error, origin) => {
-	console.log(`❌ Uncaught exception\n-----\n${error.stack}\n-----\nException origin\n${origin}`)
+	logger.log(`❌ Uncaught exception\n-----\n${error.stack}\n-----\nException origin\n${origin}`)
 })
 
 process.on('unhandledRejection', (reason, promise) => {
-	console.log(`❌ Unhandled Rejection\n-----\n${promise}\n-----\nReason\n${reason}`)
+	logger.log(`❌ Unhandled Rejection\n-----\n${promise}\n-----\nReason\n${reason}`)
 })
 
 client.login(token);

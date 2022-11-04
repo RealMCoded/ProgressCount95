@@ -2,6 +2,7 @@ const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Permissions, MessageEmbed } = require('discord.js');
 const { adminCommandPermission, countingCh } = require("./../config.json")
+const logger = require("./utils/logger.js")
 
 module.exports = { 
     data: new SlashCommandBuilder()
@@ -109,11 +110,11 @@ module.exports = {
                     if (ban) {
                         await row.update({ banReason: reason, banned: true })
                         interaction.reply(`✅ **Banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".**`)
-                        console.log(`${interaction.user.tag} has banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".`);
+                        logger.log(`${interaction.user.tag} has banned ${mbr.username}#${mbr.discriminator} from counting for "${interaction.options.getString("reason")}".`);
                     } else {
                         await row.update({ banReason: null, banned: false })
                         interaction.reply(`✅ **Unbanned ${mbr.username}#${mbr.discriminator} from counting.**`)
-                        console.log(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
+                        logger.log(`${interaction.user.tag} has unbanned ${mbr.username}#${mbr.discriminator} from counting.`);
                     }
                 }
             } else if (subcommand == "updateban") {
@@ -127,7 +128,7 @@ module.exports = {
                     if (row) {
                         await row.update({ banReason: reason })
                         interaction.reply(`✅ **Updated ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".**`)
-                        console.log(`${interaction.user.tag} has updated the ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".`);
+                        logger.log(`${interaction.user.tag} has updated the ban reason for ${mbr.username}#${mbr.discriminator} to "${interaction.options.getString("reason")}".`);
                     } else {
                         return interaction.reply({ content: `❌ **This person is not banned from counting!**`, ephemeral: true });
                     }
@@ -140,7 +141,7 @@ module.exports = {
                 var numbdb = await interaction.client.db.Data.findOne()
                 numbdb.update({ count: numb.toString() })
 
-                console.log(`${interaction.user.tag} changed the number to ${numb}`)
+                logger.log(`${interaction.user.tag} changed the number to ${numb}`)
                 await interaction.client.channels.cache.get(countingCh).send(`⚠️ The count was changed to **${numb}**! The next number is **${numb+1}**`)
                 return interaction.reply({ content: `✅ **Set the count to ${numb}!**`, ephemeral: false });
             } else if (subcommand == "banlist") {
@@ -177,7 +178,7 @@ module.exports = {
                 const db = interaction.client.db.Counters
                 const [row,] = await db.findOrCreate({ where: { userID: user.id } })
                 row.update({ wrongNumbers: incorrectNumbers, numbers: correctNumbers })
-                console.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
+                logger.log(`${interaction.user.tag} changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect`)
                 return interaction.reply({ content: `✅ **Changed the score for ${user.tag} to ${correctNumbers} correct, ${incorrectNumbers} incorrect.**`, ephemeral: true })
             } else if (subcommand == "setusersaves") {
                 const user = await interaction.client.users.fetch(interaction.options.getUser("user"))
@@ -187,28 +188,28 @@ module.exports = {
                 const slots = interaction.options.getInteger("slots") || userSaves.slots
                 if (saves > slots) { return interaction.reply({ content: "❌ **You cannot set saves higher than slots!**", ephemeral: true })}
                 userSaves.update({ saves: saves*10, slots: slots })
-                console.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
+                logger.log(`${interaction.user.tag} changed saves for ${user.tag} to ${saves}/${slots}`)
                 return interaction.reply(`✅ **Changed saves for ${user.tag} to ${saves}/${slots}.**`)
             } else if (subcommand == "sethighscore") {
                 const highscore = interaction.options.getInteger("highscore")
                 const db = interaction.client.db.Data
                 const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
                 await guildDB.update({ highscore: highscore })
-                console.log(`${interaction.user.tag} changed the highscore to ${highscore}`)
+                logger.log(`${interaction.user.tag} changed the highscore to ${highscore}`)
                 return interaction.reply(`✅ **Changed the highscore to ${highscore}.**`)
             } else if (subcommand == "setguildsaves") {
                 const db = interaction.client.db.Data
                 const saves = interaction.options.getNumber("saves")
                 const guildDB = await db.findOne({ where: { guildID: interaction.guild.id } })
                 await guildDB.update({ guildSaves: saves })
-                console.log(`${interaction.user.tag} changed the guild's saves to ${saves}`)
+                logger.log(`${interaction.user.tag} changed the guild's saves to ${saves}`)
                 return interaction.reply(`✅ **Changed the guild's saves to ${saves}.**`)
             } else if (subcommand == "resetclaimcooldown") {
                 const db = interaction.client.db.Counters
                 const user = interaction.options.getUser("user")
                 const [userDB,] = await db.findOrCreate({ where: { userID: user.id }})
                 await userDB.update({ saveCooldown: 0 })
-                console.log(`${interaction.user.tag} reset save claim cooldown for ${user.tag}`)
+                logger.log(`${interaction.user.tag} reset save claim cooldown for ${user.tag}`)
                 return interaction.reply(`✅ **Reset save claim cooldown for ${user.tag}.**`)
             }
         

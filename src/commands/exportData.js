@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageAttachment } = require('discord.js');
 const { customEmojiList, useCustomEmoji } = require("../config.json")
+const logger = require("./utils/logger.js")
+
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('export-leaderboard')
@@ -19,7 +21,7 @@ module.exports = {
 		} else {
 			await interaction.reply("••• **The file is being generated and will be sent to you soon!**")
 		}
-		console.log(`${interaction.user.tag} requested a leaderboard dump`)
+		logger.log(`${interaction.user.tag} requested a leaderboard dump`)
 		let db = interaction.client.db
 		//var data = new Array();
 		var data = {
@@ -49,7 +51,7 @@ module.exports = {
 		list = list.sort((a, b) => b.numbers - a.numbers)
 	
 		for(var i=0; i < list.length; i++){
-			//console.log(`GOT ${list[i].userID} (${i+1} / ${list.length})`)
+			//logger.log(`GOT ${list[i].userID} (${i+1} / ${list.length})`)
 			//push the userID and numbers to the data array
 			data.leaderboard.push({
 				userID: list[i].userID,

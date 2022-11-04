@@ -7,12 +7,6 @@ const { validateExpression } = require('./utils/validateExpression.js')
 const rules = require("./messages/rules.js")
 const logger = require("./utils/logger.js")
 
-// re define console functions
-console.log = logger.log;
-console.warn = logger.warn;
-console.error = logger.error;
-
-
 var canAllCount = true
 
 
@@ -21,19 +15,19 @@ function useSave(lecountr, message, serverSaves, numb, thec, lastCounterId){
 		if (useCustomEmoji) { message.react(customEmojiList.warn) } else { message.react('⚠️') }
 		lecountr.decrement('saves', { by: 10 })
 		message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves - 10) / 10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
-		if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves - 10) / 10}`)
+		if (logSaveUses) logger.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves - 10) / 10}`)
 	} else if (serverSaves >= 1) {
 		if (useCustomEmoji) { message.react(customEmojiList.warn) } else { message.react('⚠️') }
 		serverSaves--
 		message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb + 1}** | **You cannot count more than one time in a row**!`)
-		if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
+		if (logSaveUses) logger.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 	} else {
 		if (useCustomEmoji) { message.react(customEmojiList.ruin) } else { message.react('❌') }
 		message.reply(`${message.author} ruined the count!\nThe next number was **${numb + 1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 		numb = 0
 		lastCounterId = "0"
 		guildDB.update({ lastCounterID: "0" })
-		if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
+		if (logRuins) logger.log(`${message.author.tag} ruined the count at ${numb}!`)
 	}
 }
 
@@ -119,7 +113,7 @@ module.exports.eventLogic = async (message, client) => {
 				let freeSaveClamped
 				if ((lecountr.saves + freeSave) > lecountr.slots * 10) {
 					freeSaveClamped = lecountr.slots * 10 - lecountr.saves
-					console.log(`clamped: ${freeSaveClamped}`)
+					logger.log(`clamped: ${freeSaveClamped}`)
 				} else freeSaveClamped = freeSave
 				lecountr.update({ saves: (lecountr.saves + freeSaveClamped) })
 				lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });

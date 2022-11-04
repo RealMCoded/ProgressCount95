@@ -2,12 +2,6 @@
 const { useCustomEmoji, guildId } = require('./config.json');
 const logger = require("./utils/logger.js")
 
-// re define console functions
-console.log = logger.log;
-console.warn = logger.warn;
-console.error = logger.error;
-
-
 var lastCounterId
 var serverSaves
 var guildDB
@@ -24,8 +18,8 @@ module.exports.eventLogic = async (message, client) => {
 	highscore = localDB.highscore
 	serverSaves = localDB.guildSaves
 	lastCounterId = localDB.lastCounterID
-	console.log(`✅ Signed in as ${client.user.tag}! \n`);
-	if (useCustomEmoji) { console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.") } else { console.log("Custom Emoji support is off! No custom emojis will be used.") }
+	logger.log(`✅ Signed in as ${client.user.tag}! \n`);
+	if (useCustomEmoji) { logger.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.") } else { logger.log("Custom Emoji support is off! No custom emojis will be used.") }
 	client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
 	guildDB = localDB
 
