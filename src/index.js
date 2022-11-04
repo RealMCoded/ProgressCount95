@@ -27,31 +27,33 @@ eventFiles.map(event => {
 })
 
 
-//check every second asynchronously
+//check every 90 seconds asynchronously
 setInterval(async () => {
-	const n = Math.floor(Date.now() / 1000)
+	const guildDB = await client.db.Data.findOne({ where: { guildID: guildId } })
+	client.user.setActivity(`counting | ${guildDB.count}`, { type: 'COMPETING' });
+
+	const now = Math.floor(Date.now() / 1000)
+	const guild = await client.guilds.cache.get(guildId)
 
 	//get list of all counters
-	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown'] })
+	const counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown'] })
 
 	//loop through all counters
 	counters.map(async counter => {
 		const lastBeg = parseInt(counter.get('saveCooldown'))
-		if (n === (lastBeg + saveClaimCooldown)) {
-			let user = await client.users.fetch(counter.get('userID'))
-			let guild = await client.guilds.cache.get(guildId)
-			let savesClaimCommandID = await guild.commands.fetch()
-			savesClaimCommandID = savesClaimCommandID.find(c => c.name == "saves").id
+		if (now === (lastBeg + saveClaimCooldown)) {
+			const user = await client.users.fetch(counter.get('userID'))
+
 			//check if we can dm the user
-			user.send(`Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
+			user.send(`Your save is ready! Use </saves claim:${guild.commands.get("saves").id}> to claim it!`)
 				.catch(err => {
 					logger.warn(`Unable to DM user with ID ${counter.get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
-					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
+					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${guild.commands.get("saves").id}> to claim it!`)
 				})
 		}
 	})
-}, 1000);
+}, 1000 * 90);
 
 process.on('uncaughtException', (error, origin) => {
 	logger.log(`❌ Uncaught exception\n-----\n${error.stack}\n-----\nException origin\n${origin}`)
