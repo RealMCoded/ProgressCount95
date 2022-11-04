@@ -1,6 +1,6 @@
 // import files
-const { useCustomEmoji, guildId } = require('./config.json');
-const logger = require("./utils/logger.js")
+const { useCustomEmoji, guildId } = require('../config.json');
+const logger = require("../utils/logger.js")
 
 var lastCounterId
 var serverSaves

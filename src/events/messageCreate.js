@@ -2,10 +2,10 @@
 const mathx = require('math-expression-evaluator');
 
 // import files
-const { countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, logRuins, logSaveUses } = require('./config.json');
-const { validateExpression } = require('./utils/validateExpression.js')
-const rules = require("./messages/rules.js")
-const logger = require("./utils/logger.js")
+const { countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, logRuins, logSaveUses } = require('../config.json');
+const { validateExpression } = require('../utils/validateExpression.js')
+const rules = require("../messages/rules.js")
+const logger = require("../utils/logger.js")
 
 var canAllCount = true
 

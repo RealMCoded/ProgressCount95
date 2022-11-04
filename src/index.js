@@ -13,8 +13,8 @@ client.db = require('./modal/database.js')
 // import commands
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 client.commands = new Collection(
-	commandFiles.map(command => {
-		const command = require(`./commands/${file}`);
+	commandFiles.map(commandFile => {
+		const command = require(`./commands/${commandFile}`);
 		return [command.data.name, command]
 	})
 );
@@ -35,7 +35,7 @@ setInterval(async () => {
 	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown'] })
 
 	//loop through all counters
-	counters.map(counter => {
+	counters.map(async counter => {
 		const lastBeg = parseInt(counter.get('saveCooldown'))
 		if (n === (lastBeg + saveClaimCooldown)){
 			let user = await client.users.fetch(counter.get('userID'))

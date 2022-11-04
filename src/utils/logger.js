@@ -1,5 +1,5 @@
 const { WebhookClient } = require('discord.js');
-const { logHook, redirectConsoleOutputToWebhook } = require('./config.json');
+const { logHook, redirectConsoleOutputToWebhook } = require('../config.json');
 
 module.exports = {
     log: (e) => {

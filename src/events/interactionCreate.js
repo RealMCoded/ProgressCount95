@@ -1,6 +1,6 @@
 // import files
-const { nerdstatExecutor } = require('./config.json');
-const logger = require("./utils/logger.js")
+const { nerdstatExecutor } = require('../config.json');
+const logger = require("../utils/logger.js")
 
 module.exports.eventLogic = async (interaction, client) => {
 	if (!interaction.isCommand() || !client.commands.has(interaction.commandName)) return;

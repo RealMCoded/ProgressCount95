@@ -1,5 +1,5 @@
 // import files
-const { validateExpression } = require('./utils/validateExpression.js')
+const { validateExpression } = require('../utils/validateExpression.js')
 
 module.exports.eventLogic = async (message, client) => {
 	// return if message is outside of desired parameters

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageAttachment } = require('discord.js');
 const { customEmojiList, useCustomEmoji } = require("../config.json")
-const logger = require("./utils/logger.js")
+const logger = require("../utils/logger.js")
 
 module.exports = {
 	data: new SlashCommandBuilder()

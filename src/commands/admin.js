@@ -1,8 +1,8 @@
 const fs = require('node:fs')
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { Permissions, MessageEmbed } = require('discord.js');
-const { adminCommandPermission, countingCh } = require("./../config.json")
-const logger = require("./utils/logger.js")
+const { adminCommandPermission, countingCh } = require("../config.json")
+const logger = require("../utils/logger.js")
 
 module.exports = { 
     data: new SlashCommandBuilder()
