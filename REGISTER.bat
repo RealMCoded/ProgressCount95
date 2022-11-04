@@ -1,3 +1,3 @@
 @echo off
-node register.js
+node src/utils/register.js
 pause

@@ -42,7 +42,10 @@ Clone the repository with
 ```
 git clone https://github.com/RealMCoded/ProgressCount95
 ```
-
+cd into the src directory
+```
+cd src
+```
 Install all requirements
 ```
 npm install
@@ -62,5 +65,5 @@ For slash commands: Run `REGISTER.bat` to register the slash commands to your se
 
 You can also run the following command:
 ```
-node register.js
+node src/utils/register.js
 ```
