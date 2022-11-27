@@ -44,6 +44,9 @@ module.exports = {
 		    return interaction.reply({embeds: [embed]});
 
         } else if (subcommand === "user") {
+
+            //TODO: Move this to a shared file because of contextmenu_user_stats.js.
+
             const usr = interaction.options.getUser("user") || interaction.member.user;
 
             if (usr.bot) return interaction.reply({content:"❌ **Bots don't have counting stats!**", ephemeral: true})
