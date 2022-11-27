@@ -13,15 +13,6 @@ The counting bot for the [Progressbar95 +Plus server](https://discord.gg/PGMB93T
 
 The bot requires some files to be made that have been gitignored. The only file it needs to make is `config.json`
 
-This can be done for you by running the following script:
-```
-node config-gen.js
-```
-
----
-
-Alternatively, you can do it manually:
-
 - Copy `config.json.template`, rename it to `config.json` and replace the variables with your own.
 
 Notes:
@@ -44,19 +35,19 @@ For Linux:
 git clone https://github.com/RealMCoded/ProgressCount95
 cd ProgressCount95
 npm install
-cp config.json.template config.json
-$EDITOR config.json
+cp config.json.template config.json # if you have already created the config, skip this!
+$EDITOR config.json                 # if you have already created the config, skip this!
 npm run start
 ```
 
 For Windows:
 
-```
+```bash
 git clone https://github.com/RealMCoded/ProgressCount95
 cd ProgressCount95
 npm install
-copy config.json.template config.json
-notepad config.json
+copy config.json.template config.json # if you have already created the config, skip this!
+notepad config.json                   # if you have already created the config, skip this!
 npm run start
 ```
 
