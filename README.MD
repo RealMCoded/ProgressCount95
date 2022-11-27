@@ -34,23 +34,30 @@ Notes:
 
 ## Building
 
-The bot is built with Node.js.
+This bot uses [Node.js](https://nodejs.org/en/) as a backend. It should be installed before continuing.
 
 ---
 
-Clone the repository with
+For Linux:
+
+```bash
+git clone https://github.com/RealMCoded/ProgressCount95
+cd ProgressCount95
+npm install
+cp config.json.template config.json
+$EDITOR config.json
+npm run start
+```
+
+For Windows:
+
 ```
 git clone https://github.com/RealMCoded/ProgressCount95
-```
-
-Install all requirements
-```
+cd ProgressCount95
 npm install
-```
-
-Start the bot
-```
-node .
+copy config.json.template config.json
+notepad config.json
+npm run start
 ```
 
 Invite your bot with this link (Replace `[ClientID]` with your bot's ID!)
