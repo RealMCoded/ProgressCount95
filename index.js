@@ -13,7 +13,7 @@ const sequelize = new Sequelize('database', "", "", {
 	// SQLite only
 	storage: 'database.sqlite',
 });
-client.db = require('./modal/database.js')
+client.db = require('./database.js')
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
