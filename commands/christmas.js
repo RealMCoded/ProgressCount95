@@ -16,7 +16,7 @@ module.exports = {
         const embed = new MessageEmbed()
 			.setColor(Math.random() < 0.5 ? '#00FF00' : '#FF0000')
 			.setTitle('Days until Christmas')
-            .setDescription(date.getDate() > 24 ? `🎄 *CHRISTMAS IS TODAY!!!** 🎄` : `🎄 Christmas is <t:${datestamp}:R>! 🎄`)
+            .setDescription(date.getDate() > 24 ? `🎄 **CHRISTMAS IS TODAY!!!** 🎄` : `🎄 Christmas is <t:${datestamp}:R>! 🎄`)
             .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/350/christmas-tree_1f384.png')
 
 		await interaction.reply({embeds: [embed]});
