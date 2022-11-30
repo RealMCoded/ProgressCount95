@@ -8,7 +8,12 @@ module.exports = {
 
         const guildDB = await interaction.client.db.Data.findOne({ where: { guildID: interaction.guild.id }});
         let numb = await interaction.client.db.Data.findOne()
-        let lastCounter = await interaction.client.users.fetch(guildDB.lastCounterID)
+        let lastCounter;
+        try {
+            lastCounter = await interaction.client.users.fetch(guildDB.lastCounterID)
+        } catch(e) {
+            lastCounter = "[ no one ]"
+        }
         return interaction.reply({ content: `The current number is **${numb.count}** and was last counted by ${lastCounter}.`, ephemeral: true });
     },
 };
