@@ -9,15 +9,16 @@ module.exports = {
     private: true,
     async execute(interaction) {
 
-        const datestamp = '1671926400'
+        const date = new Date()
+
+        const datestamp = '1671926400' //UTC
 
         const embed = new MessageEmbed()
-			.setColor('#FF0000')
+			.setColor(Math.random() < 0.5 ? '#00FF00' : '#FF0000')
 			.setTitle('Days until Christmas')
-            .setDescription(`Placeholder Placeholder blah blah blah.`)
+            .setDescription(date.getDate() > 24 ? `🎄 *CHRISTMAS IS TODAY!!!** 🎄` : `🎄 Christmas is <t:${datestamp}:R>! 🎄`)
             .setThumbnail('https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/google/350/christmas-tree_1f384.png')
-            //.setFooter({text:'Updated daily!'})
 
-		await interaction.editReply({embeds: [embed]});
+		await interaction.reply({embeds: [embed]});
     },
 };
