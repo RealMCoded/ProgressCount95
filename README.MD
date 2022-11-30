@@ -51,14 +51,19 @@ notepad config.json                   # if you have already created the config, 
 npm run start
 ```
 
+## Invite your bot!
+
 Invite your bot with this link (Replace `[ClientID]` with your bot's ID!)
 ```
 https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=8&scope=bot%20applications.commands
 ```
 
-For slash commands: Run `REGISTER.bat` to register the slash commands to your server.
+If you want to customize the permissions for whatever reason, check out the [Discord Permissions Calculator](https://discordapi.com/permissions.html) if you need help.
 
-You can also run the following command:
+
+## Slash commands
+
+To register slash commands, run the following command:
 ```
-node register.js
+npm run register
 ```
