@@ -60,6 +60,11 @@ https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=8&scope=bo
 
 If you want to customize the permissions for whatever reason, check out the [Discord Permissions Calculator](https://discordapi.com/permissions.html) if you need help.
 
+If you want more restricted permissions, try this one (View channels, Send messages, Add Reactions)
+
+```
+https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=3136&scope=bot%20applications.commands
+```
 
 ## Slash commands
 
