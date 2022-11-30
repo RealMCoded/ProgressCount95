@@ -1,1 +1,1 @@
-node .
+npm run start
