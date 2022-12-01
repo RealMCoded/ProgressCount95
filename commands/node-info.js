@@ -29,7 +29,7 @@ module.exports = {
 				.setColor('#0099ff')
 				.setTitle('Node Info')
 				.setDescription(
-					`**Memory Usage**: \`${mem}\`\n**Uptime**: \`${uptime}\`\n**Version**: \`${version}\`\n**Platform**: \`${platform}\`\n**Architecture**: \`${arch}\`\n**CPU Speed**: \`${cpuSpeed}\`\n**CPU Usage**: \`${cpuUsage}\`\n**Ping**: \`${ping}\``
+					`**Memory Usage**: \`${mem}\`\n**Uptime**: \`${uptime}\`\n**Version**: \`${version}\`\n**Platform**: \`${platform}\`\n**Architecture**: \`${arch}\`\n**CPU Speed**: \`${cpuSpeed}\`\n**CPU Usage**: \`${cpuUsage}\`\n**Ping**: \`${ping}ms\``
 				);
 
 			await interaction.reply({embeds: [embed], ephemeral: true });
