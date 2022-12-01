@@ -54,6 +54,8 @@ module.exports = {
 			data.leaderboard.push({
 				userID: list[i].userID,
 				numbers: list[i].numbers,
+				wrongNumbers: list[i].wrongNumbers,
+				score: list[i].numbers - list[i].wrongNumbers
 			})
 
 			totalNumbers+= list[i].numbers
