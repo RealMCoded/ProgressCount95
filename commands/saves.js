@@ -19,7 +19,7 @@ module.exports = {
             .setDescription("Transfer saves to other users")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("The user to transfer tge saves to.")
+                .setDescription("The user to transfer the saves to.")
                 .setRequired(true))),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
