@@ -13,46 +13,62 @@ The counting bot for the [Progressbar95 +Plus server](https://discord.gg/PGMB93T
 
 The bot requires some files to be made that have been gitignored. The only file it needs to make is `config.json`
 
-This can be done for you by running the following script:
-```
-node config-gen.js
-```
-
----
-
-Alternatively, you can do it manually:
-
 - Copy `config.json.template`, rename it to `config.json` and replace the variables with your own.
 
-## Buidling
+Notes:
+* For the `freeSave`, `savesPerClaim`, `initialSaves` and `transferTax` variables, multiply the desired value by 10. (The bot handles saves as integers internally)
+* Unicode emoji can be used instead of Discord custom emoji.
+* Permission flags can be found [here](https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS).
+* The `ruinDelay` value is in miliseconds.
+* If you don't want free saves, set the `freeSave` variable to 0.
+* The `pushPrivateCommands` variable is specific to the Progressbar95 (+Plus!) server. It should be set to false.
 
-The bot is built with Node.js.
+## Building
+
+This bot uses [Node.js](https://nodejs.org/en/) as a backend. It should be installed before continuing.
 
 ---
 
-Clone the repository with
-```
+For Linux:
+
+```bash
 git clone https://github.com/RealMCoded/ProgressCount95
-```
-
-Install all requirements
-```
+cd ProgressCount95
 npm install
+cp config.json.template config.json # if you have already created the config, skip this!
+$EDITOR config.json                 # if you have already created the config, skip this!
+npm run start
 ```
 
-Start the bot
+For Windows:
+
+```bash
+git clone https://github.com/RealMCoded/ProgressCount95
+cd ProgressCount95
+npm install
+copy config.json.template config.json # if you have already created the config, skip this!
+notepad config.json                   # if you have already created the config, skip this!
+npm run start
 ```
-node .
-```
+
+## Invite your bot!
 
 Invite your bot with this link (Replace `[ClientID]` with your bot's ID!)
 ```
 https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=8&scope=bot%20applications.commands
 ```
 
-For slash commands: Run `REGISTER.bat` to register the slash commands to your server.
+If you want to customize the permissions for whatever reason, check out the [Discord Permissions Calculator](https://discordapi.com/permissions.html) if you need help.
 
-You can also run the following command:
+If you want more restricted permissions, try this one (View channels, Send messages, Add Reactions)
+
 ```
-node register.js
+https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=3136&scope=bot%20applications.commands
+```
+
+## Slash commands
+
+To register slash commands, run the following command:
+```
+npm run register
 ```

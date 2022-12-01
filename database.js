@@ -1,7 +1,7 @@
-const { SQL_USER, SQL_PASS, defaultSlots, initialSaves, guildSaveSlots  } = require('../config.json');
+const { defaultSlots, initialSaves, guildSaveSlots } = require('./config.json');
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
+const sequelize = new Sequelize('database', "", "", {
   host: 'localhost',
   dialect: 'sqlite',
   logging: false,
@@ -43,15 +43,6 @@ const Counters = sequelize.define('counters', {
     }
 });
 
-const Ruins = sequelize.define('ruins', {
-  userID:{
-    type: Sequelize.STRING,
-  },
-  ruin: {
-    type: Sequelize.NUMBER,
-    defaultValue: 0
-  }
-});
 
 const Data = sequelize.define('data', {
   guildID:{
@@ -76,4 +67,4 @@ const Data = sequelize.define('data', {
   }
 });
 
-module.exports = { Counters, Ruins, Data }
+module.exports = { Counters, Data }

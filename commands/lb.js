@@ -5,7 +5,7 @@ const wait = require('node:timers/promises').setTimeout;
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('leaderboard')
-        .setDescription(`Get the leaderboard`)
+        .setDescription(`Get the counting leaderboard`)
         .addIntegerOption(option => 
             option.setRequired(false)
                 .setName("page")
@@ -28,20 +28,19 @@ module.exports = {
 			list = list.slice((page-10), page);
 
 			for(var i=0; i < list.length; i++){
-
 				//TODO: Prevent rate limiting for this, causing it to hang. - mildly fixed
 				var gli = i
 				let user = await interaction.client.users.fetch(list[i].userID);
 				if(user){
-					var le = le + "**#" + ((i+1)+(page-10)).toString() + "** | `" + user.tag + "`: **" + list[i].numbers.toString() + "**\n"
+					var le = le + "**#" + ((i+1)+(page-10)).toString() + "** | `" + user.tag + "`: **" + list[i].numbers.toString() + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
 				} else {
-					var le = le + "**#" + (i+1).toString() + "** | `Unknown#" + list[i].userID + "`: **" + list[i].numbers.toString() + "**\n"
+					var le = le + "**#" + (i+1).toString() + "** | `Unknown#" + list[i].userID + "`: **" + list[i].numbers.toString() + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
 				}
 				await wait(250);
 			}
 
 			const embed = new MessageEmbed()
-                .setTitle(`Counting Leaderboard | Page ${page/10} (10 users/page)`)
+                .setTitle(`ProgressCount95 Leaderboard | Page ${page/10} (10 users/page)`)
 				.setColor("#0099ff")
 				.setDescription(`${le}`)
 				.setTimestamp()

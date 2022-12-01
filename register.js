@@ -1,6 +1,6 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { token, clientId, guildId } = require('./config.json');
+const { token, clientId, guildId, pushPrivateCommands } = require('./config.json');
 const fs = require('node:fs');
 
 console.log(`⚠️ This does not refresh global commands!\n`);
@@ -10,6 +10,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
+	if (command.private && !pushPrivateCommands) continue;
 	commands.push(command.data.toJSON());
 }
 

@@ -1,19 +1,19 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, SQL_USER, SQL_PASS, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList } = require('./config.json');
+const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses } = require('./config.json');
 const mathx = require('math-expression-evaluator');
-const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
-
+const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
+const { validateExpression } = require('./Util.js')
 //database shit
-const sequelize = new Sequelize('database', SQL_USER, SQL_PASS, {
+const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
 	dialect: 'sqlite',
 	logging: false,
 	// SQLite only
 	storage: 'database.sqlite',
 });
-client.db = require('./modal/database.js')
+client.db = require('./database.js')
 
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
@@ -25,8 +25,8 @@ console.log = function(e) {
 			let webhookClient = new WebhookClient({ url: logHook });
 			webhookClient.send(`\`\`\`\n${e}\n\`\`\``);
 		}
-	} catch(e) {
-		process.stdout.write(`Unable to redirect output: ${e}\n`);
+	} catch(err) {
+		process.stdout.write(`Unable to redirect output: ${err}\n`);
 	}
 	process.stdout.write(`${e}\n`);
 }
@@ -37,8 +37,8 @@ console.warn = function(e) {
 			let webhookClient = new WebhookClient({ url: logHook });
 			webhookClient.send(`\`\`\`\n[WARN] ${e}\n\`\`\``);
 		}
-	} catch(e) {
-		process.stdout.write(`Unable to redirect output: ${e}\n`);
+	} catch(err) {
+		process.stdout.write(`Unable to redirect output: ${err}\n`);
 	}
 	process.stdout.write(`[WARN] ${e}\n`);
 }
@@ -49,10 +49,10 @@ console.error = function(e) {
 			let webhookClient = new WebhookClient({ url: logHook });
 			webhookClient.send(`\`\`\`\n[ERROR] ${e}\n\`\`\``);
 		}
-	} catch(e) {
-		process.stdout.write(`Unable to redirect output: ${e}\n`);
+	} catch(err) {
+		process.stdout.write(`Unable to redirect output: ${err}\n`);
 	}
-	process.stdout.write(`[ERROR] ${e}\n`);
+	process.stdout.write(`[ERROR] ${e}`);
 }
 
 const recentCountRuiners= new Set();
@@ -66,16 +66,13 @@ for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 }
-function validateExpression(number) {
-	return /^[+\-/*^0-9().]+$/.test(number)
-}
 
 client.once('ready', async () => {
 	//sync database tables
 	await client.db.Counters.sync()
 	await client.db.Data.sync()
 
-	let guild = await client.channels.fetch(countingCh); guild = guild.guild
+	let guild = await client.guilds.fetch(guildId)
 	let [localDB, ]= await client.db.Data.findOrCreate({ where: { guildID: guild.id }}) 
 	numb = localDB.count
 	highscore = localDB.highscore
@@ -85,9 +82,7 @@ client.once('ready', async () => {
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
 	guildDB = localDB
-});
 
-client.once('ready', async () => {
 	setInterval(() => {
 		client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
 	}, 90000);
@@ -95,7 +90,7 @@ client.once('ready', async () => {
 
 //All slash commands. check "commands" folder
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	//if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);
 
@@ -110,23 +105,20 @@ client.on('interactionCreate', async interaction => {
 		serverSaves = guildDB.guildSaves
 	} catch (error) {
 		console.log(`${error}\n\n`)
-		if (interaction.user.id !== "284804878604435476") {
-            await interaction.reply({content: `if you are seeing this, <@284804878604435476> or <@808720142137294949> messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
+		if (!nerdstatExecutor.includes(interaction.user.id)) {
+            await interaction.reply({content: `if you are seeing this, one of the devs messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
         } else {
-            await interaction.reply({content: `wow good job you fucked something up (again)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
+            await interaction.reply({content: `Something bad happened! \n\n\`\`\`${error}\`\`\``, ephemeral: true})
         }
 	}
 });
 
 client.on('messageCreate', async message => {
 
-	let isNewCounter=0
-
 	if (message.author.bot) return
 
 	if (!canAllCount) return
 
-	//if (message.type !== "DEFAULT") return;
 	switch (message.type){
 		case "DEFAULT": break;
 		case "REPLY": break;
@@ -134,8 +126,6 @@ client.on('messageCreate', async message => {
 	}
 
 	if (message.channel.id === countingCh) {
-		//console.log(message.type)
-		
 		if (Date.now() - message.author.createdAt < 1000*60*60*24*7) {
 			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
 				if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
@@ -210,34 +200,43 @@ client.on('messageCreate', async message => {
 						
 						if(lecountr.numbers % numbersRequiredForFreeSave == 0) { //every 50(by default) numbers
 							//lecountr.increment('saves', { by: freeSave.toFixed(1) })
-							if (lecountr.saves >= lecountr.slots) return;
-							lecountr.update({
-								saves: (lecountr.saves + freeSave).toFixed(1)
-							})
+							if (lecountr.saves >= lecountr.slots*10) return;
+							let freeSaveClamped
+							if ((lecountr.saves + freeSave) > lecountr.slots*10) {
+								freeSaveClamped = lecountr.slots*10 - lecountr.saves 
+								console.log(`clamped: ${freeSaveClamped}`)
+							} else freeSaveClamped = freeSave
+							lecountr.update({saves: (lecountr.saves + freeSaveClamped)})
+							lecountr = await client.db.Counters.findOne({ where: { userID: message.author.id } });
 						}
 					} else {
 						canAllCount = false;
 							setTimeout(() => {
 								canAllCount = true;
-							}, 3000);
+							}, ruinDelay);
 						if (message.content.length >= 1500){
-							//sure we can just ignore it but it's funnier when the bot replies lol
 							if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
-							message.reply("https://cdn.discordapp.com/attachments/875920385315577867/927848021968949268/Screenshot_20220103-225144.jpg?size=4096")
+							if (longMessageEasterEgg) {
+								message.reply(longMessageEasterEggContent)
+							}
 						} else if (lecountr.saves >= 10) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							const ten = 10
 							lecountr.decrement('saves', { by: ten})
 							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+							if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-1)/10}`)
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							serverSaves--
 							message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
+							if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 						} else {
 							if (useCustomEmoji) {message.react(customEmojiList.ruin)} else {message.react('❌')}
 							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
 							numb = 0
 							lastCounterId = "0"
+							guildDB.update({ lastCounterID: "0" })
+							if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 						}
 						lecountr.increment('wrongNumbers');
 					}
@@ -250,15 +249,19 @@ client.on('messageCreate', async message => {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						lecountr.decrement('saves', {by: 10})
 						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-10)/10}`)
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						serverSaves--
 						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
+						if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 					} else {
 						if (useCustomEmoji) {message.react(customEmojiList.ruin)} else {message.react('❌')}
 						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
 						numb = 0
 						lastCounterId = "0"
+						guildDB.update({ lastCounterID: "0" })
+						if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 					}
 					lecountr.increment('wrongNumbers');
 			}
@@ -294,7 +297,7 @@ client.on('messageDelete', async message => {
 	}
 });
 
-//check every second asyncronously
+//check every second asynchronously
 setInterval(async () => {
 	const n = Math.floor(Date.now() / 1000)
 	//get list of all counters
@@ -307,12 +310,15 @@ setInterval(async () => {
 			continue
 		} else {
 			let user = await client.users.fetch(counters[i].get('userID'))
+			let guild = await client.guilds.cache.get(guildId)
+			let savesClaimCommandID = await guild.commands.fetch()
+			savesClaimCommandID = savesClaimCommandID.find(c => c.name == "saves").id
 			//check if we can dm the user
-			user.send(`Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
+			user.send(`Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				.catch(err => {
 					console.warn(`Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
 					//send notification to counting channel
-					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:990342833003184204> to claim it!`)
+					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				})
 		}
 	}
@@ -320,43 +326,11 @@ setInterval(async () => {
 }, 1000);
 
 process.on('uncaughtException', (error, origin) => {
-    //console.log('----- Uncaught exception -----')
-    //console.log(error)
-    //console.log('----- Exception origin -----')
-    //console.log(origin)
-	console.log(`❌ Uncaught exception\n-----\n${error}\n-----\nException origin\n${origin}`)
-	//let webhookClient = new WebhookClient({ url: logWebhookURL });
-	//webhookClient.send(`<@284804878604435476> [ERR]\n\`\`\`${error}\`\`\`\n\n\`\`\`${origin}\`\`\``);
+	console.log(`❌ Uncaught exception\n-----\n${error.stack}\n-----\nException origin\n${origin}`)
 })
 
 process.on('unhandledRejection', (reason, promise) => {
-    //console.log('----- Unhandled Rejection at -----')
-    //console.log(promise)
-    //console.log('----- Reason -----')
-    //console.log(reason)
 	console.log(`❌ Unhandled Rejection\n-----\n${promise}\n-----\nReason\n${reason}`)
-	//let webhookClient = new WebhookClient({ url: logWebhookURL });
-	//webhookClient.send(`<@284804878604435476> [REJ]\n\`\`\`${promise}\`\`\`\n\n\`\`\`${reason}\`\`\``);
 })
-
-/*
-process.on('uncaughtException', (error, origin) => {
-	let webhookClient = new WebhookClient({ url: logHook });
-	webhookClient.send(`Uncaught exception\n\`\`\`${error}\`\`\`\nException origin\n\`\`\`${origin}\`\`\``);
-    console.log('----- Uncaught exception -----')
-    console.log(error)
-    console.log('----- Exception origin -----')
-    console.log(origin)
-})
-
-process.on('unhandledRejection', (reason, promise) => {
-	let webhookClient = new WebhookClient({ url: logHook });
-	webhookClient.send(`Unhandled Rejection at\n\`\`\`${promise}\`\`\`\nReason\n\`\`\`${reason}\`\`\``);
-    console.log('----- Unhandled Rejection at -----')
-    console.log(promise)
-    console.log('----- Reason -----')
-    console.log(reason)
-})
-*/
 
 client.login(token);

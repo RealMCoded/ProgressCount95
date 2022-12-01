@@ -4,16 +4,16 @@ const { guildSaveSlots } = require('../config.json')
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stats')
-        .setDescription(`Viewstats!`)
+        .setDescription(`View stats!`)
         .addSubcommand(subcommand =>
 			subcommand
 			.setName("server")
-			.setDescription("View server stats"))
+			.setDescription("View the servers counting stats"))
         .addSubcommand(subcommand =>
             subcommand
             .setName("user")
-            .setDescription("View a user's stats")
-            .addUserOption(option => option.setName('user').setDescription('the chosen one').setRequired(false))),
+            .setDescription("View a user's counting stats")
+            .addUserOption(option => option.setName('user').setDescription('The user to view the stats of').setRequired(false))),
     async execute(interaction) {
         const db = interaction.client.db;
         const subcommand = interaction.options.getSubcommand();
@@ -44,6 +44,9 @@ module.exports = {
 		    return interaction.reply({embeds: [embed]});
 
         } else if (subcommand === "user") {
+
+            //TODO: Move this to a shared file because of contextmenu_user_stats.js.
+
             const usr = interaction.options.getUser("user") || interaction.member.user;
 
             if (usr.bot) return interaction.reply({content:"❌ **Bots don't have counting stats!**", ephemeral: true})
@@ -76,14 +79,14 @@ module.exports = {
                 const embed = new MessageEmbed()
                     .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`**Leaderboard Position:** #${lbpos}\n**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Saves:** ${saves/10}/${slots}\n**Last Active:** <t:${activeDate}:f> (<t:${activeDate}:R>)\n**Started counting:** <t:${createdAt}:f> (<t:${createdAt}:R>)`)
+                    .setDescription(`**Leaderboard Position:** #${lbpos}\n**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Score:** ${correct - incorrect}\n**Saves:** ${saves/10}/${slots}\n**Last Active:** <t:${activeDate}:f> (<t:${activeDate}:R>)\n**Started counting:** <t:${createdAt}:f> (<t:${createdAt}:R>)`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
                 const embed = new MessageEmbed()
                     .setTitle(`Stats for ${person.tag}`)
                     .setColor("#0099ff")
-                    .setDescription(`***${person.tag} does not have any stats yet!***`)
+                    .setDescription(`***${person.tag} does not have any counting stats yet!***`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             }
