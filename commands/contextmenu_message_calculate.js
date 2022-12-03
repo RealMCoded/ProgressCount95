@@ -8,7 +8,7 @@ module.exports = {
         .setName('Calculate')
         .setType(ApplicationCommandType.Message),
     async execute(interaction) {
-        const input = interaction.targetMessage.content
+        const input = interaction.targetMessage.content.split(" ")[0]
 
         if(validateExpression(input)) {
             const output = mathx.eval(input)
