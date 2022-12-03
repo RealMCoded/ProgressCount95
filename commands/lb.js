@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+const { lockLBIncorects } = require("../config.json")
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {

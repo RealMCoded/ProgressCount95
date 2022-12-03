@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses } = require('./config.json');
+const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { validateExpression } = require('./Util.js')
@@ -136,7 +136,7 @@ client.on('messageCreate', async message => {
 
 		let [lecountr, isNewCounter] = await client.db.Counters.findOrCreate({ where: { userID: message.author.id } });
 
-		if (isNewCounter) {
+		if (isNewCounter && enableRulesFile && showRulesOnFirstCount) {
 			message.reply(fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'}));
 		}
 

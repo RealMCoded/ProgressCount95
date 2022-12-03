@@ -4,3 +4,4 @@ database.sqlite
 *.old
 GeneratedUserData.json
 package-lock.json
+rules.txt
