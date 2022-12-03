@@ -7,7 +7,7 @@ module.exports = {
         .setName('rules')
         .setDescription(`Read the bot's rules!`),
     async execute(interaction) {
-        if (enableRulesFile) {
+        if (enableRulesFile || !fs.existsSync('./rules.txt')) {
             const rules = fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'})
             interaction.reply({content : rules , ephemeral: true })
         } else {
