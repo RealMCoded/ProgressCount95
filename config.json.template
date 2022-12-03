@@ -17,6 +17,7 @@
     "redirectConsoleOutputToWebhook":false,
     "logHook": "https://discord.com/api/webhooks/webhook_id/webhook_token",
     "adminCommandPermission": "PERMISSION",
+    "lockLBIncorects: true,
     "longMessageEasterEgg": false,
     "longMessageEasterEggContent": "Whatever you want the long message easter egg to say when triggered (1500+ character)",
     "ruinDelay": 3000,

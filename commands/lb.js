@@ -19,6 +19,13 @@ module.exports = {
             .addIntegerOption(option => 
 				option.setRequired(false)
 					.setName("page")
+					.setDescription("The page of users to show (10 users/page) (Default: 1)")))
+		.addSubcommand(subcommand => subcommand
+            .setName("incorects")
+            .setDescription("Counting leaderboard. Based on incorrects.")
+            .addIntegerOption(option => 
+				option.setRequired(false)
+					.setName("page")
 					.setDescription("The page of users to show (10 users/page) (Default: 1)"))),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
@@ -34,20 +41,33 @@ module.exports = {
 
 			var list;
 
-			if(subcommand == "corrects") {
-				list = await db.findAll({
-					attributes: ['numbers', 'userID']
-				})
-			} else if (subcommand == "score") {
-				list = await db.findAll({
-					attributes: ['numbers', 'wrongNumbers', 'userID']
-				})
+			switch(subcommand) { 
+				case "corrects": {
+					list = await db.findAll({
+						attributes: ['numbers', 'userID']
+					})
+				}
+				case "score": {
+					list = await db.findAll({
+						attributes: ['numbers', 'wrongNumbers', 'userID']
+					})
 
-				for(var i=0; i < list.length; i++){
-					list[i].numbers = list[i].numbers - list[i].wrongNumbers
+					for(var i=0; i < list.length; i++){
+						list[i].numbers = list[i].numbers - list[i].wrongNumbers
+					}
+				}
+				case "incorects": {
+					if (lockLBIncorects) return interaction.followUp({embeds: [new MessageEmbed().setColor("#ff0000").setDescription("This command has been disabled.")]})
+					list = await db.findAll({
+						attributes: ['wrongNumbers', 'userID']
+					})
+
+					for(var i=0; i < list.length; i++){
+						list[i].numbers = list[i].wrongNumbers
+					}
 				}
 			}
-
+		
 			list = list.sort((a, b) => b.numbers - a.numbers)
 
 			list = list.slice((page-10), page);
