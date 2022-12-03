@@ -9,7 +9,7 @@ module.exports = {
 			//store node memory usage
 			const mem = `${Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100} MB`;
 			//store node uptime
-			const uptime = `${(Math.round(process.uptime() * 100) / 100)/60} seconds`;
+			const uptime = `${Math.floor((Math.round(process.uptime() * 100) / 100)/60)} minutes`;
 			//store node version
 			const version = `${process.version}`;
 			//store node platform
