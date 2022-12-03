@@ -219,9 +219,9 @@ client.on('messageCreate', async message => {
 							if (longMessageEasterEgg) {
 								message.reply(longMessageEasterEggContent)
 							}
-						} else if (numb = "0"){
+						} else if (numb == 0){
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
-							message.reply(`${message.author} tried to run the count, but the number was already **0**!\nNo stats (saves, incorrect numbers) have been modified.`)
+							message.reply(`${message.author} tried to ruin the count, but the number was already **0**!\nNo stats (saves, incorrect numbers) have been modified.`)
 							//this is the way to bypass the increment of wrong numbers. It removes and then adds one, cancelling it out.
 							lecountr.decrement('wrongNumbers');
 						} else if (lecountr.saves >= 10) {
@@ -255,6 +255,11 @@ client.on('messageCreate', async message => {
 						lecountr.decrement('saves', {by: 10})
 						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
 						if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-10)/10}`)
+					} else if (numb == 0){
+						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
+						message.reply(`${message.author} tried to ruin the count, but the number was already **0**!\nNo stats (saves, incorrect numbers) have been modified.`)
+						//this is the way to bypass the increment of wrong numbers. It removes and then adds one, cancelling it out.
+						lecountr.decrement('wrongNumbers');
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						serverSaves--
