@@ -24,6 +24,7 @@
     "logRuins": true,
     "logSaveUses": false,
     "transferTax": 0,
+    "enableRulesFile": false,
     "customEmojiList": {
         "normal": "<:normal:id>",
         "highscore": "<:highscore:id>",
