@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { enableRulesFile } = require('../config.json')
 const fs = require('node:fs');
 
 module.exports = {
@@ -6,9 +7,11 @@ module.exports = {
         .setName('rules')
         .setDescription(`Read the bot's rules!`),
     async execute(interaction) {
-
-        const rules = fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'})
-
-        interaction.reply({content : rules , ephemeral: true })
+        if (enableRulesFile) {
+            const rules = fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'})
+            interaction.reply({content : rules , ephemeral: true })
+        } else {
+            interaction.reply({content : `❌ **The instance host has disabled the rules file.**`, ephemeral: true })
+        }
     },
 };
