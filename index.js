@@ -219,6 +219,11 @@ client.on('messageCreate', async message => {
 							if (longMessageEasterEgg) {
 								message.reply(longMessageEasterEggContent)
 							}
+						} else if (numb = "0"){
+							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
+							message.reply(`${message.author} tried to run the count, but the number was already **0**!\nNo stats (saves, incorrect numbers) have been modified.`)
+							//this is the way to bypass the increment of wrong numbers. It removes and then adds one, cancelling it out.
+							lecountr.decrement('wrongNumbers');
 						} else if (lecountr.saves >= 10) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							const ten = 10
