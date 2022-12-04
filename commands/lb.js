@@ -58,7 +58,7 @@ module.exports = {
 					}
 				}
 				case "incorects": {
-					if (lockLBIncorects) return interaction.followUp({embeds: [new MessageEmbed().setColor("#ff0000").setDescription("This command has been disabled.")]})
+					if (lockLBIncorects) return interaction.followUp({embeds: [new MessageEmbed().setColor("#ff0000").setDescription("This command has been disabled.")], ephemeral: true})
 					list = await db.findAll({
 						attributes: ['wrongNumbers', 'userID']
 					})
