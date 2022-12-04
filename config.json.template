@@ -26,6 +26,7 @@
     "transferTax": 0,
     "enableRulesFile": false,
     "showRulesOnFirstCount": false,
+    "lockLBIncorects": false,
     "customEmojiList": {
         "normal": "<:normal:id>",
         "highscore": "<:highscore:id>",
