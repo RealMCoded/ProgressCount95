@@ -42,7 +42,9 @@ module.exports = {
                     const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
                     await row.update({ 
                         numbers: 0, 
-                        wrongNumbers: 0
+                        wrongNumbers: 0,
+                        hasUserBeenDMed: false,
+                        enableClaimDM: null,
                         //saves: 20,
                         //slots: 5,
                         //saveCooldown: 0 

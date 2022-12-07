@@ -26,6 +26,8 @@
     "transferTax": 0,
     "enableRulesFile": false,
     "showRulesOnFirstCount": false,
+    "claimAlertDM": true,
+    "fallbackToChannelIfDMFails": false,
     "customEmojiList": {
         "normal": "<:normal:id>",
         "highscore": "<:highscore:id>",

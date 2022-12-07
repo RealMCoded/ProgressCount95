@@ -60,7 +60,7 @@ module.exports = {
                     return interaction.reply({embeds: [embed]})
                 }
                 row.increment('saves', { by: savesPerClaim });
-                row.update({ saveCooldown: n });
+                row.update({ saveCooldown: n, hasUserBeenDMed: false });
 
                 let embed = new MessageEmbed()
                     .setTitle("Saves")

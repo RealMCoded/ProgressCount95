@@ -1,4 +1,4 @@
-const { defaultSlots, initialSaves, guildSaveSlots } = require('./config.json');
+const { defaultSlots, initialSaves, guildSaveSlots, claimAlertDM } = require('./config.json');
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('database', "", "", {
@@ -40,6 +40,14 @@ const Counters = sequelize.define('counters', {
     saveCooldown: {
       type: Sequelize.STRING,
       defaultValue: "0"
+    },
+    enableClaimDM: {
+      type: Sequelize.BOOLEAN,
+      allowNull: true // if it's null, we'll use the global config
+    },
+    hasUserBeenDMed: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
     }
 });
 
