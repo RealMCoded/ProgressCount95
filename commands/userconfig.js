@@ -19,7 +19,11 @@ module.exports = {
                 const db = interaction.client.db.Counters
                 const val = interaction.options.getBoolean("value")
                 const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
-                await row.update({ enableClaimDM: val })
+                let config = JSON.parse(row.get('config'))
+                console.log(`CONFIG BEFORE: ${JSON.stringify(config)}`)
+                config.enableClaimDM = val
+                console.log(`CONFIG AFTER: ${JSON.stringify(config)}`)
+                await row.update({config: JSON.stringify(config)})
                 interaction.reply({content: "✅ **Your user settings have been updated.**", ephemeral: true })
             }
             break;

@@ -311,12 +311,12 @@ client.on('messageDelete', async message => {
 setInterval(async () => {
 	const n = Math.floor(Date.now() / 1000)
 	//get list of all counters
-	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown', 'enableClaimDM', 'hasUserBeenDMed'] })
+	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown', 'config', 'hasUserBeenDMed'] })
 
 	//loop through all counters
 	for (let i = 0; i < counters.length; i++) {
 		const lastBeg = parseInt(counters[i].get('saveCooldown'))
-		const dmEnabled = (counters[i].get('enableClaimDM')) ?? claimAlertDM // if enableClaimDM is null (unset) fallback to default 
+		const dmEnabled = (JSON.parse(counters[i].get("config")).enableClaimDM) ?? claimAlertDM // if enableClaimDM is null (unset) fallback to default 
 		const hasUserBeenDMed = counters[i].get('hasUserBeenDMed')
 		if(n < lastBeg+saveClaimCooldown || !dmEnabled || hasUserBeenDMed ){
 			continue

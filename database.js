@@ -41,9 +41,9 @@ const Counters = sequelize.define('counters', {
       type: Sequelize.STRING,
       defaultValue: "0"
     },
-    enableClaimDM: {
-      type: Sequelize.BOOLEAN,
-      allowNull: true // if it's null, we'll use the global config
+    config: {
+      type: Sequelize.STRING,
+      defaultValue: "{}"
     },
     hasUserBeenDMed: {
       type: Sequelize.BOOLEAN,
