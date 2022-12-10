@@ -10,7 +10,10 @@ module.exports = {
             .addBooleanOption(option => option
                 .setName("value")
                 .setDescription("Whether to be notified when you can claim saves.")
-                .setRequired(true))),
+                .setRequired(true)))
+        .addSubcommand(subcommand => subcommand
+            .setName("view")
+            .setDescription("View your current user settings (WIP)")),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand()
         const user = interaction.user
@@ -25,8 +28,16 @@ module.exports = {
                 console.log(`CONFIG AFTER: ${JSON.stringify(config)}`)
                 await row.update({config: JSON.stringify(config)})
                 interaction.reply({content: "✅ **Your user settings have been updated.**", ephemeral: true })
+            } break;
+            case "view": {
+                /*
+                    TODO: PROPER FORMATTING FOR THIS INSTEAD OF THE RAW JSON FILE!!!
+                */
+                const db = interaction.client.db.Counters
+                const val = interaction.options.getBoolean("value")
+                const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
+                interaction.reply({content: `\`\`\`json\n${row.get('config')}\n\`\`\``, ephemeral: true })
             }
-            break;
         }   
     }
         
