@@ -5,7 +5,7 @@ module.exports = {
         .setName('userconfig')
         .setDescription('User settings.')
         .addSubcommand(subcommand => subcommand
-            .setName("claim-dm")
+            .setName("claim-notifications")
             .setDescription("Enable or disable being notified when you can claim saves.")
             .addBooleanOption(option => option
                 .setName("value")
@@ -18,7 +18,7 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand()
         const user = interaction.user
         switch(subcommand) {
-            case "claim-dm": {
+            case "claim-notifications": {
                 const db = interaction.client.db.Counters
                 const val = interaction.options.getBoolean("value")
                 const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
