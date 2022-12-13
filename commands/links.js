@@ -9,6 +9,9 @@ module.exports = {
             .setName("github")
             .setDescription("Check out the source code for the bot!"))
         .addSubcommand(subcommand => subcommand
+            .setName("support")
+            .setDescription("Join my support server for assistance with self hosting and more!"))
+        .addSubcommand(subcommand => subcommand
             .setName("trello")
             .setDescription("Future improvements coming to the bot!"))
         .addSubcommand(subcommand => subcommand
@@ -19,6 +22,8 @@ module.exports = {
 
         if (subcommand === "github") {
             interaction.reply({ content: "Here's the Github: https://github.com/RealMCoded/ProgressCount95", ephemeral: true });
+        } else if (subcommand === "support") {
+            interaction.reply({ content: "Here's the **stuartt bott supportt** server!\n~~*\"state your case & #$%@ OFF!\"*~~", ephemeral: true });
         } else if (subcommand === "trello") {
             interaction.reply({ content: "Here's the Trello: https://trello.com/b/WMZYOuTd/progresscount95", ephemeral: true });
         }else if (subcommand === "privacy-policy") {
