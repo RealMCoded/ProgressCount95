@@ -1,5 +1,5 @@
 /*
-    This file contains some functions that are shared in multiple files.
+    This file contains some functions that are re-sued by other files in the bot.
 */
 
 module.exports = {
