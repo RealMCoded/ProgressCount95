@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, codeBlock } = require('@discordjs/builders');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,7 +36,7 @@ module.exports = {
                 const db = interaction.client.db.Counters
                 const val = interaction.options.getBoolean("value")
                 const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
-                interaction.reply({content: `\`\`\`json\n${JSON.stringify(JSON.parse(row.get("config")), null, 2)}\n\`\`\``, ephemeral: true })
+                interaction.reply({content: `${codeBlock("json", JSON.stringify(JSON.parse(row.get("config")), null, 2))}`, ephemeral: true })
             }
         }   
     }
