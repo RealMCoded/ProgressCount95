@@ -24,11 +24,12 @@ module.exports = {
                 const val = interaction.options.getBoolean("value")
                 const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
                 let config = JSON.parse(row.get('config'))
-                //console.log(`CONFIG BEFORE: ${JSON.stringify(config)}`)
+                let oldconf = JSON.parse(row.get('config'))
                 config.enableClaimDM = val
-                //console.log(`CONFIG AFTER: ${JSON.stringify(config)}`)
+
+                if (config.enableClaimDM == oldconf.enableClaimDM) {return interaction.reply({content: `⚠️ **Your user settings have not bee updated because this setting already equaled this value!**`, ephemeral: true })}
                 await row.update({config: JSON.stringify(config)})
-                interaction.reply({content: "✅ **Your user settings have been updated.**", ephemeral: true })
+                interaction.reply({content: `✅ **Your user settings have been updated.**\n${codeBlock("diff", `- enableClaimDM: ${oldconf.enableClaimDM}\n+ enableClaimDM: ${config.enableClaimDM}`)}`, ephemeral: true })
             } break;
             case "view": {
                 const db = interaction.client.db.Counters
