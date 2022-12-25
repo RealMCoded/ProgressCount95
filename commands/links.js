@@ -23,7 +23,7 @@ module.exports = {
         if (subcommand === "github") {
             interaction.reply({ content: "Here's the Github: https://github.com/RealMCoded/ProgressCount95", ephemeral: true });
         } else if (subcommand === "support") {
-            interaction.reply({ content: "Here's the **stuartt bott supportt** server!\n~~*\"state your case & #$%@ OFF!\"*~~", ephemeral: true });
+            interaction.reply({ content: "Here's the **stuartt bott supportt** server!\nhttps://discord.gg/DyNuGVRBp3", ephemeral: true });
         } else if (subcommand === "trello") {
             interaction.reply({ content: "Here's the Trello: https://trello.com/b/WMZYOuTd/progresscount95", ephemeral: true });
         }else if (subcommand === "privacy-policy") {
