@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, codeBlock } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,20 +24,25 @@ module.exports = {
                 const val = interaction.options.getBoolean("value")
                 const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
                 let config = JSON.parse(row.get('config'))
-                console.log(`CONFIG BEFORE: ${JSON.stringify(config)}`)
+                //console.log(`CONFIG BEFORE: ${JSON.stringify(config)}`)
                 config.enableClaimDM = val
-                console.log(`CONFIG AFTER: ${JSON.stringify(config)}`)
+                //console.log(`CONFIG AFTER: ${JSON.stringify(config)}`)
                 await row.update({config: JSON.stringify(config)})
                 interaction.reply({content: "✅ **Your user settings have been updated.**", ephemeral: true })
             } break;
             case "view": {
-                /*
-                    TODO: PROPER FORMATTING FOR THIS INSTEAD OF THE RAW JSON FILE!!!
-                */
                 const db = interaction.client.db.Counters
-                const val = interaction.options.getBoolean("value")
                 const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
-                interaction.reply({content: `${codeBlock("json", JSON.stringify(JSON.parse(row.get("config")), null, 2))}`, ephemeral: true })
+                let config = JSON.parse(row.get('config'))
+
+                const embed = new MessageEmbed()
+                    .setColor('#0099ff')
+                    .setTitle(`User Configuration for ${interaction.user.tag}`)
+                    .addFields(
+                        { name: `claim-notifications: ${(config.enableClaimDM == true ? "✅" : "❌")}`, value: `Enable claim notifcations from the bot.`},
+                    )
+
+                await interaction.reply({embeds: [embed]});
             }
         }   
     }
