@@ -14,7 +14,7 @@ module.exports = {
                 .setRequired(true)))
         .addSubcommand(subcommand => subcommand
             .setName("view")
-            .setDescription("View your current user settings (WIP)")),
+            .setDescription("View your current user settings")),
     async execute(interaction) {
         const subcommand = interaction.options.getSubcommand()
         const user = interaction.user
