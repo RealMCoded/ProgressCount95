@@ -82,7 +82,9 @@ client.once('ready', async () => {
 	console.log(`✅ Signed in as ${client.user.tag}! \n`);
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	guildDB = localDB
-	if (status.enable) {
+
+	client.user.setStatus(status.onlineStatus);
+	if (status.enableActivity) {
 		client.user.setActivity(`${status.activity_name} ${(status.showCurrentNumber ? `| ${numb}` : '')}`, { type: status.activity_type });
 
 		setInterval(() => {

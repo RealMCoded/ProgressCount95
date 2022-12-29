@@ -29,6 +29,8 @@
     "claimAlertDM": true,
     "fallbackToChannelIfDMFails": false,
     "status": {
+        "onlineStatus": "online",
+        "enableActivity": true,
         "activity_type": "COMPETING",
         "activity_name": "counting",
         "showCurrentNumber": true
