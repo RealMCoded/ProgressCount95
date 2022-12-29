@@ -1,7 +1,7 @@
 {
   "name": "progresscount95",
-  "version": "0.2.1",
-  "description": "",
+  "version": "0.2.2",
+  "description": "The counting bot created for the Progressbar95 +Plus! server.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "stuartt_mcoded",
   "license": "ISC",
   "dependencies": {
     "@discordjs/builders": "^0.12.0",
