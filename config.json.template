@@ -28,6 +28,11 @@
     "showRulesOnFirstCount": false,
     "claimAlertDM": true,
     "fallbackToChannelIfDMFails": false,
+    "status": {
+        "activity_type": "COMPETING",
+        "activity_name": "counting",
+        "showCurrentNumber": true
+    },
     "customEmojiList": {
         "normal": "<:normal:id>",
         "highscore": "<:highscore:id>",

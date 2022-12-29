@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, claimAlertDM } = require('./config.json');
+const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, claimAlertDM, status } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { validateExpression } = require('./Util.js')
@@ -81,12 +81,14 @@ client.once('ready', async () => {
 	lastCounterId = localDB.lastCounterID
 	console.log(`✅ Signed in as ${client.user.tag}! \n`);
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
-	client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
 	guildDB = localDB
+	if (status.enable) {
+		client.user.setActivity(`${status.activity_name} ${(status.showCurrentNumber ? `| ${numb}` : '')}`, { type: status.activity_type });
 
-	setInterval(() => {
-		client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
-	}, 90000);
+		setInterval(() => {
+			client.user.setActivity(`${status.activity_name} ${(status.showCurrentNumber ? `| ${numb}` : '')}`, { type: status.activity_type });
+		}, 90000);
+	}
 });
 
 //All slash commands. check "commands" folder
