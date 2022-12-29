@@ -5,6 +5,7 @@ const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave,
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { validateExpression } = require('./Util.js')
+
 //database shit
 const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
@@ -105,14 +106,14 @@ client.on('interactionCreate', async interaction => {
 		serverSaves = guildDB.guildSaves
 	} catch (error) {
 		console.log(`${error}\n\n`)
-		if (!nerdstatExecutor.includes(interaction.user.id)) {
-            await interaction.reply({content: `if you are seeing this, one of the devs messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
-        } else {
-            await interaction.reply({content: `Something bad happened! \n\n\`\`\`${error}\`\`\``, ephemeral: true})
-        }
+		await interaction.reply({content: `⚠️Uh Oh! If you're reading this then something bad happened! We've logged the error and will investigate it as soon as possible.\n\n\`\`\`js\n${error}\`\`\``, ephemeral: true})
 	}
 });
 
+/*
+	Counting logic
+	TODO: make this it's own separate file.
+*/
 client.on('messageCreate', async message => {
 
 	if (message.author.bot) return
@@ -341,6 +342,7 @@ setInterval(async () => {
 	
 }, 1000);
 
+//fallbacks just incase something really bad happens
 process.on('uncaughtException', (error, origin) => {
 	console.log(`❌ Uncaught exception\n-----\n${error.stack}\n-----\nException origin\n${origin}`)
 })
