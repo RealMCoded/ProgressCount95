@@ -5,7 +5,7 @@ const fs = require('node:fs');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('rules')
-        .setDescription(`Read the bot's rules!`),
+        .setDescription(`Read the counting rules!`),
     async execute(interaction) {
         if (enableRulesFile || !fs.existsSync('./rules.txt')) {
             const rules = fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'})

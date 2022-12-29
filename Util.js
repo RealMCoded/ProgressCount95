@@ -1,3 +1,7 @@
+/*
+    This file contains some functions that are re-sued by other files in the bot.
+*/
+
 module.exports = {
 	validateExpression(number) {
 		return /^[+\-/*^0-9().]+$/.test(number)

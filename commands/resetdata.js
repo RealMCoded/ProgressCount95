@@ -25,7 +25,7 @@ module.exports = {
             .addComponents(answers);
         const questionEmbed = new MessageEmbed()
             .setTitle("Are you sure you want to reset your ProgressCount95 data?")
-            .setDescription("**You are about to reset your ProgressCount95 data.**\n\nThe data that will be reset is: Correct Numbers, Incorrect Numbers. **This does not reset Saves, Saves Slots, Next save claim time, and your banned status from the bot.**\n\nClick on **\"Yes, Delete my data.\"** to delete this data, Click **\"Nevermind.\"** or wait 30 seconds to cancel this.\n\n**THIS IS IRREVERSIBLE. DO THIS AT YOUR OWN RISK!**")
+            .setDescription("**You are about to reset your ProgressCount95 data.**\n\nThe data that will be reset is: Correct Numbers, Incorrect Numbers, User Settings. **This does not reset Saves, Saves Slots, Next save claim time, and your banned status from the bot.**\n\nClick on **\"Yes, Delete my data.\"** to delete this data, Click **\"Nevermind.\"** or wait 30 seconds to cancel this.\n\n**THIS IS IRREVERSIBLE. DO THIS AT YOUR OWN RISK!**")
             .setColor('#007f7f')
         const message = await interaction.reply({embeds: [questionEmbed], components: [answerButtons], fetchReply: true});
         const collector = message.createMessageComponentCollector({ componentType: 'BUTTON', time: time});
@@ -42,7 +42,9 @@ module.exports = {
                     const [row,] = await db.findOrCreate({ where: { userID: interaction.user.id } })
                     await row.update({ 
                         numbers: 0, 
-                        wrongNumbers: 0
+                        wrongNumbers: 0,
+                        hasUserBeenDMed: false,
+                        config: "{}",
                         //saves: 20,
                         //slots: 5,
                         //saveCooldown: 0 

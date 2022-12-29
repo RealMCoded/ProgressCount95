@@ -1,10 +1,11 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount } = require('./config.json');
+const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, claimAlertDM, status } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { validateExpression } = require('./Util.js')
+
 //database shit
 const sequelize = new Sequelize('database', "", "", {
 	host: 'localhost',
@@ -80,12 +81,16 @@ client.once('ready', async () => {
 	lastCounterId = localDB.lastCounterID
 	console.log(`✅ Signed in as ${client.user.tag}! \n`);
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
-	client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
 	guildDB = localDB
 
-	setInterval(() => {
-		client.user.setActivity(`counting | ${numb}`, { type: 'COMPETING' });
-	}, 90000);
+	client.user.setStatus(status.onlineStatus);
+	if (status.enableActivity) {
+		client.user.setActivity(`${status.activity_name} ${(status.showCurrentNumber ? `| ${numb}` : '')}`, { type: status.activity_type });
+
+		setInterval(() => {
+			client.user.setActivity(`${status.activity_name} ${(status.showCurrentNumber ? `| ${numb}` : '')}`, { type: status.activity_type });
+		}, 90000);
+	}
 });
 
 //All slash commands. check "commands" folder
@@ -105,14 +110,14 @@ client.on('interactionCreate', async interaction => {
 		serverSaves = guildDB.guildSaves
 	} catch (error) {
 		console.log(`${error}\n\n`)
-		if (!nerdstatExecutor.includes(interaction.user.id)) {
-            await interaction.reply({content: `if you are seeing this, one of the devs messed up somehow. send this error to them plz :)\n\n\`\`\`${error}\`\`\``, ephemeral: true})
-        } else {
-            await interaction.reply({content: `Something bad happened! \n\n\`\`\`${error}\`\`\``, ephemeral: true})
-        }
+		await interaction.reply({content: `⚠️Uh Oh! If you're reading this then something bad happened! We've logged the error and will investigate it as soon as possible.\n\n\`\`\`js\n${error}\`\`\``, ephemeral: true})
 	}
 });
 
+/*
+	Counting logic
+	TODO: make this it's own separate file.
+*/
 client.on('messageCreate', async message => {
 
 	if (message.author.bot) return
@@ -311,12 +316,14 @@ client.on('messageDelete', async message => {
 setInterval(async () => {
 	const n = Math.floor(Date.now() / 1000)
 	//get list of all counters
-	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown'] })
+	let counters = await client.db.Counters.findAll({ attributes: ['userID', 'saveCooldown', 'config', 'hasUserBeenDMed'] })
 
 	//loop through all counters
 	for (let i = 0; i < counters.length; i++) {
-		const lastBeg= parseInt(counters[i].get('saveCooldown'))
-		if(n !== lastBeg+saveClaimCooldown){
+		const lastBeg = parseInt(counters[i].get('saveCooldown'))
+		const dmEnabled = (JSON.parse(counters[i].get("config")).enableClaimDM) ?? claimAlertDM // if enableClaimDM is null (unset) fallback to default 
+		const hasUserBeenDMed = counters[i].get('hasUserBeenDMed')
+		if(n < lastBeg+saveClaimCooldown || !dmEnabled || hasUserBeenDMed ){
 			continue
 		} else {
 			let user = await client.users.fetch(counters[i].get('userID'))
@@ -326,15 +333,20 @@ setInterval(async () => {
 			//check if we can dm the user
 			user.send(`Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
 				.catch(err => {
-					console.warn(`Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
-					//send notification to counting channel
-					client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
+					if(fallbackToChannelIfDMFails) {
+						console.warn(`Unable to DM user with ID ${counters[i].get('userID')}, notifying them in counting channel!`)
+						//send notification to counting channel
+						client.channels.cache.get(countingCh).send(`${user}, Your save is ready! Use </saves claim:${savesClaimCommandID}> to claim it!`)
+					}
 				})
+			const counter = await client.db.Counters.findOne({ where: { userID: counters[i].get("userID") } })
+			counter.update({ hasUserBeenDMed: true })
 		}
 	}
 	
 }, 1000);
 
+//fallbacks just incase something really bad happens
 process.on('uncaughtException', (error, origin) => {
 	console.log(`❌ Uncaught exception\n-----\n${error.stack}\n-----\nException origin\n${origin}`)
 })

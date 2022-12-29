@@ -26,7 +26,7 @@ module.exports = {
         const subcommand = interaction.options.getSubcommand();
         let [author,] = await db.findOrCreate({ where: { userID: interaction.user.id } });
         if (author.banned) {
-            return interaction.reply({ content: `❌ Sorry, you can't use this command because you're currently banned from using ProgressCount95. Bans are usually issued for trolling or ruining counts on purpose.\n\n**Reason for the ban:** "${author.banReason}"`, ephemeral: true })
+            return interaction.reply({ content: `❌ Sorry, you can't use this command because you're currently banned from using ProgressCount95. Bans are usually issued for trolling or ruining counts on purpose.\n\n**Reason for this ban:** "${author.banReason}"`, ephemeral: true })
         }
         if (subcommand === "claim") {
             //let delay = 43200 //10 seconds for testing
@@ -60,7 +60,7 @@ module.exports = {
                     return interaction.reply({embeds: [embed]})
                 }
                 row.increment('saves', { by: savesPerClaim });
-                row.update({ saveCooldown: n });
+                row.update({ saveCooldown: n, hasUserBeenDMed: false });
 
                 let embed = new MessageEmbed()
                     .setTitle("Saves")

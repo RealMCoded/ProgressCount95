@@ -26,6 +26,15 @@
     "transferTax": 0,
     "enableRulesFile": false,
     "showRulesOnFirstCount": false,
+    "claimAlertDM": true,
+    "fallbackToChannelIfDMFails": false,
+    "status": {
+        "onlineStatus": "online",
+        "enableActivity": true,
+        "activity_type": "COMPETING",
+        "activity_name": "counting",
+        "showCurrentNumber": true
+    },
     "customEmojiList": {
         "normal": "<:normal:id>",
         "highscore": "<:highscore:id>",
