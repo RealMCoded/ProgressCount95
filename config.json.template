@@ -26,7 +26,6 @@
     "transferTax": 0,
     "enableRulesFile": false,
     "showRulesOnFirstCount": false,
-    "claimAlertDM": true,
     "fallbackToChannelIfDMFails": false,
     "status": {
         "onlineStatus": "online",

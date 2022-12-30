@@ -1,4 +1,4 @@
-const { defaultSlots, initialSaves, guildSaveSlots, claimAlertDM } = require('./config.json');
+const { defaultSlots, initialSaves, guildSaveSlots } = require('./config.json');
 const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize('database', "", "", {

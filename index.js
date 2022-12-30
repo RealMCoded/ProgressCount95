@@ -1,7 +1,7 @@
 const fs = require('node:fs');
 const Sequelize = require('sequelize');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, claimAlertDM, status, fallbackToChannelIfDMFails } = require('./config.json');
+const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, status, fallbackToChannelIfDMFails } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { validateExpression } = require('./Util.js')
@@ -321,7 +321,7 @@ setInterval(async () => {
 	//loop through all counters
 	for (let i = 0; i < counters.length; i++) {
 		const lastBeg = parseInt(counters[i].get('saveCooldown'))
-		const dmEnabled = (JSON.parse(counters[i].get("config")).enableClaimDM) ?? claimAlertDM // if enableClaimDM is null (unset) fallback to default 
+		const dmEnabled = (JSON.parse(counters[i].get("config")).enableClaimDM)
 		const hasUserBeenDMed = counters[i].get('hasUserBeenDMed')
 		if(n < lastBeg+saveClaimCooldown || !dmEnabled || hasUserBeenDMed ){
 			continue
