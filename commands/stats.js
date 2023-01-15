@@ -38,7 +38,7 @@ module.exports = {
             const embed = new MessageEmbed()
                 .setTitle(`Server Stats`)
                 .setColor("#0099ff")
-                .setDescription(`**Current number:** ${guildDB.count}\n**Last counter:** ${lastCounter}\n**Guild saves:** ${guildDB.guildSaves}/${guildSaveSlots}\n**Highscore:** ${guildDB.highscore}\n\n**Total numbers counted:** ${tot}`)
+                .setDescription(`**Current number:** ${guildDB.count}\n**Last counter:** ${lastCounter}\n**Guild saves:** ${guildDB.guildSaves}/${guildSaveSlots}\n**Highscore:** ${guildDB.highscore}\n**Current Streak:** ${guildDB.streak}\n\n**Total numbers counted:** ${tot}`)
                 .setTimestamp()
 
 		    return interaction.reply({embeds: [embed]});
