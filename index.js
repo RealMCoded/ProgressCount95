@@ -59,10 +59,7 @@ console.error = function(e) {
 const recentCountRuiners= new Set();
 
 var canAllCount = true
-var lastCounterId
-var serverSaves
-var guildDB 
-var highscore
+var lastCounterId, serverSaves, guildDB, highscore, streak
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
@@ -79,6 +76,7 @@ client.once('ready', async () => {
 	highscore = localDB.highscore
 	serverSaves = localDB.guildSaves
 	lastCounterId = localDB.lastCounterID
+	streak = localDB.streak
 	console.log(`✅ Signed in as ${client.user.tag}! \n`);
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	guildDB = localDB
@@ -106,6 +104,7 @@ client.on('interactionCreate', async interaction => {
 
 		let guildDB = await client.db.Data.findOne({ where: { guildID: interaction.guild.id} }) //i can run this instead of findOrCreate because it already exists by now lol
 		numb = guildDB.count
+		streak = guildDB.streak
 		highscore = guildDB.highscore
 		serverSaves = guildDB.guildSaves
 	} catch (error) {
@@ -131,7 +130,7 @@ client.on('messageCreate', async message => {
 	}
 
 	if (message.channel.id === countingCh) {
-		if (Date.now() - message.author.createdAt < 1000*60*60*24*7) {
+		if (Date.now() - message.author.createdAt < 0) {
 			if (validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY") { 
 				if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
 				message.reply("⚠️ **Your account is too young to count! Your account must be 7 days old to count.**")
@@ -198,6 +197,7 @@ client.on('messageCreate', async message => {
 							}
 						}
 						numb++
+						streak++
 						if (highscore < numb) highscore = numb;
 						lastCounterId = message.author.id
 						guildDB.update({ lastCounterID: message.author.id })
@@ -233,22 +233,23 @@ client.on('messageCreate', async message => {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							const ten = 10
 							lecountr.decrement('saves', { by: ten})
-							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**`)
+							message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **Wrong Number.**\n**STREAK LOST AT ${streak}!**`)
 							if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-1)/10}`)
 						} else if (serverSaves >= 1) {
 							if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 							serverSaves--
-							message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**`)
+							message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **Wrong Number.**\n**STREAK LOST AT ${streak}!**`)
 							if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 						} else {
 							if (useCustomEmoji) {message.react(customEmojiList.ruin)} else {message.react('❌')}
-							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**`)
+							message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**!\nThe next number is **1** | **Wrong Number.**\n**STREAK LOST AT ${streak}!**`)
 							numb = 0
 							lastCounterId = "0"
 							guildDB.update({ lastCounterID: "0" })
 							if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 						}
 						lecountr.increment('wrongNumbers');
+						streak = 0
 					}
 				} else {
 					canAllCount = false;
@@ -258,7 +259,7 @@ client.on('messageCreate', async message => {
 					if (lecountr.saves >= 10) {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						lecountr.decrement('saves', {by: 10})
-						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**`)
+						message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(lecountr.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **You cannot count twice in a row!**\n**STREAK LOST AT ${streak}!**`)
 						if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(lecountr.saves-10)/10}`)
 					} else if (numb == 0){
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
@@ -268,20 +269,20 @@ client.on('messageCreate', async message => {
 					} else if (serverSaves >= 1) {
 						if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 						serverSaves--
-						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!`)
+						message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **You cannot count more than one time in a row**!\n**STREAK LOST AT ${streak}!**`)
 						if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
 					} else {
 						if (useCustomEmoji) {message.react(customEmojiList.ruin)} else {message.react('❌')}
-						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!`)
+						message.reply(`${message.author} ruined the count!\nThe next number was **${numb+1}**, but they said **${thec}**! | **You cannot count more than one time in a row**!\n**STREAK LOST AT ${streak}!**`)
 						numb = 0
 						lastCounterId = "0"
 						guildDB.update({ lastCounterID: "0" })
 						if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
 					}
 					lecountr.increment('wrongNumbers');
+					streak = 0
 			}
-			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore })
-
+			guildDB.update({ count: numb, guildSaves: serverSaves, highscore: highscore, streak: streak })
 		}
 	}
 	}
