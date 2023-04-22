@@ -5,3 +5,4 @@ database.sqlite
 GeneratedUserData.json
 package-lock.json
 rules.txt
+EVENTS_TEST/
