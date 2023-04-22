@@ -1,5 +1,3 @@
-//const { generateDependencyReport } = require('@discordjs/voice');
-const { Sequelize } = require('sequelize');
 const fs = require('node:fs')
 
 var data = {
@@ -8,14 +6,6 @@ var data = {
 		export_date: Date.now()
 	}
 }
-
-const sequelize = new Sequelize('database', "", "", {
-	host: 'localhost',
-	dialect: 'sqlite',
-	logging: false,
-	// SQLite only
-	storage: 'database.sqlite',
-});
 
 const db = require('./database.js')
 
