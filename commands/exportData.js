@@ -17,7 +17,7 @@ module.exports = {
 		if (useCustomEmoji) {
 			await interaction.reply(`${customEmojiList.typing} **The file is being generated and will be sent to you soon!**`)
 		} else {
-			await interaction.reply("••• **The file is being generated and will be sent to you soon!**")
+			await interaction.reply("⏰ **The file is being generated and will be sent to you soon!**")
 		}
 		console.log(`${interaction.user.tag} requested a leaderboard dump`)
 		let db = interaction.client.db
