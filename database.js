@@ -72,6 +72,10 @@ const Data = sequelize.define('data', {
   highscore: {
     type: Sequelize.BIGINT,
     defaultValue: 0
+  },
+  streak: {
+    type: Sequelize.BIGINT,
+    defaultValue: 0
   }
 });
 

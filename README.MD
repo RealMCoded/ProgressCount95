@@ -2,7 +2,7 @@
 
 The counting bot for the [Progressbar95 +Plus server](https://discord.gg/PGMB93T5yJ) created by [stuartt](https://github.com/RealMCoded) (with help from [luihum](https://github.com/luihum) and [5jiji](https://github.com/5jiji))
 
-**[Privacy Policy](https://github.com/RealMCoded/ProgressCount95/blob/master/PRIVACY-POLICY.md)** - **[Trello Board](https://trello.com/b/WMZYOuTd/progresscount95)** - **[Support Server](https://discord.gg/DyNuGVRBp3)**
+**[Privacy Policy](https://github.com/RealMCoded/ProgressCount95/blob/master/PRIVACY-POLICY.md)** - **[Support Server](https://discord.gg/DyNuGVRBp3)**
 
 ## Known issues
 
@@ -13,7 +13,7 @@ The counting bot for the [Progressbar95 +Plus server](https://discord.gg/PGMB93T
 
 The bot requires some files to be made that have been gitignored. The only file it needs to make is `config.json`
 
-- Copy `config.json.template`, rename it to `config.json` and replace the variables with your own.
+- Copy `config.template.json`, rename it to `config.json` and replace the variables with your own.
 
 Notes:
 * For the `freeSave`, `savesPerClaim`, `initialSaves` and `transferTax` variables, multiply the desired value by 10. (The bot handles saves as integers internally)
@@ -23,7 +23,7 @@ Notes:
 * If you don't want free saves, set the `freeSave` variable to 0.
 * The `pushPrivateCommands` variable is specific to the Progressbar95 (+Plus!) server. It should be set to false.
 
-## Building
+## Running
 
 This bot uses [Node.js](https://nodejs.org/en/) as a backend. It should be installed before continuing.
 
@@ -35,7 +35,7 @@ For Linux:
 git clone https://github.com/RealMCoded/ProgressCount95
 cd ProgressCount95
 npm install
-cp config.json.template config.json # if you have already created the config, skip this!
+cp config.template.json config.json # if you have already created the config, skip this!
 $EDITOR config.json                 # if you have already created the config, skip this!
 npm run start
 ```
@@ -46,7 +46,7 @@ For Windows:
 git clone https://github.com/RealMCoded/ProgressCount95
 cd ProgressCount95
 npm install
-copy config.json.template config.json # if you have already created the config, skip this!
+copy config.template.json config.json # if you have already created the config, skip this!
 notepad config.json                   # if you have already created the config, skip this!
 npm run start
 ```
@@ -69,6 +69,6 @@ https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=3136&scope
 ## Slash commands
 
 To register slash commands, run the following command:
-```
+```bash 
 npm run register
 ```

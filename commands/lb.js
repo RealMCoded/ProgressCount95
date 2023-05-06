@@ -19,6 +19,13 @@ module.exports = {
             .addIntegerOption(option => 
 				option.setRequired(false)
 					.setName("page")
+					.setDescription("The page of users to show (10 users/page) (Default: 1)")))
+		.addSubcommand(subcommand => subcommand
+            .setName("incorrects")
+            .setDescription("Counting leaderboard. Based on incorrects numbers only.")
+            .addIntegerOption(option => 
+				option.setRequired(false)
+					.setName("page")
 					.setDescription("The page of users to show (10 users/page) (Default: 1)"))),
     async execute(interaction) {
         const db = interaction.client.db.Counters;
@@ -45,6 +52,14 @@ module.exports = {
 
 				for(var i=0; i < list.length; i++){
 					list[i].numbers = list[i].numbers - list[i].wrongNumbers
+				}
+			} else if (subcommand == "incorrects") {
+				list = await db.findAll({
+					attributes: ['wrongNumbers', 'userID']
+				})
+
+				for(var i=0; i < list.length; i++){
+					list[i].numbers = list[i].wrongNumbers
 				}
 			}
 
