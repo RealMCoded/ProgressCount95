@@ -19,7 +19,7 @@ module.exports = {
             .setDescription("Set or unset a ban on a user.")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("The user")
+                .setDescription("The user to ban")
                 .setRequired(true))
             .addBooleanOption(option => option
                 .setName("ban")
@@ -34,7 +34,7 @@ module.exports = {
             .setDescription("Update the ban reason for a user")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("The user")
+                .setDescription("The user you want to update the ban reason for")
                 .setRequired(true))
             .addStringOption(option => option
                 .setName("reason")
@@ -48,7 +48,7 @@ module.exports = {
             .setDescription("Set an user's correct and incorrect numbers.")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("The user")
+                .setDescription("The user you want to set the numbers for")
                 .setRequired(true))
             .addIntegerOption(option => option
                 .setName("correct")
@@ -70,7 +70,7 @@ module.exports = {
             .setDescription("Set an user's saves.")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("The user")
+                .setDescription("The user you want to give the saves to")
                 .setRequired(true))
             .addNumberOption(option => option
                 .setName("saves")
@@ -88,10 +88,10 @@ module.exports = {
                 .setRequired(true)))
         .addSubcommand(subcommand => subcommand
             .setName("resetclaimcooldown")
-            .setDescription("Reset an user's save claim cooldown")
+            .setDescription("Reset a user's save claim cooldown")
             .addUserOption(option => option
                 .setName("user")
-                .setDescription("The user")
+                .setDescription("The user you want to clear the cooldown from")
                 .setRequired(true))),
     async execute(interaction) {
         //const webhookClient = new WebhookClient({ url: logHook });
