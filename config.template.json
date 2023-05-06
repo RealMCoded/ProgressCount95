@@ -27,6 +27,10 @@
     "enableRulesFile": false,
     "showRulesOnFirstCount": false,
     "fallbackToChannelIfDMFails": false,
+    "ageGate":{
+        "enable": true,
+        "age": 7
+    },
     "status": {
         "onlineStatus": "online",
         "enableActivity": true,

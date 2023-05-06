@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents, WebhookClient } = require('discord.js');
-const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, status, fallbackToChannelIfDMFails } = require('./config.json');
+const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, status, fallbackToChannelIfDMFails, ageGate } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
 const { isNumber } = require('./Util.js')
@@ -123,9 +123,14 @@ client.on('messageCreate', async message => {
 	if (message.channel.id === countingCh && isNumber(message)) {
 
 		//Age Gate
-		if (Date.now() - message.author.createdAt < 0) {
-			if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
-			return message.reply("⚠️ **Your account is too young to count! Your account must be 7 days old to count.**")
+		if (ageGate.enable) {
+			let accountAge = Date.now() - message.author.createdAt.getTime();
+			let ageInDays = accountAge / (1000 * 60 * 60 * 24); // convert milliseconds to days
+
+			if (ageInDays <= ageGate.age) {
+				if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
+				return message.reply("⚠️ **Your account is too young to count! Your account must be 7 days old to count.**")
+			}
 		}
 
 		//define the user that sent the number
