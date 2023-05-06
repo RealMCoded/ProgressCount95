@@ -1,3 +1,7 @@
+/***
+ * TO PEOPLE READING THIS: THIS IS A JOKE COMMAND!!! DO NOT TAKE IT SERIOUSLY!!!
+ * It's a running gag in the Progressbar95 +Plus! server that Setap gets no bitches.
+ */
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const wait = require('node:timers/promises').setTimeout;
