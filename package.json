@@ -1,6 +1,6 @@
 {
   "name": "progresscount95",
-  "version": "0.2.2",
+  "version": "0.2.4",
   "description": "The counting bot created for the Progressbar95 +Plus! server.",
   "main": "index.js",
   "scripts": {
