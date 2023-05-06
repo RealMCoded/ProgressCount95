@@ -1,6 +1,6 @@
 /***
  * TO PEOPLE READING THIS: THIS IS A JOKE COMMAND!!! DO NOT TAKE IT SERIOUSLY!!!
- * It's a running gag in the Progressbar95 +Plus! server that Setap gets no bitches.
+ * It's a running gag in the Progressbar95 +Plus! server that Setap gets no bitches. He is fine with this command being here.
  */
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');

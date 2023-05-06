@@ -16,8 +16,6 @@ module.exports = {
 			const platform = `${process.platform}`;
 			//store node arch
 			const arch = `${process.arch}`;
-			//store node cpu count
-			//const cpuCount = `${process.cpuCount()}`;
 			//store node cpu speed
 			const cpuSpeed = `${Math.round(process.cpuUsage().system / 1000 / 1000 * 100) / 100} MHz`;
 			//store node total cpu usage
