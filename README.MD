@@ -69,6 +69,6 @@ https://discord.com/oauth2/authorize?client_id=[ClientID]&permissions=3136&scope
 ## Slash commands
 
 To register slash commands, run the following command:
-```
+```bash 
 npm run register
 ```
