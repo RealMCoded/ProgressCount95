@@ -9,6 +9,7 @@ module.exports = {
     async execute(interaction) {
         const db = interaction.client.db;
         const usr = interaction.targetUser;
+        const person = await interaction.client.users.fetch(usr.id)
 
         if (usr.bot) return interaction.reply({content:"❌ **Bots don't have counting stats!**", ephemeral: true})
 
@@ -32,7 +33,6 @@ module.exports = {
             const saves = tag.get("saves")
             const slots = tag.get("slots")
             const accuracy = (correct / (correct + incorrect) * 100).toFixed(3)
-            const person = await interaction.client.users.fetch(usr.id)
 
             const activeDate = new Date(tag.get("updatedAt")).valueOf().toString().slice(0, -3)
             const createdAt = new Date(tag.get("createdAt")).valueOf().toString().slice(0, -3)
