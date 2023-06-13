@@ -3,7 +3,7 @@ const { Client, Collection, Intents, WebhookClient } = require('discord.js');
 const { token, countingCh, useCustomEmoji, numbersRequiredForFreeSave, freeSave, saveClaimCooldown, logHook, redirectConsoleOutputToWebhook, customEmojiList, longMessageEasterEggContent, longMessageEasterEgg, ruinDelay, nerdstatExecutor, guildId, logRuins, logSaveUses, enableRulesFile, showRulesOnFirstCount, status, fallbackToChannelIfDMFails, ageGate } = require('./config.json');
 const mathx = require('math-expression-evaluator');
 const client = new Client({ ws: { properties: { browser: "Discord iOS" }}, intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS] });
-const { isNumber } = require('./Util.js')
+const { isNumber, formattedName } = require('./Util.js')
 
 client.db = require('./database.js')
 
@@ -268,15 +268,15 @@ async function fail(reason_for_fail, user_counter, message, user_count) {
 
 		if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 		user_counter.decrement('saves', {by: 10})
-		message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${message.author.tag} now has **${(user_counter.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **${formal_fail_reason}**\n**STREAK LOST AT ${streak}!**`)
-		if (logSaveUses) console.log(`${message.author.tag} used one of their saves, now they have ${(user_counter.saves-10)/10}`)
+		message.reply(`${message.author} almost ruined the count, but one of their saves were used!\n${formattedName(message.author)} now has **${(user_counter.saves-10)/10}** saves remaining.\nThe next number is **${numb + 1}** | **${formal_fail_reason}**\n**STREAK LOST AT ${streak}!**`)
+		if (logSaveUses) console.log(`${formattedName(message.author)} used one of their saves, now they have ${(user_counter.saves-10)/10}`)
 
 	} else if (serverSaves >= 1) { //if there are server saves
 
 		if (useCustomEmoji) {message.react(customEmojiList.warn)} else {message.react('⚠️')}
 		serverSaves--
 		message.reply(`${message.author} almost ruined the count, but a server save was used!\n**${serverSaves}** server saves remain.\nThe next number is **${numb+1}** | **${formal_fail_reason}**!\n**STREAK LOST AT ${streak}!**`)
-		if (logSaveUses) console.log(`${message.author.tag} used a server save, now the server has ${serverSaves}}!`)
+		if (logSaveUses) console.log(`${formattedName(message.author)} used a server save, now the server has ${serverSaves}}!`)
 
 	} else { //No saves (user and server) and the number was not 0 to start with
 
@@ -285,7 +285,7 @@ async function fail(reason_for_fail, user_counter, message, user_count) {
 		numb = 0
 		lastCounterId = "0"
 		guildDB.update({ lastCounterID: "0" })
-		if (logRuins) console.log(`${message.author.tag} ruined the count at ${numb}!`)
+		if (logRuins) console.log(`${formattedName(message.author)} ruined the count at ${numb}!`)
 
 	}
 

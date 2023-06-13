@@ -18,4 +18,8 @@ function isNumber(message) {
     return validateExpression(message.content.split(" ")[0]) && message.attachments.size == 0 && message.stickers.size == 0 && message.content.toUpperCase() !== "INFINITY"
 }
 
-module.exports = { validateExpression, random_range, random, isNumber }
+function formattedName(user) {
+    return user.discriminator === "0" ? `\@${user.username}` : user.tag
+}
+
+module.exports = { validateExpression, random_range, random, isNumber, formattedName }

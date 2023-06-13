@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {MessageEmbed} = require('discord.js');
 const { guildSaveSlots } = require('../config.json')
+const { formattedName } = require('../Util.js')
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('stats')
@@ -77,16 +79,16 @@ module.exports = {
                 const createdAt = new Date(tag.get("createdAt")).valueOf().toString().slice(0, -3)
 
                 const embed = new MessageEmbed()
-                    .setTitle(`Stats for ${person.tag}`)
+                    .setTitle(`Stats for ${formattedName(person)}`)
                     .setColor("#0099ff")
                     .setDescription(`**Leaderboard Position:** #${lbpos}\n**Accuracy:** ${accuracy}%\n**Correct numbers:** ${correct}\n**Wrong numbers:** ${incorrect}\n**Score:** ${correct - incorrect}\n**Saves:** ${saves/10}/${slots}\n**Last Active:** <t:${activeDate}:f> (<t:${activeDate}:R>)\n**Started counting:** <t:${createdAt}:f> (<t:${createdAt}:R>)`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             } else {
                 const embed = new MessageEmbed()
-                    .setTitle(`Stats for ${person.tag}`)
+                    .setTitle(`Stats for ${formattedName(person)}`)
                     .setColor("#0099ff")
-                    .setDescription(`***${person.tag} does not have any counting stats yet!***`)
+                    .setDescription(`***${formattedName(person)} does not have any counting stats yet!***`)
                     .setTimestamp()
                 return interaction.reply({embeds: [embed]});
             }

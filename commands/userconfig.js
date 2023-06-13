@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, codeBlock } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+const { formattedName } = require('../Util.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -27,7 +28,7 @@ module.exports = {
                 let oldconf = JSON.parse(row.get('config'))
                 config.enableClaimDM = val
 
-                if (config.enableClaimDM == oldconf.enableClaimDM) {return interaction.reply({content: `⚠️ **Your user settings have not bee updated because this setting already equaled this value!**`, ephemeral: true })}
+                if (config.enableClaimDM == oldconf.enableClaimDM) {return interaction.reply({content: `⚠️ **Your user settings have not been updated because this setting already equaled this value!**`, ephemeral: true })}
                 await row.update({config: JSON.stringify(config)})
                 interaction.reply({content: `✅ **Your user settings have been updated.**\n${codeBlock("diff", `- enableClaimDM: ${oldconf.enableClaimDM}\n+ enableClaimDM: ${config.enableClaimDM}`)}`, ephemeral: true })
             } break;
@@ -38,7 +39,7 @@ module.exports = {
 
                 const embed = new MessageEmbed()
                     .setColor('#0099ff')
-                    .setTitle(`User Configuration for ${interaction.user.tag}`)
+                    .setTitle(`User Configuration for ${formattedName(interaction.user)}`)
                     .addFields(
                         { name: `claim-notifications: ${(config.enableClaimDM == true ? "✅" : "❌")}`, value: `Enable claim notifcations from the bot.`},
                     )

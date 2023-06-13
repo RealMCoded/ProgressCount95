@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const wait = require('node:timers/promises').setTimeout;
+const { formattedName } = require('../Util.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -74,10 +75,11 @@ module.exports = {
 				let theScore = list[i].numbers.toString()
 
 				let user = await interaction.client.users.fetch(list[i].userID);
+				//console.log(JSON.stringify(interaction.user))
 				if(user){
-					var le = le + "**#" + ((i+1)+(page-10)).toString() + "** | `" + user.tag + "`: **" + theScore + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
+					var le = le + "**#" + ((i+1)+(page-10)).toString() + "** | `" + formattedName(user) + "`: **" + theScore + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
 				} else {
-					var le = le + "**#" + (i+1).toString() + "** | `Unknown#" + list[i].userID + "`: **" + theScore + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
+					var le = le + "**#" + (i+1).toString() + "** | `" + list[i].userID + "`: **" + theScore + "**" + (list[i].userID == interaction.user.id ? ' < __You__' : '') + "\n"
 				}
 				await wait(250);
 			}
