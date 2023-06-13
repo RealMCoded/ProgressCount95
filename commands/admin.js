@@ -155,7 +155,8 @@ module.exports = {
                         //TODO: Fix caching.
                         let user = await interaction.client.users.fetch(bans[i].userID);
                         if (user) {
-                            banlist += `**${user.username}#${user.discriminator}** - ${bans[i].banReason}\n`
+                            let usertag = user.discriminator == "0" ? `@${user.username}` : user.tag
+                            banlist += `**${usertag}** - ${bans[i].banReason}\n`
                         } else {
                             banlist += `**<@${bans[i].userID}>**  - ${bans[i].banReason}\n`
                         }
