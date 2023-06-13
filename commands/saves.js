@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const {MessageEmbed, Permissions} = require('discord.js');
 const { userSavesPerGuildSave, guildSaveSlots, saveClaimCooldown, savesPerClaim, clientId, transferTax } = require('../config.json')
+const { formattedName } = require('../Util.js')
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('saves')
@@ -149,7 +151,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#FFFF00")
-                    .setDescription(`**${userB.tag}** already has maximum saves! (${userDBB.saves/10})`)
+                    .setDescription(`**${formattedName(userB)}** already has maximum saves! (${userDBB.saves/10})`)
                     .setTimestamp()
                 return interaction.reply({ embeds: [replyEmbed], ephemeral: true })
             } else if (userDBA.saves < 10+transferTax) {
@@ -168,7 +170,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **${partialSave/10}**${taxMessage} of your saves to **${userB.tag}**. You now have **${userDBA.saves/10}** saves.`)
+                    .setDescription(`You have transferred **${partialSave/10}**${taxMessage} of your saves to **${formattedName(userB)}**. You now have **${userDBA.saves/10}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})    
             
             } else {
@@ -179,7 +181,7 @@ module.exports = {
                 const replyEmbed = new MessageEmbed()
                     .setTitle("Saves")
                     .setColor("#00FF00")
-                    .setDescription(`You have transferred **1**${taxMessage} of your saves to **${userB.tag}**. You now have **${userDBA.saves/10}** saves.`)
+                    .setDescription(`You have transferred **1**${taxMessage} of your saves to **${formattedName(userB)}**. You now have **${userDBA.saves/10}** saves.`)
                 return interaction.reply({ embeds: [replyEmbed]})
             }
         }        
