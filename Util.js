@@ -19,7 +19,7 @@ function isNumber(message) {
 }
 
 function formattedName(user) {
-    return user.discriminator === "0" ? `\@${user.username}` : user.tag
+    return user.discriminator === "0" ? `${user.username}` : user.tag
 }
 
 module.exports = { validateExpression, random_range, random, isNumber, formattedName }
