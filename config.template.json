@@ -25,6 +25,7 @@
     "logSaveUses": false,
     "transferTax": 0,
     "enableRulesFile": false,
+    "useMath": true,
     "showRulesOnFirstCount": false,
     "fallbackToChannelIfDMFails": false,
     "ageGate":{

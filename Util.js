@@ -2,8 +2,14 @@
     This file contains some functions that are re-sued by other files in the bot.
 */
 
+const { useMath } = require("./config.json")
+
 function validateExpression(number) {
-    return /^[+\-/*^0-9().]+$/.test(number)
+    if (useMath) {
+        return /^[+\-/*^0-9().]+$/.test(number)
+    } else {
+        return /^[0-9().]+$/.test(number)
+    }
 }
 
 function random_range(min, max) {
