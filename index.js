@@ -140,7 +140,10 @@ client.on('messageCreate', async message => {
 		if (isNewCounter && enableRulesFile && showRulesOnFirstCount) {message.reply(fs.readFileSync('./rules.txt',{encoding:'utf8', flag:'r'}));}
 
 		//if they are banned react with the ignored emoji and end execution.
-		if (user_counter.banned) {if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}}
+		if (user_counter.banned) {
+			if (useCustomEmoji) {message.react(customEmojiList.ignored)} else {message.react("⛔")}
+			return;
+		}
 
 		//actual counting logic
 		try {
