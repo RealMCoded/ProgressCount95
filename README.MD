@@ -1,6 +1,13 @@
+# ProgressCount95 is no longer being developed.
+
+> As of Jan 14 2024, The *ProgressCount95* project is deprecated. I no longer have plans to update this bot anymore due to lack of time and other more important projects. Any current versions of the bot that are still being hosted will remain operational, though use of this bots source code is not recommended due to its unstable nature.<br/><br>If you are looking for a replacement, check out [countable](https://github.com/benslv/countable) (i have never used it myself though, but it looks like its a good replacement). Someone also mentioned that they want to rewrite this bot using newer versions of Discord.js, so keep an eye out for that on the [
+PB Discord Server Community](https://github.com/Progressbar-Discord-Server) organization
+
+---
+
 # ProgressCount95
 
-The counting bot for the [Progressbar95 +Plus server](https://discord.gg/PGMB93T5yJ) created by [stuartt](https://github.com/RealMCoded) (with help from [luihum](https://github.com/luihum) and [5jiji](https://github.com/5jiji))
+The counting bot for the [Progresscord](https://discord.gg/PGMB93T5yJ) server created by [stuartt](https://github.com/RealMCoded) (with help from [luihum](https://github.com/luihum))
 
 **[Privacy Policy](https://github.com/RealMCoded/ProgressCount95/blob/master/PRIVACY-POLICY.md)**
 

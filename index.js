@@ -67,6 +67,7 @@ client.once('ready', async () => {
 	serverSaves = localDB.guildSaves
 	lastCounterId = localDB.lastCounterID
 	streak = localDB.streak
+	console.log(`⚠️ ProgressCount95 is now deprecated, and use of it is no longer encouraged. View the README file for more information.`)
 	console.log(`✅ Signed in as ${client.user.tag}! \n`);
 	if (useCustomEmoji) {console.log("Custom Emoji support is on! Some emojis may fail to react if the bot is not in the server with the emoji.")} else {console.log("Custom Emoji support is off! No custom emojis will be used.")}
 	guildDB = localDB
